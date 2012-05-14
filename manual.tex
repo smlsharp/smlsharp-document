@@ -1,8 +1,20 @@
-%#!platex manual; latexml --noparse --destination=./manual.xml manual.tex; latexmlpost --format=xhtml --destination=/home/ohori/work/WWW/pllab-www/smlsharp/docs/1.0/ja/manual.xhtml --split  --novalidate manual.xml
+%#!platex manual; latexml --noparse --destination=./manual.xml manual.tex; latexmlpost --format=xhtml --destination=/home/ohori/work/WWW/pllab-www/smlsharp/docs/1.0/en/manual.xhtml --split  --novalidate manual.xml
 \documentclass{jbook}
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\newif\ifjp
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+% %%%%% 日本語
+% %  doc/1.0/ja <==== in %#!platex
+% \jptrue
+% \newcommand{\txt}[2]{#1}
+%%%%% 英語
+%  doc/1.0/en <==== in %#!platex
+\jpfalse
+\newcommand{\txt}[2]{#2}
+
 \usepackage{a4}
 \usepackage{latexsym}
 \usepackage{url}
@@ -10,18 +22,13 @@
 \oddsidemargin 0in
 \evensidemargin 0in
 
-%%%%% 日本語
-% \newcommand{\jp}{a}
-% \newcommand{\txt}[2]{#1}
-%%%%% 英語
-\newcommand{\txt}[2]{#2}
 
 
-\renewcommand{\today}{\txt{平成24年4月18日}{April 18, 2012}}
+\renewcommand{\today}{\txt{平成24年4月26日}{April 26, 2012}}
 \date{\today}
 \newcommand{\smlsharp}{SML\#}
 
-\newcommand{\version}{1.0.0}
+\newcommand{\version}{1.0.1}
 \newcommand{\smlsharpSize}{\txt{30万}{0.3 millions}}
 \newcommand{\authors}
 {\txt{大堀\ \ 淳\mbox{\ \ \ \ }上野 雄大}
@@ -52,7 +59,7 @@
 \maketitle
 
 \frontmatter
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 {\bf FireFox}などのMathMLを表示可能なブラウザでご覧ください．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This document is best viewed with a MathML-capable browser such as {\bf FireFox}.
@@ -60,7 +67,7 @@ This document is best viewed with a MathML-capable browser such as {\bf FireFox}
 
 \chapter*{\txt{はじめに}{Preface}}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	本書は東北大学電気通信研究所で開発された関数型プログラミング言語
 \smlsharp{}の公式ドキュメントです．
 	\smlsharp{}の概要，プログラミングチュートリアル，参照マニュアル，
@@ -94,7 +101,7 @@ Tohoku University.
 programming, and a reference manual.
 	This \version{} version only contains an overview of \smlsharp{}
 and tutorials on ML and \smlsharp{} programming, which would be
-sufficient both for beginners who want to start writing ML programs and
+sufficient for beginners who want to start writing ML programs and
 for experienced ML programmer who would like to try out or switch to
 \smlsharp{}.
 
@@ -114,26 +121,27 @@ RIEC, Tohoku University\\
 }
 \end{flushright}
 
-\chapter*{\txt{本書の使い方}{How to read}}
+\chapter*{\txt{本書の使い方}{How to read this document}}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     この文書の第\ref{part:outline}部の概要と第\ref{part:tutorial}部のチュー
 トリアルはMLプログラミングの基礎から\smlsharp{}が提供する高度の機能まで
 を習得できる構造になっています．
 	先頭から順に一気にお読みになることをおすすめします．
 	お急ぎの方は，以下のページにお探しの情報があるかもしれません．
-\begin{description}
-\item[\smlsharp{}の名前について]
-第\ref{sec:smlsharpHistory}節 \smlsharp{}の歴史
-\item[インストール]
-第\ref{sec:tutorialInstall}節 \smlsharp{}コンパイラのインストール
-\item[コマンドパラメタ]
-第\ref{sec:tutorialSmlsharpParameter}節 {\tt smlsharp}コマンドの起動モード
-\item[コンタクト]
-第\ref{sec:smlsharpTeam}節 \smlsharp{}開発チームと連絡先情報
-\item[\smlsharp{}ホームページ] 
+\begin{itemize}
+\item {\bf \smlsharp{}の名前について:}
+第\ref{sec:smlsharpHistory}節.
+\item {\bf インストール方法：}
+第\ref{sec:tutorialInstall}節．
+\item {\bf {\tt smlsgarp}コマンドの起動モードと起動パラメタ：}
+第\ref{sec:tutorialSmlsharpParameter}節．
+\item {\bf \smlsharp{}開発チームと連絡先情報：} 第\ref{sec:smlsharpTeam}節．
+\item {\bf \smlsharp{}ホームページ：}
 \url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/ja/}
-\end{description}    
+\item {\bf \smlsharp{} Documnet in English：}
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/docs/1.0/en/manual.xhtml}
+\end{itemize}   
 
 本書に関して，以下の点をご了承ください．
 \begin{itemize}
@@ -172,29 +180,31 @@ they are presented.
 	If you are in a harry, you may find the desired information in
 one of the following pages.
 \begin{itemize}
-\item Section \ref{sec:tutorialInstall}: How to install \smlsharp{}.
-\item Section \ref{sec:tutorialSmlsharpParameter}: {\tt smlsharp} command parameters.
-\item Section \ref{sec:smlsharpTeam}: \smlsharp{} development team and
-contact information.
-\item Section \ref{sec:smlsharpHistory}: On the name of \smlsharp{}
-(History of \smlsharp).
-\item \smlsharp{} web page:
-\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/ja/}
+\item {\bf How to install \smlsharp{}}: Section \ref{sec:tutorialInstall}.
+\item {\bf {\tt smlsharp} command parameters}: Section \ref{sec:tutorialSmlsharpParameter}.
+\item {\bf \smlsharp{} development team and contact information}: 
+Section \ref{sec:smlsharpTeam}.
+\item {\bf On the name of \smlsharp{}}: Section \ref{sec:smlsharpHistory} (History of \smlsharp).
+\item {\bf \smlsharp{} web page}: 
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/}
+\item {\bf \smlsharp{} Documnet in Japanese (プログラミング言語\smlsharp{}解説）}:
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/docs/1.0/ja/manual.xhtml}
 \end{itemize}
 
-Please note the following.
+In reading this document, please note the following.
 \begin{itemize}
 \item 
-	This \version{} version is an incomplete draft;
-it does not contain the reference manual and some part of the ML
-programming tutorial is incomplete.
+	This \version{} version is an incomplete draft; it does not
+contain the reference manual and the ML programming tutorial is
+incomplete.
 
 \item 
 	This document is frequently revised and updated.
-	For this reason, currently, this is only distributed on this web
-server.
+	For this reason, the currently version is distributed only on
+this web server.
 	In near future, we plan to include a more complete version of
-this document in PDF format with \smlsharp{} distribution.
+this document (both in PDF and XHTML format) in the \smlsharp{}
+distribution.
 
 \item 
 	This document is written in LaTeX and processed with LaTeXML.
@@ -204,7 +214,7 @@ this document in PDF format with \smlsharp{} distribution.
 
 \chapter*{\txt{\smlsharp{}使用上の注意}{Important notes on \smlsharp{}}}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 \smlsharp{}\version{}版を使用する上で注意すべき点を列挙します．
 \begin{enumerate}
@@ -246,13 +256,14 @@ version~\version{}.
 	This is a function in the Standard ML Basis Library.
 	The implementation in the \version{} version uses C library
 function {\bf\tt tmpnam}.
-	It is know that usage of this C function has a security problem.
+	It is known that usage of this C function has a security
+problem. 
 	(See, for example, a man page in a BSD-family OS.)
 	If one write an \smlsharp{} program that manipulates
 temporary files using {\tt OS.FileSys.tmpName}, the program may subject
 to the same security problem.
   
-	When the \smlsharp{} compiler generates an executable program
+	When \smlsharp{} compiler generates an executable program
 of a source program that references this function, typically through
 {\tt \_require "basis.smi"} declaration, the following warning message
 is printed:
@@ -271,7 +282,7 @@ actually used.
 implementation of the function {\tt tmpName : unit -> string}, whose
 signature is required by {\tt OS\_FILE\_SYS}.
 	We plan to develop a new structure that would serve
-a secure, efficient and usable alternative to {\tt OS.FileSys}.
+as a secure, efficient and usable alternative to {\tt OS.FileSys}.
 \end{enumerate}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -284,16 +295,16 @@ a secure, efficient and usable alternative to {\tt OS.FileSys}.
 \chapter{\txt{\smlsharp{}の概要}{Overview of \smlsharp{}}}
 \label{chap:intro}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 本章では\smlsharp{}言語の概要を説明します．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This chapter outline the \smlsharp{} language.
+This chapter outlines the \smlsharp{} language and the compiler.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{\txt{\smlsharp{}とは？}{What is \smlsharp{}？}}
 \label{sec:whatIsSmlsharp}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 \smlsharp{}は，以下のような特徴をもったML系関数型プログラミング言語です．
 \begin{enumerate}
 \item {\bf Standard MLとの後方互換性．}
@@ -357,32 +368,34 @@ ELFフォーマット）にコンパイルし，システムのリンカーでC�
 	\smlsharp{} is a new programming language in the ML-family,
 having the following features.
 \begin{enumerate}
-\item {\bf Downward compatibility with Standard ML}
+\item {\bf Downward compatibility with Standard ML.}
 	\smlsharp{} can compile any programs that conform to the
 definition of the Standard ML\cite{sml}.
 
-\item {\bf Record polymorphism}
-	\smlsharp{} supports record polymorphism \cite{ohor95toplas},
+\item {\bf Record polymorphism.}
+	\smlsharp{} supports record polymorphism \cite{ohor95toplas}.
 	In \smlsharp{} , field selection operators {\bf\tt \#\nonterm{label}}
 and record patterns {\bf\tt \{\nonterm{field-pat},...\}} are fully
 polymorphic.
 	This feature is essential in modular development of programs
 manipulating records, and is the key to extend ML with SQL.
 
-\item {\bf Seamless integration of SQL}
-	\smlsharp{} seamlessly integrate (currently a subset of) SQL.
+\item {\bf Seamless integration of SQL.}
+	\smlsharp{} seamlessly integrates (currently a subset of) SQL.
 	Instead of providing built-in primitives to access
 database servers, \smlsharp{} integrate SQL expressions themselves as
 polymorphically-typed first-class citizens.
 	This allows the programmer to directly access databases in
-polymorphic ML code.
+your polymorphic ML code.
 
-\item {\bf Direct interface to C}
-	\smlsharp{} programs can directly call C functions just by
-declaring their names and types without writing any stub or conversion
-functions.
-	\smlsharp{} supports static and dynamic linking of object and
-library files compiled by C.
+\item {\bf Direct interface to C.}
+	\smlsharp{} programs can directly call C functions of your own
+coding or in system libraries.
+	The programmer need only declare their names and types, without
+writing mysterious ``stubs'' or conversion functions. 
+	The \smlsharp{} generates external references to C functions,
+which are resolved and linked by the system linker.
+	Both static and dynamic linking are supported.
 
 \item {\bf Separate compilation and linking.}
 	\smlsharp{} supports true separate compilation and linking.
@@ -390,14 +403,16 @@ library files compiled by C.
 separately into an object file in the standard system format (e.g.\ ELF
 format.)
 	The separately compiled object files are then linked together
-possibly with C libraries into an executable program.
+possibly with C functions and libraries into an executable program.
 
 \item {\bf Multithread support for multicore CPUs.}
-	The non-moving concurrent GC \cite{ueno11icfp} and direct C
-interface allow ML code to directly  call POSIX thread library.
-	As far as the OS thread library support multicore CPUs,
+	The non-moving GC \cite{ueno11icfp} and direct C interface allow
+\smlsharp{} code to directly call POSIX thread library.
+	As far as the OS thread library support a multicore CPU,
 \smlsharp{} program automatically obtains multithread capability for
 multicore CPUs.
+	With the non-moving fully concurrent GC we have just developed, 
+concurrent threads run efficiently on a multicore CPU.
 
 \end{enumerate}
 
@@ -410,7 +425,7 @@ Research Institute of Electrical Communication,  Tohoku University.
 \section{\txt{\smlsharp{}の歴史}{History of \smlsharp{}}}
 \label{sec:smlsharpHistory}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	1993年，沖電気工業（株）関西総合研究所にて，大堀により，Standard
 ML of New Jerseyコンパイラに多相型レコード演算を加え拡張したプロトタイプ
 {\bf SML\# of Kansai}が開発されました．
@@ -450,22 +465,22 @@ ML of New Jerseyコンパイラに多相型レコード演算を加え拡張し�
 
 	In 1993, Atsushi Ohori extended the Standard ML of New Jersey
 compiler at Kansai Laboratory of Oki Electric, and named the
-experimental prototype SML\# of Kansai. 
+experimental prototype SML\# of Kansai.
 	The Internet still remembers my old posting of \smlsharp{} to
 the types mailing list 
 (\url{http://www.funet.fi/pub/languages/ml/sml%23/description}).
 
 	The name SML\# of Kansai symbolizes the field selector {\bf\tt
-\#\nonterm{label}}, which was given a polymorphic type by this
-compiler.
-	This compiler was reported in the TOPLAS article on record
+\#\nonterm{label}}, which was given a polymorphic type for the first
+time by this compiler.
+	This compiler was reported in the ACM TOPLAS article on record
 polymorphism \cite{ohor95toplas} as {\bf \smlsharp{}}.
 
 	To support not only record polymorphism but also
 interoperability and other practically important features, we decided 
 to develop a new SML-style language from scratch, and in 2003, we
 started the \smlsharp{} compiler project at Japan Advanced Institute of 
-Science and Technology as part of the e-Society project 
+Science and Technology as a part of the e-Society project 
 (
 \url{http://www.tkl.iis.u-tokyo.ac.jp/e-society/index.html}
 ).
@@ -480,7 +495,7 @@ funded by the Japan ministry of science, education and technologies
 }
 \label{sec:smlsharpTeam}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	現在（2012年4月）\smlsharp{}は，
 \begin{itemize}
 \item 
@@ -523,7 +538,7 @@ funded by the Japan ministry of science, education and technologies
 共同研究の提案や各種問い合わせなどにご利用ください．
 \end{itemize}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	At present (April 2012), \smlsharp{} is developed by
+	At present (April 2012), \smlsharp{} is being developed by
 \begin{itemize}
 \item 
 Atsushi Ohori（RIEC, Tohoku University）
@@ -551,10 +566,10 @@ affiliation at the time of development):
 \item \smlsharp{} mailing list:
 {\tt smlsharp-list@pllab.riec.tohoku.ac.jp}
 
-This list is for general discussion on \smlsharp{}.
-We use Japanese and English in discussion.
-To post a message, you need to subscribe to this list.
-All the messages are made available on the Web.
+	This list is for general discussion on \smlsharp{}.
+	We use Japanese and English in discussion.
+	To post a message, you need to subscribe to this list.
+	All the messages are made available on the Web.
 
 How to subscribe:\url{http://www.pllab.riec.tohoku.ac.jp/mailman/listinfo.cgi/smlsharp-list?language=ja}\\
 Mail archive:\url{http://www.pllab.riec.tohoku.ac.jp/pipermail/smlsharp-list/}
@@ -562,25 +577,25 @@ Mail archive:\url{http://www.pllab.riec.tohoku.ac.jp/pipermail/smlsharp-list/}
 \item Email address of the \smlsharp{} development team :
 \epsfig{file=smlsharp-list.eps,width=0.4\textwidth}
 
-Send your questions, requests and comments to us.
+Send your questions, requests and comments to the development team.
 \end{itemize}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{\txt{謝辞}{Acknowledgments}}
 \label{sec:acknowledgements}
 	
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	2003年にスタートしたSML#開発の過程では，以下を含む色々なご指導や
-ご協力を頂きました．
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	2003年にスタートした\smlsharp{}開発の過程では，以下を含む色々な
+ご指導やご協力を頂きました．
 	ここに謝意を表します．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	From its start in 2003, we have benefited from many pepples.
-	We acknowledge some of them below.
+	From its start in 2003, we have benefited from many pepples and
+ogranizations.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	
-\subsection{\txt{プロジェクトファンディング}{Project Funding}}
+\subsection{\txt{プロジェクトファンディング}{Project funding}}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}言語の研究開発は，2003年から5年間の文部科学省リーディ
 ングプロジェクトe-Society基盤ソフトウェアの総合開発「高い生産性をもつ高
 信頼ソフトウェア作成技術の開発」
@@ -606,16 +621,16 @@ under the title
 reliable software development technology based on automatic program analysis
 (chief investigator: Atsushi Ohori)
 ''
-（\url{http://www.tkl.iis.u-tokyo.ac.jp/e-society/index.html}）.
+（\url{http://www.tkl.iis.u-tokyo.ac.jp/e-society/index.html}）
+sponsored by the Japan ministry of science, education and technologies.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
 \subsection{
 \txt{\smlsharp{}が使用しているソフトウエア}
-    {Third-party code used in \smlsharp{}}
+    {Third-party code and software tool used in \smlsharp{} development}
 }
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}言語は，第\version{}版以降は，\smlsharp{}自身でコンパ
 イルし開発を行なっていますが，それ以前は，Standard ML of New Jerseyおよ
 びMLTonのStandard MLコンパイラを使って開発を行いました．
@@ -669,15 +684,17 @@ Standard ML of New Jersey
 	「\smlsharp{}ソース上の位置」にそれぞれのライセンスが添付されて
 います．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	After the \version{} version had completed, \smlsharp{} has been
+
+	Since the \version{} version had completed, \smlsharp{} has been
 developed by the \smlsharp{} compiler itself.
-	Before the \version{} version, we have used Standard ML of New
-Jersey and MLTon compilers.
+	Before the \version{} version, we had used Standard ML of New
+Jersey compiler for development and MLTon compiler for building
+distributions.
 
 	The \smlsharp{} compiler is a software developed by the
 \smlsharp{} development team （\ref{sec:smlsharpTeam}）.
-	We have developed most of the code of \smlsharp{} compiler from
-scratch, except for the following code:
+	We have wrote most of the code of \smlsharp{} compiler from
+scratch, except for the following code: 
 
 \begin{center}
 \begin{tabular}{|c|c|c|}
@@ -725,7 +742,7 @@ of them at the ``location in \smlsharp{} distribution'' show above.
 
 \subsection{\txt{研究開発協力者}{Collaborators}}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}言語の開発にあたっては，多くの人々からの指導を受けま
 した．
 	過去現在の開発チーム（第（\ref{sec:smlsharpTeam}）節）以外で特に
@@ -843,9 +860,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \txt{\smlsharp{}第\version{}版の機能と制限}
 {Limitations in \smlsharp{} version \version{}}
 }
+\label{sec:smlsharpLimitation}
 
-
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	我々開発チームは第\ref{sec:whatIsSmlsharp}節でのべた機能をすべて
 開発し\smlsharp{}開発開始時に目標とした機能を実現しています．
 	第\version{}版にその殆どが含まれていますが，以下の制約があります．
@@ -1023,7 +1040,7 @@ and will hit the limit of the command-line length.
 }
 \label{chap:tutorialEnvironment}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	第２部では，\smlsharp{}でプログラミングをマスターするための
 チュートリアルを提供します．
 	まず\smlsharp{}プログラミング環境を整えましょう．
@@ -1038,7 +1055,8 @@ writing \smlsharp{} programs.
 \txt{Unix系OS，Emacsエディタ，その他ツールの整備}
     {Unix-family OS，Emacs，and other tools}}
 \label{sec:tutorialEnvironmemt}
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	プログラミングのためには，
 \begin{itemize}
 \item 使いやすい高機能エディタ
@@ -1053,8 +1071,8 @@ writing \smlsharp{} programs.
 能を駆使したプログラミングを十分に楽しむためには，以下のような標準的なプ
 ログラミング環境を整えることを勧めます．
 
-\begin{description}
-\item[Unix系のOS] 
+\begin{itemize}
+\item {\bf Unix系のOS.}
 	高度なプログラム開発には，Linux，FreeBSD，Mac OS等のUnix
 系OSが豊富なツールを含んでいて便利です．
 	Windows系のOSがインストールされたPCの場合は，VMware，VirtualBoxなど
@@ -1063,7 +1081,7 @@ writing \smlsharp{} programs.
 	Windows系OSで，Emacsが自由に使いこなせれば，MinGW（＋MSYS)でも十
 分にプログラミングを楽しむことができると思われます．
 
-\item[Emacsエディタ]
+\item {\bf Emacsエディタ.}
 	プログラミングにもっとも適したエディタの一つです．
 	プログラミングは，テキスト形式の文を書き，コンパイルしテストをし，
 修正する，という作業の繰り返しであり，その大部分の時間はテキストエディタ
@@ -1077,7 +1095,7 @@ writing \smlsharp{} programs.
 の強力な道具となります．
 	Unix系OSでは通常デフォルトでインストール済みです．
 
-\item[Cコンパイラ] 
+\item {\bf Cコンパイラ.}
 	\smlsharp{}コンパイラは，x86アーキテクチャのネイティブコードにコ
 ンパイルし，ソースコードをOS標準のオブジェクトファイルを作成し，さらに
 それらをリンクし実行形式ファイルを作成します．
@@ -1089,7 +1107,8 @@ writing \smlsharp{} programs.
 が直接{\tt gcc}コンパイラを呼び出す必要はありませんが，C言語との直接連携
 機能を使いより高度なプログラミングを行うためにも，{\tt gcc}コンパイラに
 慣れておくことをお勧めします．
-\item[データベースシステム] 
+
+\item {\bf データベースシステム.}
 	\smlsharp{}のデータベース機能を使用するにはデータベースシステムを
 インストールする必要があります．
 	第\version{}版では，PostgreSQLが実行時にバインドされます．
@@ -1097,7 +1116,7 @@ writing \smlsharp{} programs.
 する必要があります．
 	詳細はOSに依存しますが，いずれの場合も簡単にインストールできるは
 ずです．
-\end{description}
+\end{itemize}
 
 	第\ref{sec:tutorialInstall}節で説明する通り，Windowsのユーザ
 に対しても，コンパイル済みのバイナリープログラムを用意しています．
@@ -1122,8 +1141,8 @@ environment such as Eclipse is often used, but for \smlsharp{}
 programming, we recommend the following standard system development
 environments.
 
-\begin{description}
-\item[OS in the Unix family] 
+\begin{itemize}
+\item {\bf OS in the Unix family.}
 	A Unix-family OS such as Linux, FreeBSD (including Mac OS)
 provides a rich collection of programming tools.
 	This would be your first choice.
@@ -1136,7 +1155,7 @@ such as {\tt make} and {\tt configure/autoconf} then
 the combination of Emacs and MinGW (+ MSYS) on Windows would be a
 reasonable alternative.
 	
-\item[Emacs editor]
+\item {\bf Emacs editor.}
 	This is one of the best editor for programming, which is a
 repeated process of editing an ASCII text file and and compiling it.
 	In most of the time, you are interacting with your text editor.
@@ -1144,38 +1163,39 @@ repeated process of editing an ASCII text file and and compiling it.
 important.
 	Among various choices, we recommend one in the Emacs-family (GNU
 Emacs, XEmacs).
-	Emacs is a powerful custormisable text editor, but it can also 
-perform command execution and file system management. 
+	Emacs is a powerful custormisable text editor, and it can also
+perform command execution and file system management.
 	It requires some practice at the beginnings, but once you mastered
 its basic functionality, it will become a powerful tool in programming.
 
-\item[C compiler] 
-	\smlsharp{} compiler generates x86 native code, create an
-object file in a standard format (e.g. EFL), and then generate 
-an executable code by lining object files with C libraries.
+\item {\bf C compiler.}
+	\smlsharp{} compiler generates x86 native code, creates an
+object file in a standard format (e.g. EFL), and generates an executable
+code by linking object files with C libraries.
 	In this process, it calls GNU C compiler {\tt gcc}.
-	In Unix-family OS including Cygwin and MinGW set up for
-system development, {\tt gcc} should be installed.
+	{\tt gcc} should already be installed in a Unix-family OS
+including Cygwin and MinGW.
 
 	If your purpose is to make a small program entirely within
 \smlsharp{}, then you will not need to call {\tt gcc} directly.
-	However, if you want to make a program of certain size and
-complexity, you will need to call some library functions or to code up
-in C for law-level manipulation of hardware.
+	However, if you want to make a paractical program, you may want to
+call some system library functions or you may write some part of your
+system in C and call that function from your ML code.
 	This is straightforward in \smlsharp{}.
 	To exploit this feature, we recommend that you familiarize
-yourself with C compiler.	
-\item[database systems] 
+yourself with C compiler.
+
+\item {\bf database systems.}
 	\smlsharp{} seamlessly integrates SQL.
 	If you set up PostgreSQL, then you can use PostgreSQL databases
-directly from your \smlsharp{} code.
-\end{description}
+directly within your \smlsharp{} code.
+\end{itemize}
 
 	As we explain in Section~\ref{sec:tutorialInstall}，
 we prepared a binary package for Windows users.
 	By installing this package, \smlsharp{} compiler can be used 
-a Windows application.
-	In this case, we recommend to install Emacs.
+as a Windows application.
+	In this case, we still recommend to install Emacs.
 	With Emacs shell, you can enjoy \smlsharp{} programming more
 comfortably.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -1183,11 +1203,11 @@ comfortably.
 
 \section{
 \txt{\smlsharp{}コンパイラの構造とブートストラップ}
-    {Bootstrapping the \smlsharp{} compiler }
+    {Bootstrapping the \smlsharp{} compiler}
 }
 \label{sec:tutorialBootstrap}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	この節は，\smlsharp{}コンパイラをインストールし使用する上で，理
 解する必要はありませんが，やや時間がかかる\smlsharp{}コンパイラのインス
 トール処理の理解や，さらにコンパイラの一般的な構造を理解する上で有用と思
@@ -1290,22 +1310,23 @@ GNU Autoconfによる{\tt configure}スクリプトと{\tt make}コマンドの�
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	This section outlines the structure of \smlsharp{} compiler and
-the method to building (bootstrap) it.
-	You do not have to understand this section for installing
-\smlsharp{} compiler, but you may find this section informative in
-understanding various output during compilation of \smlsharp{} or 
-compiler structure in general.
+the method to building (bootstrapping) it.
+	You do not have to understand this section for installing and
+using \smlsharp{} compiler, but you may find this section informative in
+understanding various messages during compilation of \smlsharp{} and also 
+a structure of a compiler in general.
 
 	\smlsharp{} system consists of a single compiler that performs
 separate compilation. 
-	Interactive mode is realized by the top-level-loop performing
-the following:
+	Its interactive mode is realized by the top-level-loop
+performing the following steps:
 \begin{enumerate}
 \item compile the user input using the current static environment as its
 interface,
-\item link the object file with the external symbols in the current
-system to generate a shared executable file,
-\item dynamically load the shared executable in the current system.
+\item link the object file with the current system to generate a shared
+executable file,
+\item dynamically load the shared executable in the current system, and
+call its entry point.
 \end{enumerate}
 
 	\smlsharp{} is written in \smlsharp{} and C.
@@ -1324,53 +1345,54 @@ object file (sample.o file).
 	The compiled files are then linked by the standard linker ({\tt
 ld} in Unix-family OS) to generate an executable file.
 	So, in order to build the \smlsharp{} compiler, it is sufficient
-to have a C compiler and a \smlsharp{} compiler.
+to have a C compiler and an \smlsharp{} compiler.
 	But of course, at the time when the \smlsharp{} compiler is
 first built, an \smlsharp{} compiler is not available.
 	The standard step of solving this bootstrap problem is the
 following.
 
 \begin{enumerate}
-\item {\bf Build {\tt minismlsharp} command.}
+\item {\bf Build {\tt minismlsharp} command}
 \begin{enumerate}
 \item 
 	Obtain a set of assembly source files of a minimal compiler
 {\tt minismlsharp} that is sufficient for compiling all the source files
 used in the \smlsharp{} compiler. 
-	The assembly files are typically generated by a previous version
-of \smlsharp{} compiler or some other Standard ML compiler. 
+	The assembly files are typically generated by an older version
+of \smlsharp{} compiler. 
+
 \item 
 	In the system where the target \smlsharp{} compiler is
 installed, assemble the {\tt minismlsharp} assembly files, link them
-together and create the {\tt minismlsharp} command.
+together and create a {\tt minismlsharp} command.
 \end{enumerate}
-\item {\bf Build ML-lex and ML-yacc commands.}
+\item {\bf Build ML-lex and ML-yacc commands}
 \begin{enumerate}
 \item Compile the library files required by ml-lex and ml-yacc 
 using {\tt minismlsharp}. 
 \item Compile ml-lex and ml-yacc sources using {\tt minismlsharp}.
 \item Create ml-lex and ml-yacc commands using the system linker.
 \end{enumerate}
-\item {\bf Build SMLFormat command.}
+\item {\bf Build SMLFormat command}
 \begin{enumerate}
-\item Compile the library files required for SMLFormat
+\item Compile the library files required by SMLFormat
 using  {\tt minismlsharp}.
 \item Generate the parser source file used in SMLFormat using ml-yacc
 and ml-lex.
 \item Compile SMLFormat source files using {\tt minismlsharp}.
 \item Create SMLFormat command using the system linker.
 \end{enumerate}
-\item {\bf Build {\tt smlsharp} command.}
+\item {\bf Build {\tt smlsharp} command}
 \begin{enumerate}
 \item Compile all the library files using {\tt minismlsharp}.
 \item Generate the parser source files of \smlsharp{} using ml-yacc and ml-lex.
 \item Generate the printer source files of \smlsharp{} using SMLFormat.
 \item Compile \smlsharp{} source files using {\tt minismlsharp}.
-\item Compile C source files of \smlsharp{} runtime system.
+\item Compile C source files of the \smlsharp{} runtime system.
 \item Invoke the system linker to like all the object files.
-	This yields \smlsharp{} command.
+	This yields {\bf\tt smlsharp} (\smlsharp{} compiler) command.
 \end{enumerate}
-\item {\bf Install the compiler.}
+\item {\bf Install the compiler}
 Use the system install command to install the following files.
 \begin{itemize}
 \item Library object files.
@@ -1378,7 +1400,7 @@ Use the system install command to install the following files.
 \item Library interface files.
 	They are used when a user source file is compiled.
 \item Library signature files.
-\item ml-lex，ml-yacc，SMLFormat，\smlsharp{} commands.
+\item ml-lex，ml-yacc，SMLFormat，{\tt smlsharp} commands.
 \end{itemize}
 \end{enumerate}
 
@@ -1395,36 +1417,34 @@ to use {\tt configure} script generated by GNU Autoconf and
 interface file, which describes the set of files require by the source
 file.
 	\smlsharp{} compiler can also generate a list of files on which
-each source file is depend in the format processed by {\tt make}
-command. 
-	To let \smlsharp{} do this task, give it one of the following
-switch.
+each source file depends in the {\tt Makefile} format that can be
+processed by {\tt make} command. 
+	\smlsharp{} compiler does this task, when it is given one of the
+following switch.
 
 \begin{enumerate}
 \item {\tt smlsharp -M $smlFile$}.
 	The compiler generates the dependency for the source file
-$smlFile$ to be compiled in the {\tt Makefile} format.
-します．
+$smlFile$ to be compiled in the {\tt Makefile} format. 
 \item {\tt smlsharp -Ml $smiFile$}.
-	The compiler assume that the interface $smlFile$ specifies the
-top level system, and generate the list of necessary object files 
-in the {\tt Makefile} format.
+	The compiler assumes that the file $smlFile$ specifies the top
+level system, and generates the list of necessary object files in the
+{\tt Makefile} format. 
 \end{enumerate}	
 
-	The {\tt Makefile} that performs the above described complicated
-sequence of compilation and linking steps to build the \smlsharp{}
-compiler is generated by a script that uses the above functionality of
-\smlsharp{}.
+	In the \smlsharp{} project, we make a {\tt Makefile} that
+performs the above described complicated sequence of compilation and
+linking steps using the above functionality of \smlsharp{}.
 	Invoking {\tt make} command on {\tt Makefile} re-compiles only
-the necessary files to build the \smlsharp{} compiler.
+the necessary files to build \smlsharp{} compiler.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{
-\txt{\smlsharp{}コンパイラのインストール}
-    {Installing \smlsharp{} compiler}}
+\txt{\smlsharp{}のインストール}
+    {Installing \smlsharp{}}}
 \label{sec:tutorialInstall}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}\version{}版は以下のプラットフォームで動作します．
 \begin{itemize}
 \item Linux（x86版．または32ビット開発環境のあるamd64版），
@@ -1448,29 +1468,27 @@ Arithmetic Library）が必要です．
 	以下に各OS毎のインストール処理の詳細は以下のとおりです．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The \smlsharp{} version \version{} works on one of the following
-platform.
+platforms.
 \begin{itemize}
 \item Linux (x86, or amd64 with 32 bit development environment),
 \item Mac OS X (Intel version),
 \item MinGW (32 bit version) on Windows 
 \end{itemize}
 
-
-	The \smlsharp{} compiler uses GMP (GNU Multiple Precision
-Arithmetic Library).
-	GMP is an open-source software distributed under LGPL（GNU
+	\smlsharp{} compiler uses GMP (GNU Multiple Precision Arithmetic
+Library), which is an open-source software distributed under LGPL（GNU
 Lesser General Public License).
 	\smlsharp{} compiler and the executable programs compiled by the
 \smlsharp{} dynamically link this library.
 	GMP is not included in the \smlsharp{} distribution package.
 	So you need to install it before installing \smlsharp.
 
-	Below, we show the details of installation steps for each of the
-supported operating systems.
+	Below, we show the details of \smlsharp{} installation steps for
+each of the supported operating systems.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \subsection{\txt{Mac OS X}{Mac OS X}}
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MacPortsのPortfileが用意されていますので，MacPortsを使って
 インストールするのが最も簡単です．
 	MacPortsをセットアップ後，\smlsharp{}のPortfileをダウンロードし，
@@ -1535,7 +1553,7 @@ GMPライブラリなどをユニバーサルバイナリ化するために再�
 
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	An \smlsharp{} Portfile is available.
+	We prepare an \smlsharp{} Portfile.
 	After setting up MacPorts，download the \smlsharp{} Portfile,
 set it up as a local Portfile, and do {\tt port install smlsharp}.
 	We show some more details below.
@@ -1548,7 +1566,7 @@ Consult \url{http://www.macports.org/} and set up MacPorts．
 	Create a directory and set it as a local Portfile repository.
 	For example, if you plan to put local Portfiles in
  {\tt /opt/var/macports/sources/local}, create the directory
-and write
+and write the following line
 \begin{program}
 file:///opt/var/macports/sources/local [nosync]
 \end{program}
@@ -1577,7 +1595,7 @@ repository directory as:
 
 \item 
 	The above steps should have set \smlsharp{} package to MacPorts.
-	You can now install \smlsharp by {\tt port} command as:
+	You can now install \smlsharp{} by {\tt port} command as:
 \begin{program}
 \$ port install smlsharp
 \end{program}
@@ -1586,19 +1604,103 @@ repository directory as:
 	\smlsharp{} version \version{} only support 32 bit mode on x86
 architecture.
 	So in Mac OS X 10.6 or later version with 64 bit MacPorts,
-GMP library must be 32 bit version or a universal binary that include a
-32 bit version.
+GMP library must be a 32 bit version or a universal binary that include
+a 32 bit version.
 	This dependency should be automatically resolved when you
 install \smlsharp{} by {\tt port} command.
-	To resolve this dependency, {\tt port} command may re-build 64-bit GMP
-to make it as a universal binary.
+	To resolve this dependency, {\tt port} command may re-build
+64-bit GMP to make it as a universal binary.
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\subsection{\txt{Debian GNU/LinuxおよびUbuntu}{Debian GNU/Linux and Ubuntu}}
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	Debian GNU/LinuxおよびUbuntu用のdeb形式のバイナリパッケージが用意されています．
+	依存する他のパッケージをインストールした上で，このバイナリパッケー
+ジを{\tt dpkg}コマンドでインストールすれば，\smlsharp{}コンパイラが使用可
+能になります．
+	詳細は，以下のとおりです．
+
+\begin{enumerate}
+\item 下記URLより\smlsharp{}のdebパッケージをダウンロードする．
+\begin{itemize}
+\item Debian i386版：
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1_debian-i386.deb}
+\item Debian amd64版：
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1_debian-amd64.deb}
+\item Ubuntu i386版：
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1_ubuntu-i386.deb}
+\item Ubuntu amd64版：
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1_ubuntu-amd64.deb}
+\end{itemize}
+\item ダウンロードしたパッケージを{\tt dpkg --install}コマンドでインストール
+する．
+このとき，もし\smlsharp{}が必要とするパッケージがインストールされていなければ，
+その旨を表すエラーメッセージが表示されるので，必要なパッケージを
+{\tt apt-get}コマンドでインストールしてから再度{\tt dpkg}コマンドを実行する．
+例えば，i386版であれば，以下のコマンドを実行する．
+\begin{program}
+\$ apt-get install gcc\\
+\$ apt-get install libgmp-dev\\
+\$ sudo dpkg --install smlsharp-\version{}-1\_i386.deb
+\end{program}
+\end{enumerate}
+
+	なお，このdebパッケージはDebianまたはUbuntuの公式なパッケージで
+はないことに注意してください．
+	公式のパッケージとは異なり，メンテナによる署名は行われていません．
+	また，amd64版のdebパッケージも32ビット版\smlsharp{}のみを含むことに
+ご注意ください．
+	\smlsharp{}コンパイラは64ビットコードを出力しません．
+
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\mbox{.deb} packages for both i386 and amd64 version are available.
+	After setting up other packages required for \smlsharp{},
+download it, and install it by {\tt dpkg} command.
+	We show some more details below.
+
+\begin{enumerate}
+\item Download one of the \mbox{.deb} packages from the following URL.
+\begin{itemize}
+\item Debian i386 version:
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1_debian-i386.deb}
+\item Debian amd64 version:
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1_debian-amd64.deb}
+\item Ubuntu i386 version:
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1_ubuntu-i386.deb}
+\item Ubuntu amd64 version:
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1_ubuntu-amd64.deb}
+\end{itemize}
+\item 
+	Do {\tt dpkg --install} with the downloaded \mbox{.deb} package.
+	If other packages required for \smlsharp{} has not been installed
+on your system, {\tt dpkg} command fails and produces an error message with
+a list of the required packages.
+	In this case, you need to install the required package by {\tt apt-get}
+command and do {\tt dpkg --install} command again.
+	For example, on i386 Debian GNU/Linux, do the following commands.
+\begin{program}
+\$ apt-get install gcc\\
+\$ apt-get install libgmp-dev\\
+\$ sudo dpkg --install smlsharp-\version{}-1\_i386.deb
+\end{program}
+\end{enumerate}
+
+	Note that these \mbox{.deb} packages are not a part of an official release
+of Debian or Ubuntu system.
+	Unlike official packages, they do not include any signature of
+package maintainer.
+	Also note that the \mbox{.deb} package for amd64 only includes 32 bit
+version of \smlsharp{} compiler.
+	It does not produce any 64 bit code.
+
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \subsection{\txt{Windows上の{\tt MinGW}}{{\tt MinGW} on Windows}}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	32ビット版MinGW用のバイナリパッケージが，
-\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.0-1-mingw32-bin.tar.lzma}
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1-mingw32-bin.tar.lzma}
 に用意されています．
 	32ビット版MinGWのCコンパイラとGMPライブラリをセットアップした後，
 このバイナリパッケージをMinGWのルートディレクトリで展開すれば，
@@ -1633,16 +1735,12 @@ mingw-get install smlsharp
 \end{enumerate} 
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	A binary package for 32 bit MinGW is available from:
-\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.0-1-mingw32-bin.tar.lzma}.
+\url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-1.0.1-1-mingw32-bin.tar.lzma}.
 	After setting up a C compiler and GMP library for 32 bit MinGM,
 simply extract the binary package in the MinGW root directory.
 
-	Instead of simply extracting the binary package, you can make
-the \smlsharp{} compiler managed by the package system.
-% 
-% 	単に展開する代わりに以下の手順を実行すれば，\smlsharp{}コンパイ
-% ラがパッケージ管理下に入り，GMPなど必要なソフトウェアの自動インストールや，
-% 将来のバージョンアップなどにも簡単に対応できるようになります．
+	Instead of simply extracting the binary package, the following
+steps make \smlsharp{} compiler managed by the package system.
 \begin{enumerate}
 \item Set up MinGW consulting MinGW home page.
 	In this explanation, we assume that MinGW is installed at:
@@ -1671,7 +1769,7 @@ mingw-get install smlsharp
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \subsection{\txt{ソースからビルドする場合}{Building from the source}}
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	Linuxなどのその他システムではソースからビルドしてください．
 	ソースからのビルドには，以下の開発ツールとライブラリが事前に
 インストールされている必要があります．
@@ -1699,7 +1797,6 @@ mingw-get install smlsharp
 	GMPのビルド方法についての詳細はGMPライブラリのドキュメントを参照
 してください．
 
-
 	以上の環境の下で，以下の手順で\smlsharp{}をソースからビルドします．
 \begin{enumerate}
 \item ソースパッケージ（
@@ -1711,19 +1808,19 @@ mingw-get install smlsharp
 	\smlsharp{}ソースディレクトリにて{\tt configure}スクリプトを実行する．
         このとき，64ビットOSでは，Cコンパイラおよびリンカが32ビット版となる
 ように{\tt CC}および{\tt LD}を適切に設定する．
+	マルチスレッド（pthread）サポートを有効化したい場合は，
+{\tt --enable-thread}スイッチを加える．
+	また，ビルドにかかる時間を短縮したい場合は
+{\tt --enable-fast-build}スイッチを加える．
 
 i386 Linux の場合:
 \begin{program}
-\$ ./configure --prefix=$PATH$
+\$ ./configure --prefix=$PATH$ --enable-fast-build
 \end{program}
 amd64 Linux の場合:
 \begin{program}
-\$ ./configure CC='gcc -m32' LD='ld -m elf\_i386' --prefix=$PATH$
+\$ ./configure CC='gcc -m32' LD='ld -m elf\_i386' --prefix=$PATH$ --enable-fast-build
 \end{program}
-\item
-
-	マルチスレッドサポートを有効化したい場合は，{\tt ./configure}コマンド
-に{\tt --enable-thread}スイッチを加える．
 \item
 	{\tt make}コマンドを実行しビルドとインストールを行う．
 \begin{program}
@@ -1751,13 +1848,19 @@ $PATH$とは異なるディレクトリ$PATH'$に出力させたい場合は，
 補足とヒント：
 \begin{itemize}
 \item 
-	この手順は，時間がかかります．（例えば，ThinkPadのVMWare上の
+	ソースからビルドする全てのユーザーに，
+{\tt configure}に{\tt --enable-fast-build}スイッチを指定することを推奨します．
+	このスイッチが指定されると，コンパイル済みアセンブリコードを再利用す
+ることでビルドにかかる時間を短縮します．
+	このスイッチを指定しても，ビルド結果はこのスイッチを指定しない場合と
+同一です．
+	なお，このスイッチを指定しなかった場合，
+{\tt make}コマンドの実行に時間がかかります．（例えば，ThinkPadのVMWare上の
 Linux では，３時間以上かかるようです．）
 	特に，yaccが生成した{\tt iml.grm.sml}と{\tt ml.grm.sml}の２つの
 ファイルのコンパイルに時間がかかりますが，ループしているわけではありませ
 ん．
-	将来の最適化されたバージョンでは，（劇的に）改善されているとはず
-です．
+	将来の最適化されたバージョンでは改善されるはずです．
 % \item 最後にリンクが成功すると，
 % \begin{program}
 % xxxx.o : In function `F45xxx':\\
@@ -1771,7 +1874,8 @@ Linux では，３時間以上かかるようです．）
 \end{itemize}
 
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	For Linux and other systems, you need to build from the source.
+	For Linux and other systems, you need to build from the
+\smlsharp{} source distribution.
 	To do this, the following tools and libraries are required:
 \begin{enumerate}
 \item GNU binutils（GNU Binary Utilities),
@@ -1781,11 +1885,9 @@ Linux では，３時間以上かかるようです．）
 \end{enumerate}
 	In a 64 bit OS, these tools and libraries must be of 32 bit version.
 
-	If you 64 bit OS does not provide 32 bit GMP library package,
-you need to build the 32 bit version from the source.
-% 	32ビット版GMPライブラリがOSのパッケージシステムによって提供されて
-% いない場合，32ビット版GMPライブラリもソースからビルドする必要があります．
-	In that case, get the GML source from GML web page 
+	If your 64 bit OS does not provide a 32 bit GMP library package,
+you need to build a 32 bit version from the source.
+	In that case, get the GML source from GML web page
 \url{http://gmplib.org/},
 and {\tt configure} it with {\tt ABI=32} option as in the following:
 \begin{program}
@@ -1798,33 +1900,34 @@ want to specify the install location of the 32 bit version through
 {\tt --prefix} option.
 	See GMP document for more details.
 
-
-	With these preparation, \smlsharp{} can be build by the
+	With these preparation, \smlsharp{} can be build in the
 following steps.
 \begin{enumerate}
 \item Download the source distribution from:
 \url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-\version{}.tar.gz}
-\item Select an \smlsharp source directory and extract the tar archive there.
+\item Select an \smlsharp{} source directory and extract the tar archive there.
 \item Select an \smlsharp{} installation direction. Let $PATH$ be the path
 to the directory.
 \item
 	In the \smlsharp{} source directory, execute {\tt configure} script.
-	In a 64 bit OS，set {\tt CC} and {\tt LD} to 32 bit C compiler
-and 32 bit linker, respectively.
+	In a 64 bit OS，set {\tt CC} and {\tt LD} to a 32 bit C compiler
+and a 32 bit linker, respectively.
+	To enable multithread support, give
+{\tt --enable-thread} switch to {\tt ./configure} script.
+	To make the build process faster,
+give {\tt --enable-fast-build} switch.
 
-In i386 Linux:
+In i386 Linux, you would do the following:
 \begin{program}
-\$ ./configure --prefix=$PATH$
+\$ ./configure --prefix=$PATH$ --enable-fast-build
 \end{program}
 In amd64 Linux:
 \begin{program}
-\$ ./configure CC='gcc -m32' LD='ld -m elf\_i386' --prefix=$PATH$
+\$ ./configure CC='gcc -m32' LD='ld -m elf\_i386' --prefix=$PATH$ --enable-fast-build
 \end{program}
-	To enable multithread support, given 
-{\tt --enable-thread} switch to {\tt ./configure} script.
 
 \item
-	Do the following
+	Do the following:
 \begin{program}
 \$ make\\
 \$ make install
@@ -1839,19 +1942,29 @@ In amd64 Linux:
 \item {\tt smlyacc} command at {\tt $PATH$/bin/smlyacc}
 \item library files in the {\tt $PATH$/lib/smlsharp/} directory.
 \end{enumerate}
-	If successful, you can invoke \smlsharp{} compiler by typing:
+	If successful, you can invoke \smlsharp{} by typing:
 \begin{program}
 \$ $PATH$/bin/smlsharp
 \end{program}
 
 Some hints:
 \begin{itemize}
+\item
+	We recommend that all users who try to build \smlsharp from source
+code should specify {\tt --enable-fast-build} switch to {\tt configure}
+script.
+	If this switch is turned on, {\tt make} command tries to generate
+object files from pre-compiled assembly code as many as possible instead
+of compiling source files.
+	Resulting executable files are identical whether this switch is
+turned on or not.
+	Without this switch, {\tt make} command may take long time.
 \item 
 	This process compiles all the source files including those of
-tools, and takes some time．
+tools, which takes some time．
 	If you have a CPU with $n$ cores and use GNU make, then try to
-give {\tt -jm} ($m \le n$) switch to {\tt make} command for
-parallel processing, where {\tt m} indicate the degree of parallelism. 
+give {\tt -j$m$} ($m \le n$) switch to {\tt make} command for
+parallel processing, where $m$ indicate the degree of parallelism. 
 \end{itemize}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -1859,7 +1972,8 @@ parallel processing, where {\tt m} indicate the degree of parallelism.
 \txt{\smlsharp{}の対話型モードを使ってみよう}
     {Let's try \smlsharp{} interactive mode}}
 \label{sec:tutorialInteractive}
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 	インストールが終了すると，\smlsharp{}コンパイラが{\tt smlsharp}
 という名前のコマンドとして使用可能となります．
@@ -1872,7 +1986,7 @@ parallel processing, where {\tt m} indicate the degree of parallelism.
 \begin{tt}
 \begin{quote}
 \$ smlsharp\\
-SML\# version 1.0.0 (2012-04-06 JST) for x86-linux\\
+SML\# version 1.0.1 (2012-04-24 10:23:45 JST) for x86-linux\\
 \# 
 \end{quote}
 \end{tt}
@@ -1901,25 +2015,25 @@ val it = "Hello" : string
 	ユーザによる指定がなければ，{\tt it}という名前が付けられます．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	Include the \smlsharp{} installation directory in your path, 
-so that \smlsharp{} compiler is available by the name {\tt smlsharp}.
-	If you invoke {\tt smlsharp} without any parameter, \smlsharp{}
-compiler stars its interactive session by printing the following
-message and wait for the user input.
+	Include the \smlsharp{} installation directory in your command
+load path,  so that you can run \smlsharp{} by the name {\tt smlsharp}.
+	When invoked without any parameter, \smlsharp{} stars its
+interactive session by printing the following message and waits for your
+input.
 \begin{program}
 \$ smlsharp\\
-SML\# version 1.0.0 (2012-04-06 JST) for x86-linux\\
+SML\# version 1.0.1 (2012-04-24 10:23:45 JST) for x86-linux\\
 \# 
 \end{program}
-	The ``{\tt \#\ }'' character is the prompt \smlsharp{} compiler
+	The ``{\tt \#\ }'' character is the prompt \smlsharp{}
 prints.
 	In this document, we write ``{\tt \$\ }'' for the 
 shell prompt.
 
-	The compiler then repeat the following steps.
+	After this message, the compiler repeats the following steps. 
 \begin{enumerate}
 \item Read the user input up to ``{\tt ;}''.
-\item Compile the input program, execute it.
+\item Compile the input program and execute it.
 \item Print the result.
 \end{enumerate}
 	The following is a simple example.
@@ -1929,12 +2043,12 @@ shell prompt.
 val it = "Hello world" : string
 \end{quote}
 \end{tt}
-	The first line the user input.
+	The first line is the user input.
 	The second line is the response of \smlsharp{} system.
-	As seen in this example, the compiler print the result value with
-its type, bind it to a name for subsequent use.
-	If the user does not specify the name, the system uses  {\tt it}
-as the default name.
+	As seen in this example, the compiler prints the result value with
+its type, and binds it to a name for subsequent use.
+	If the user does not specify the name, the compiler uses  ``{\tt
+it}'' as the default name.
 
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -1944,7 +2058,8 @@ as the default name.
 {Let's try \smlsharp{} compile mode}
 }
 \label{sec:tutorialCompile}
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}コンパイラは，対話型以外に，Cコンパイラのようにファイ
 ルをコンパイルすることができます．
 
@@ -2020,9 +2135,8 @@ unit}を使用することですが，{\tt print}は自由に再定義できま�
 hello word!
 \end{program}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	In addition to interactive execution, \smlsharp{} compiler can
-also compile a file and create an executable program, just like C
-compiler.  
+	The main function of \smlsharp{} compiler  is to compile a file
+and to create an executable program, just like {\tt gcc}.
 
 	As a simple example, let us write the previous user input
 {\tt \# "Hello world";} into a file {\tt hello1.sml}:
@@ -2040,6 +2154,8 @@ a.out: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically lin
 	When only a file name is given, \smlsharp{} compiles the file,
 link it and creates an executable file, whose default name is {\tt
 a.out}.
+	As shown by the Linux {\tt file} command, it is an ordinary
+executable file.
 	The output file name can be specified by a {\tt -o} switch.
 \begin{program}
 \$ smlsharp -o hello1 hello1.sml\\
@@ -2053,12 +2169,13 @@ hello1 hellp1.sml\\
 \$ 
 \end{program}
 	Nothing is printed by this program.
-	This is normal.
-	When compiling a file, \smlsharp{} does not attach code to print
-the result value and its type.
+	This is what you expect.
+	\smlsharp{} compiles the source code itsel; it does not attach
+code to print the result value and its type.
 	If you want to see something printed, you need to write code
 to print it explicitly.
-	So let's create the file {\tt hello2.sml} containing:
+	Now let's create a file {\tt hello2.sml} to print this message.
+	The contents can be the following.
 \begin{program}
 print "hello world!\verb|\|n"
 \end{program}
@@ -2067,24 +2184,24 @@ in this file.
 	Our intention is that {\tt print} denotes the function
 {\tt print : string -> unit} in Standard ML Basis Library.
 	However, since name {\tt print} can be freely re-defined,
-for \smlsharp{} compiler, it does not necessarily mean the  library
+for \smlsharp{} compiler, it does not necessarily mean the library
 function.
 	In order to compile {\tt hello2.sml}, you need to notify the
 compiler where the name {\tt print} is defined.
 	For this purpose, an {\bf interface file} must be created.
 
 	When compiling {\tt hello2.sml}, \smlsharp{} searches for 
-its interface file by its default name {\tt "hello2.smi"}.
+its interface file by its default name {\tt hello2.smi}.
 	So to compile {\tt hello2.sml}, you need to create file {\tt
-"hello2.smi"}.
+hello2.smi}.
 	Its contents can be the following.
 \begin{program}
 \verb|_|require "basis.smi"
 \end{program}
 	This declares that {\tt hello2.sml} uses names that are defined
 in the interface file {\tt "basis.smi"}, which is the system supplied
-file containing the declarations of all the names defined in Standard ML
-Basis Library.
+file containing the declarations of all the names defined in the
+Standard ML Basis Library.
 
 	With this preparation, {\tt hello2.sml} is compiled as follows.
 \begin{program}
@@ -2096,10 +2213,11 @@ hello word!\\
 
 \section{
 \txt{{\tt smlsharp}コマンドの起動モード}
-{{\tt smlsharp} command modes}}
+    {{\tt smlsharp} command modes}
+}
 \label{sec:tutorialSmlsharpParameter}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	{\tt smlsharp}の主な実行モードは以下の4つです．
 \begin{description}
 \item[対話型モード]
@@ -2135,44 +2253,45 @@ hello word!\\
 \item[-Wl,\nonterm{args}]  リンカーへ<args>をパラメタとして渡す
 \end{description}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	{\tt smlsharp} execution modes include the following.
+	{\tt smlsharp} has the following execution modes.
 \begin{description}
 \item[interactive mode]
-When {\tt smlsharp} is invoked without any parameter as:
+When {\tt smlsharp} is invoked without any parameter as shown below:
 \begin{program}
 \$ smlsharp\\
-SML\# version 1.0.0 (2012-04-06 JST) for x86-linux\\
+SML\# version 1.0.1 (2012-04-24 10:23:45 JST) for x86-linux\\
 \# 
 \end{program}
-it execute the interactive session.
+it executes the interactive session.
 \item[compile and link mode]
-When {\tt smlsharp} is invoked with a single source file as:
+When {\tt smlsharp} is invoked with a single source file as shown below:
 \begin{program}
 \$ smlsharp \nonterm{file}.sml\\
 \$ 
 \end{program}
-it compiles the source file {\tt \nonterm{file}.sml}, link the resulting
-object and creates an executable program (with the name {\tt a.out} by default).
+it compiles the source file {\tt \nonterm{file}.sml}, links the resulting
+object file and creates an executable program (with the name {\tt a.out}
+by default).
 \item[compile mode]
-When {\tt smlsharp} is invoked with {\tt -c} switch as in:
+When {\tt smlsharp} is invoked with {\tt -c} switch as shown below:
 \begin{program}
 \$ smlsharp -c \nonterm{file1}.sml $\cdots$ \nonterm{fileN}.sml \\
 \$ 
 \end{program}
-it compile the given files {\tt \nonterm{file1}.sml $\cdots$
+it compiles the given files {\tt \nonterm{file1}.sml $\cdots$
 \nonterm{fileN}.sml}
 into object files {\tt \nonterm{file1}.o $\cdots$
 \nonterm{fileN}.o}.
 \item[link mode]
-When {\tt smlsharp} is invoked with a single interface files:
+When {\tt smlsharp} is invoked with a single interface files as shown below:
 \begin{program}
 \$ smlsharp \nonterm{file}.smi \\
 \$ 
 \end{program}
-it assumes that {\tt \nonterm{file}.smi} is a top-level interface file
-and link all the object files corresponding to the interface files
-referenced from {\tt \nonterm{file}.smi}, and generate an executable
-file.
+it assumes that {\tt \nonterm{file}.smi} is a top-level interface file,
+links all the object files corresponding to the interface files
+referenced from {\tt \nonterm{file}.smi}, 
+and generates an executable file.
 \end{description}
 	\smlsharp{} also recognizes various command-line switches.
 \begin{program}
@@ -2184,65 +2303,73 @@ will print a help message describing available switches.
 \chapter{\txt{MLプログラミング入門}{Introduction to ML programming}}
 \label{chap:tutorialMlprogramming}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}言語は，Standard ML言語と後方互換性のあるプログラミン
 グ言語です．
 	\smlsharp{}の高度な機能を使いこなすために，本章でまず，Standard
 MLプログラミングの基礎を学びましょう．
 
-現在この章は未完です．
-第\ref{sec:tutorialPolymorphicfunction}節に続き近い将来，以下の
-節を追加する予定です．
-\begin{quote}
-パターンマッチングによる関数定義\\
-リストプログラミング\\
-高階のリスト処理関数\\
-データ型の定義\\
-パターンマッチングによるデータ型の利用\\
-モジュールシステム\\
-Structure\\
-local宣言\\
-signature制約\\
-種々のデータ型ライブラリ\\
-Functor
-\end{quote}
+% 現在この章は未完です．
+% 第\ref{sec:tutorialPolymorphicfunction}節に続き近い将来，以下の
+% 節を追加する予定です．
+% \begin{quote}
+% パターンマッチングによる関数定義\\
+% リストプログラミング\\
+% 高階のリスト処理関数\\
+% データ型の定義\\
+% パターンマッチングによるデータ型の利用\\
+% モジュールシステム\\
+% Structure\\
+% local宣言\\
+% signature制約\\
+% 種々のデータ型ライブラリ\\
+% Functor
+% \end{quote}
+
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\smlsharp{} is a super set of Standard ML.
+	The \smlsharp{} language is a super set of Standard ML.
 	To write a program in \smlsharp{} exploiting its advanced
 features, you must first learn Standard ML programming.
 	This chapter provides ML programming tutorial for those who
 first learn ML programming.
 
-\begin{small}
-This chapter is incomplete
+% \begin{small}
+% This chapter is incomplete
+% 
+% The following sections will be added in near future.
+% \begin{quote}
+% list programming\\
+% higher-order functions for lists\\
+% data type definitions\\
+% pattern matching \\
+% overview of the module system\\
+% Structure\\
+% local declaration\\
+% signature constraint\\
+% various data types and libraries\\
+% functors
+% \end{quote}
+% \end{small}
 
-Continuing Section \ref{sec:tutorialPolymorphicfunction}, the following 
-sections will be added in near future.
-\begin{quote}
-list programming\\
-higher-order functions for lists\\
-data type definitions\\
-pattern matching \\
-overview of the module system\\
-Structure\\
-local declaration\\
-signature constraint\\
-various data types and libraries\\
-functors
-\end{quote}
-\end{small}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-\section{\txt{ML言語について}{The ML language family}}
-\label{sec:mllanguage}
+\section{\txt{ML言語について}{About the ML language family}}
+\label{sec:tutorialMllanguage}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}はML系関数型プログラミング言語の一つです．
-	本節では\smlsharp{}の理解のためにML言語の概要を説明します．
 
 	ML言語はEdinburgh LCF\cite{gord79}のメタ言語（{\bf M}eta {\bf
 L}anguage）として開発されました．
-	メタ言語とは，ある言語の分析や記述をするための言語のことです．
+	メタという接頭語のこの特別な使われ方は，ギリシャ語の``ta meta ta
+phusika''という用例に遡るといわれています．
+	このフレーズは単に，自然学（physics）のあとに置かれた名前が付
+けられていない本を示すギリシャ語でしたが，その本の内容が哲学（形而上学，
+metaphysics）であったことから，このメタという接頭語に，通常の思考の次元
+をこえて物事を分析する哲学的な態度，という意味が与えられるようになりまし
+た．
+	言語学の文脈では，メタ言語とは，ある言語の分析や記述をするための
+言語を意味します．
 	プログラミング言語を変換したり処理するための言語もメタ言語とみな
 すことができます．
 	Edinburgh LCFは計算可能な関数（つまりプログラム）を対象とした一
@@ -2270,10 +2397,10 @@ L}anguage）として開発されました．
 	\smlsharp{} is a programming language in the ML family.
 
 	ML was first developed as a {\bf M}meta {\bf L}anguage of
-Edinburgh LCF\cite{gord79} system. 
+Edinburgh LCF\cite{gord79} system.
 	The prefix {\em meta\/} in this particular usage probably traces
 back to Greek phrase ``ta meta ta phusika'', which  simply denotes the
-book placed after the phusika (Physics).
+book placed after the phusika (Physics, or the book on the nature).
 	The denoted book happens to be on philosophy (metaphysics), which
 made this prefix receive a meaning of the (philosophical) attitude of
 analyzing things beyond the ordinary way of thinking.
@@ -2281,37 +2408,26 @@ analyzing things beyond the ordinary way of thinking.
 to analyze the ordinary usage (writing/reading/speaking) of a language.
 	Objects of LCF system are computable functions (programs)
 represented by a language called PPLAMBDA.
-	LCF ML was a meta language of PPLAMBDA, namely, a programming
-language to manipulate PPLAMBDA expressions.
+	LCF ML was the meta language of PPLAMBDA, namely, a programming
+language to manipulate PPLAMBDA expressions (functions).
 
 	ML's name as well as its features are originated from this
 historical role of LCF ML. 
-	For flexible manipulation of programs, ML itself was defined as
-a functional language.
-	In addition, a type inference system was first introduced in ML
-for reliable manipulation of function terms.
+	For flexible manipulation of programs, LCF ML itself was defined
+as a functional language.
+	In addition, a type inference system was introduced for reliable
+manipulation of function terms.
 	Since the success of LCF ML, ML has evolved as a general purpose
-programming language, and several compilers have been developed.
+programming language, and several compilers have been developed for ML.
 	Based on these efforts, its specification is formally defined as
 Standard ML \cite{sml,sml97}.
-% 	このLCF MLは，PPLAMBDAの操作言語にとどまらない汎用のプロ
-% グラミング言語として価値があることが認識され，CardelliによってLCFとは独
-% 立したプログラミング言語としてのMLコンパイラが開始され，PDP11やVAX VMSな
-% どの上に実装され使用されました．
-% 	その後，Milner，Harper，MacQueen等によってプログラミング言語とし
-% ての仕様策定の努力がなされ，さらにこの言語がEdinburg大学によってCardelli
-% のML上に実装されました．
-% 	これらの成果を踏まえ，Standard MLの仕様\cite{sml}が確定し，その
-% 後改訂され現在のStandard ML言語仕様\cite{sml97}として完成しました．
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 \section{\txt{宣言的プログラミング}{Declarative programming}}
 \label{sec:tutorialDeclarative}
 
-
-\txt
-{
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	時折，関数型プログラミングは「宣言的」であると言われます．
 	この言葉は厳密な技術的用語ではなく，プログラムが実現したいことそ
 のものの記述するといった意味の曖昧性のある言葉です．
@@ -2326,15 +2442,41 @@ Standard ML \cite{sml,sml97}.
 いえます．
 	MLプログラミングをマスターする鍵の一つは，この意味での宣言的プロ
 グラミングの考え方を身につけることです．
-}
-{
+
+	簡単な例として，数学の教科書で学んだ階乗を計算するプログラムを考
+えてみましょう．
+	自然数$n$の階乗$n !$は，以下のように定義されます．
+\begin{eqnarray*}
+0 ! &=& 1
+\\
+n ! &=& n \times (n - 1) !
+\end{eqnarray*}
+MLでは，このプログラムを以下のように記述できます．
+\begin{tt}
+\begin{quote}
+fun fact 0 = 1\\
+\ \ \ \ \ | fact n = n * fact (n - 1)
+\end{quote}
+\end{tt}
+	この宣言によって{\tt fact}と言う名前の関数が定義されます．
+	この定義は``{\tt |}''によって区切られた２つの場合からなっています．
+	上段は，引数が{\tt 0}の場合は{\tt 1}を返すことを表し，下段はそれ
+以外の場合，引数{\tt n}と{\tt n - 1}の階乗とを掛けた結果を返すことを表し
+ています．
+	それぞれが，上記の階乗の定義とほぼ完全に一致していることがおわかりでしょう．
+	
+	このような単純な関数に限らず，種々のプログラムを，その意図する意
+味に従い宣言的な関数として表現できれば，複雑なプログラムをより簡潔かつ分
+かりやすく書き下すことができるかもしれません．
+	プログラミング言語MLは，この考え方に従い，大規模で複雑な計算をプ
+ログラムする言語と言えます．
+	以下に続く節で，その基本となる考え方を学んでいきましょう．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Functional programming is sometimes described as ``declarative
 programming''.
 	This is not a precise technical term.
-	It generally implies that programs naturally and directly
-express what they should realize.
-% 	この言葉は厳密な技術的用語ではなく，プログラムが実現したいことそ
-% のものの記述するといった意味の曖昧性のある言葉です．
+	It somewhat vaguely suggests that programs naturally and
+directly express what they should realize.
 	If the problem to be solved is procedural in nature then a
 procedural description may well be declarative.
 	However, when the thing to be represented by a program has a
@@ -2344,93 +2486,49 @@ meaning.
 	When a program to be written is best understood as a function
 that takes an input and returns a result, then functional programming
 would be naturally declarative.
-	In many cases, this way of modeling problems yields 
-clean and readable programs.
-	In this sense, ML is a language that promotes declarative
-description.
-	A key to master ML programming is to obtain a skill of writing
-declarative code in this sense.
-% 	MLプログラミングをマスターする鍵の一つは，この意味での宣言的プロ
-% グラミングの考え方を身につけることです．
-% 	簡単な例として，数学の教科書で学んだ階乗を計算するプログラムを考
-% えてみましょう．
-}
-
-\txt
-{
-	簡単な例として，数学の教科書で学んだ階乗を計算するプログラムを考
-えてみましょう．
-	自然数$n$の階乗$n !$は，以下のように定義されます．
-}
-{
 	As a simple example, consider the factorial function.
 	The factorial of $n$,  $n !$, is defined by the following mathematical
 equations.
-}
 \begin{eqnarray*}
 0 ! &=& 1
 \\
 n ! &=& n \times (n - 1) !
 \end{eqnarray*}
-\txt
-{
-MLでは，このプログラムを以下のように記述できます．
-}
-{
 In ML, it is coded below.
-}
 \begin{tt}
 \begin{quote}
 fun fact 0 = 1\\
 \ \ \ \ \ | fact n = n * fact (n - 1)
 \end{quote}
 \end{tt}
-\txt
-{
-	この宣言によって{\tt fact}と言う名前の関数が定義されます．
-	この定義は``{\tt |}''によって区切られた２つの場合からなっています．
-	上段は，引数が{\tt 0}の場合は{\tt 1}を返すことを表し，下段はそれ
-以外の場合，引数{\tt n}と{\tt n - 1}の階乗とを掛けた結果を返すことを表し
-ています．
-	それぞれが，上記の階乗の定義とほぼ完全に一致していることがおわかりでしょう．
-}
-{
 	This declaration defines a function named {\tt fact}.
 	It consists of two cases separated by ``{\tt |}''.
-	The first case says fact returns {\tt 1} if the parameter is
-{\tt 0}, and the second case says it otherwise returns the multiple of
-{\tt n} and the factorial of {\tt n - 1}.
-	These two cases exactly corresponds to the mathematical
+	The first case says {\tt fact} returns {\tt 1} if the parameter
+is {\tt 0}, and the second case says it otherwise returns the multiple
+of {\tt n} and the factorial of {\tt n - 1}.
+	These two cases exactly correspond to the mathematical
 definition of this function.
-}
 	
-\txt
-{
-	このような単純な関数に限らず，種々のプログラムを，その意図する意
-味に従い宣言的な関数として表現できれば，複雑なプログラムをより簡潔かつ分
-かりやすく書き下すことができるかもしれません．
-	プログラミング言語MLは，この考え方に従い，大規模で複雑な計算をプ
-ログラムする言語と言えます．
-	以下に続く節で，その基本となる考え方を学んでいきましょう．
-}
-{
+	
 	Various programs other than such a very simple mathematical
 function can be written in a concise and readable fashion if you
-can represent it as a declarative function according to the intended
+can represent them as declarative functions according to the intended
 meaning.
 	ML is a programming language that promotes this way of declarative
 programming.
+	A key to master ML programming is to obtain a skill of writing
+declarative code in this sense.
 	In the subsequent sections, we learn the essence of ML
 programming.
-}
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 \section{
 \txt{式の組み合わせによる計算の表現}
 {Representing computation by composing expressions}
 }
 \label{sec:tutorialExpression}
 
-\txt
-{
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	前節の階乗の計算では，引数が{\tt 0}の場合は{\tt 1}を返し，それ以
 外の一般の{\tt n}の場合は，{\tt n * fact (n - 1)}を返すようにプログラム
 されていました．
@@ -2440,28 +2538,10 @@ programming.
 	{\tt n * fact (n - 1)}は，変数{\tt n}と関数を含む式です．
 	一般にML言語の大原則は，
 \begin{quote}
-MLのプログラミングは，必要な値をもつ式を定義することを通じて行う
+{\bf MLのプログラミングは，必要な値をもつ式を定義することを通じて行う}
 \end{quote}
 というものです．
-}
-{
-	In the factorial example, the program returns {\tt 1} 
-if the parameter is {\tt 0}，and returns {\tt n * fact (n - 1)}
-otherwise.
-	In this way, the value returned by a function is represented by
-an {\em expression}.
-	{\tt 1} in the first case is also an expression representing
-the natural number zero.
-	{\tt n * fact (n - 1)} is an expression involving variable {\tt
-n} and function application.
-	The basic principle of ML programming is 
-\begin{quote}
-programming is done by defining an expression that represents the desired value
-\end{quote}
-}
 
-\txt
-{
 	式は以下の要素を組み合わせて構成されます．
 \begin{enumerate}
 \item {\tt 0}などの定数式
@@ -2471,111 +2551,563 @@ programming is done by defining an expression that represents the desired value
 \end{enumerate}
 	１から３までの組み合わせは，高校などで慣れ親しんだ算術式と同じ構
 造を持っています．
-	以下にこれらを組み合わせた対話型プログラミングの例を示します．
-}
-{
+	例えば，$1$から$n$までの自然数の２乗の和
+$S_n = 1^2 + 2^2 + \cdots + n^2$
+は以下の公式で求められます．
+\[
+S_n = \frac{n (n + 1) (2n + 1)}{6}
+\]
+この式は，MLで直接以下のようにプログラムできます．
+\begin{program}
+val Sn = (n * (n + 1) * (2*n + 1)) div 6
+\end{program}
+	{\tt *}と{\tt div}はそれぞれ自然数の乗算と除算を表します．
+	この式は$n$が定義されていれば，正しく$S_n$の値を計
+算します．
+\begin{program}
+\# val n = 10;\\
+val n = 10 : int\\
+val Sn = (n * (n + 1) * (2*n + 1)) div 6;\\
+val Sn = 385 : int
+\end{program}
+
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	In the factorial example, the program returns {\tt 1} 
+if the parameter is {\tt 0}，and returns {\tt n * fact (n - 1)}
+otherwise.
+	In this way, the value returned by a function is represented by
+an {\em expression}.
+	{\tt 1} in the first case is an expression representing the
+natural number $1$.
+	{\tt n * fact (n - 1)} is an expression involving variable {\tt
+n} and function application.
+	The basic principle of ML programming is 
+\begin{quote}
+{\bf programming is done by defining an expression that represents the desired value}.
+\end{quote}
+
 	An expression consist of the following components:
 \begin{enumerate}
-\item constant such as {\tt 0}
-\item variables representing function parameters and defined values
-\item function applications (function calls)
+\item constants such as {\tt 1},
+\item variables representing function parameters and defined values.
+\item function applications (function calls), and
 \item functions and other data structure constructions
 \end{enumerate}
-	The items 1 through 3 are the same as in arithmetic expressions,
-as seen in the following expressions.
+	The items 1 through 3 are the same as in mathematical expressions,
+we have leaned in school.
+	For example, the sum of the arithmetic sequence 
+$S_n = 1^2 + 2^2 + \cdots + n^2$
+is given by the following equation.
+\[
+S_n = \frac{n (n + 1) (2n + 1)}{6}
+\]
+	This is directly programmed as follows.
+\begin{program}
+val Sn = (n * (n + 1) * (2*n + 1)) div 6
+\end{program}
+	{\tt *} and {\tt div} are integer multiplication and division,
+respectively.
+	When $n$ is defined, it correctly computes $S_n$ as seen below.
+\begin{program}
+\# val n = 10;\\
+val n = 10 : int\\
+val Sn = (n * (n + 1) * (2*n + 1)) div 6;\\
+val Sn = 385 : int
+\end{program}
+% 
+% \begin{tt}
+% \begin{quote}
+% \# val pi = 3.14;\\
+% val pi = 3.14 : real\\
+% \# val r = 1.5;\\
+% val r = 1.5 : real\\
+% \# 2.0 * pi * r;\\
+% val it = 9.41999999999 : real\\
+% \# pi * r * r;\\
+% val it = 7.06499999999 : real\\
+% \# r * (Math.sin (pi / 6.0));\\
+% val it = 0.749655153964 : real\\
+% \# Math.sqrt 2.0;\\
+% val it = 1.414213562373 : real\\
+% \# it  = Math.pow (2.0, 3.0);\\
+% val it = 8.0 : real\\
+% \# val negative = \verb|~|1.0;\\
+% val negative = \verb|~|1.0 : real
+% \end{quote}
+% \end{tt}
+% 	{\tt Math.sqrt $n$} and {\tt Math.pow($n$,$m$)} are primitive
+% functions to compute $\sqrt{n}$ and $n^m$ respectively.
+% 	As in the last example, a negative constant is written by
+% prefixing the tilde symbol ``{\tt \verb|~|}''.
+
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\section{
+\txt{定数式と組込み関数}
+{Constants literals and built-in primitives}
 }
-\begin{tt}
+\label{sec:tutorialConstants}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	型付き言語であるMLでは，定数式はすべて決まった型を持ちます．
+	MLでよく使われる組込み型には以下のものがあります．
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+型 & 内容
+\\ \hline
+int & （マシン語１ワードの大きさの）符号付き整数
+\\ \hline
+real & 倍精度浮動小数点
+\\ \hline
+char & 文字型
+\\ \hline
+string & 文字列型
+\\ \hline
+word & （マシン語１ワードの大きさの）符号無し整数
+\\ \hline
+bool & 真理値型
+\\ \hline
+\end{tabular}
+\end{center}
+	真理値型以外は，他のプログラミング言語と考え方は同じです．
+	これらの組込み方の定数式と基本組込み演算を覚えましょう．
+	真理値型の扱いは次節で説明します．	
+
+\subsection{int型}
+	{\tt int}型は整数型です．
+	\smlsharp{}では，C言語の\code{long}と同一の２の補数表現で表され
+る１語長の符号付き整数です．
+	{\tt int}型定数には通常の十進数の記述以外に{\tt 0x\nonterm{h}}形式の16進
+数でも記述できます．
+	\nonterm{h}は{\tt 0}から{\tt 9}の数字と{\tt a}({\tt A}でもよい)
+から{\tt f}({\tt F}でもよい)までのアルファベットの並びです．
+	負数の定数はチルダ記号\verb|~|を付けて表します．
+	\smlsharp{}は{\tt int}型の値を十進数で表示します．
+\begin{program}
+\# 10;\\
+val it = 10 : int\\
+\# 0xA;\\
+val it = 10 : int\\
+\# \verb|~|FF;\\
+val it = \verb|~|255 : int
+\end{program}
+	{\tt int}型に対しては，通常の四則演算{\tt +, -, *, div}が2項演算
+子として定義されています．
+\begin{program}
+\# 10 + 0xA;\\
+val it = 20 : int\\
+\# 0 - 0xA;\\
+val it = \verb|~|10 : int\\
+\# 10 div 2;\\
+val it = 5 : int\\
+\# 10 * 2;\\
+val it = 20 : int
+\end{program}
+	これらの組合せは，通常の算術演算の習慣に従い，{\tt *,div}が{\tt
++, -}より強く結合します．
+	また，同一の演算子は左から順に計算されます．
+\begin{program}
+\# 1 + 2 * 3;\\
+val it = 7 : int\\
+\# 4 - 3 - 2;\\
+val it = \verb|~|1 : int
+\end{program}
+
+\subsection{real型}
+	{\tt real}は浮動小数点データの型です．
+	\smlsharp{}では，C言語の\code{double}に相当する６４ビットの倍精
+度浮動小数点です．
+	{\tt real}型の定数は{\tt \nonterm{s}.\nonterm{d}E\nonterm{s}}
+の形で表現します．
+	ここで\nonterm{s}は符号付き十進数，\nonterm{d}は符号なし十進数で
+す．
+	整数部，小数部，指数部のいずれも省略できますが．小数部と指数部の
+両方を省略すると{\tt real}型ではなく{\tt int}型と解釈されます．
+\begin{program}
+\# 10.0;\\
+val it = 10.0 : real\\
+\# 1E2;\\
+val it = 10.0 : real\\
+\# .001;\\
+val it = 0.001 : real\\
+\# \verb|~|1E\verb|~|2;\\
+val it = 0.001 : real\\
+\# 10;\\
+val it = 10 : int
+\end{program}
+	{\tt real}型に対しても{\tt int}型同様に四則演算が定義されていま
+す．
+	ただし，除算は{\tt div}ではなく{\tt /}です．
+\begin{program}
+\# 10.0 + 1E1;\\
+val it = 20.0 : real\\
+\# 0.0 - 0xA;\\
+val it = \verb|~|10.0 : real\\
+\# 10.0 / 2.0;\\
+val it = 5.0 : real\\
+\# 10.0 * 2.0;\\
+val it = 20.0 : real
+\end{program}
+
+\subsection{char型}
+	{\tt char}は１文字を表すデータ型です．
+	文字\nonterm{c}を表す{\tt char}型定数は{\tt \#"\nonterm{c}"}と書きます．
+	\nonterm{c}には通常文字以外に以下の特殊文字のエスケープが書けます．
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline\\
+\verb|\a| & {warning (ASCII 7)}\\
+\verb|\b| & {backspace (ASCII 8)}\\
+\verb|\t| & {horizontal tab(ASCII 9)}\\
+\verb|\n| & {new line (ASCII 10)}\\
+\verb|\v| & {vertical tab (ASCII 11)}\\
+\verb|\f| & {home feed (ASCII 12)}\\
+\verb|\r| & {carrige return(ASCII 13)}\\
+\verb|\^|$C$ & {control character $C$}\\
+\verb|\"| & {character {\tt \verb|"|}}\\ %"
+\verb|\\| & {character \verb|\|}\\
+\verb|\|$ddd$ &  {the character whose code is $ddd$ in decimal}
+\\\hline
+\end{tabular}
+\end{center}
+\begin{program}
+\# \#"a";\\
+val it = \#"a" : char\\
+\# \#"\verb|\|n";\\
+val it = \#"\verb|\|n" : char
+\end{program}
+	文字型に対して以下の組込み演算が定義されています．
+\begin{program}
+val chr : int -> char\\
+val ord : char -> int
+\end{program}
+	{\tt chr}は与えられた数字をASCIIコードとみなし，そのコードの文字
+を返します．
+	{\tt ord}は文字型データのASCIIコードを返します．
+\begin{program}
+\# ord \#"a";\\
+val it = 97 : int\\
+\# chr(97 + 7);\\
+val it = \#"h" : char\\
+\# ord \#"a" - ord \#"A";\\
+val it = 32 : int\\
+\# chr(ord \#"H" + 32);\\
+val it = \#"h" : char
+\end{program}
+
+\subsection{string 型}
+	{\tt string}は文字列を表すデータ型です．
+	{\tt string}定数は{\tt "}と{\tt "}で囲んで文字列表します．
+	この文字列の中に特殊文字を含める場合は，{\tt char}型で定義され
+ているエスケープシーケンスを使います．
+	{\tt string}データには，標準出力にプリントする{\tt print}と
+２つの文字列を連結する{\tt \verb|^|}が組込み関数として定義されています．
+\begin{program}
+\# "SML" \verb|^| "\verb|\n|";
+val it = "SML\#\verb|\n|" : string\\
+\# print it;\\
+SML\#\\
+val it = () : unit
+\end{program}
+
+\subsection{word 型}
+	{\tt word}は符号なし整数型です．
+	{\tt word}型定数は{\tt 0w\nonterm{d}}または{\tt 0wx\nonterm{h}}
+の形で表現します．
+	ここで\nonterm{d}はそれぞれ十進数，\nonterm{h}は16進の数字列です．
+	\smlsharp{}は{\tt word}型定数を16進表現で表示します．
+\begin{program}
+\# 0w10;\\
+val it = 0xA : word\\
+\# 0wxA;\\
+val it = 0xA : word
+\end{program}
+	{\tt word}型データに対しても{\tt int}型と同じ四則演算が定義され
+ています．
+	さらに{\tt word}型データに対しては，種々のビット演算が定義されて
+います．
+
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\smlsharp{} cointains the following atomic types, with the
+associated literal constants.
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+type & its values
+\\ \hline
+{\tt int} & signed integres (of one machine word size)
+\\ \hline
+{\tt real} & double presicion floating point numbers
+\\ \hline
+{\tt char} & characters
+\\ \hline
+{\tt string} & character strings
+\\ \hline
+{\tt word} & unsigned intergers (of one machine word size)
+\\ \hline
+bool & boolean values
+\\ \hline
+\end{tabular}
+\end{center}
+
+	We review basis expressions for these atomic types, except for
+{\tt bool} which will be treated in the next section.
+
+\subsection{int type}
+	This is a standard type of integers.
+	In \smlsharp{}, a value of {\tt int} is a two's compliment
+integer and is the same as \code{long} in C.
+	Constants of {\tt int} are written either the usual decimal
+notation or hexadecimal notation of the form {\tt 0x\nonterm{h}} 
+where \nonterm{h} is a sequence of digits from {\tt 0} to {\tt 9} and
+letters from {\tt a}(or {\tt A}) to {\tt f}(or {\tt F}).
+	A negative constant is written with \verb|~|.
+	\smlsharp{} prints {\tt int} values in decimal notation.
+\begin{program}
+\# 10;\\
+val it = 10 : int\\
+\# 0xA;\\
+val it = 10 : int\\
+\# \verb|~|FF;\\
+val it = \verb|~|255 : int
+\end{program}
+	Binary arithmetic operations {\tt +, -, *, div} are defined on 
+{\tt int}.
+\begin{program}
+\# 10 + 0xA;\\
+val it = 20 : int\\
+\# 0 - 0xA;\\
+val it = \verb|~|10 : int\\
+\# 10 div 2;\\
+val it = 5 : int\\
+\# 10 * 2;\\
+val it = 20 : int
+\end{program}
+	As in arithmetic expressions in mathematics, {\tt *,div}
+associate stronger than {\tt +, -}, and operators of the same strength
+are computed from left to right.
+\begin{program}
+\# 1 + 2 * 3;\\
+val it = 7 : int\\
+\# 4 - 3 - 2;\\
+val it = \verb|~|1 : int
+\end{program}
+
+\subsection{real type}
+	{\tt real} is a type of floating point data.
+	In \smlsharp{}, a value of {\tt real} is a 64 bit double
+precision floating point numbers and is the same as \code{double} in C.
+	{\tt real} constants are written in the notation {\tt
+\nonterm{s}.\nonterm{d}E\nonterm{s}}, where \nonterm{s} is a decimal
+string possibly with the negation symbol and \nonterm{d} is a decimal
+string.
+	Each of the three parts can be omitted, but decimal string is
+interpreted as a value of  {\tt int}.
+\begin{program}
+\# 10.0;\\
+val it = 10.0 : real\\
+\# 1E2;\\
+val it = 10.0 : real\\
+\# .001;\\
+val it = 0.001 : real\\
+\# \verb|~|1E\verb|~|2;\\
+val it = 0.001 : real\\
+\# 10;\\
+val it = 10 : int
+\end{program}
+	Binary arithmetic operators {\tt +, -, *, /} are defined for {\tt real}.
+	Note that the division operator on {\tt real} is {\tt /} and not
+{\tt div}.
+\begin{program}
+\# 10.0 + 1E1;\\
+val it = 20.0 : real\\
+\# 0.0 - 0xA;\\
+val it = \verb|~|10.0 : real\\
+\# 10.0 / 2.0;\\
+val it = 5.0 : real\\
+\# 10.0 * 2.0;\\
+val it = 20.0 : real
+\end{program}
+
+\subsection{char type}
+	{\tt char} is a type for one character data.
+	A constant for a character \nonterm{c} is written as {\tt \#"\nonterm{c}"}.
+	\nonterm{c} may be any printable character or one of the
+following special secape sequences.
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline\\
+\verb|\a| & {warning (ASCII 7)}\\
+\verb|\b| & {backspace (ASCII 8)}\\
+\verb|\t| & {horizontal tab(ASCII 9)}\\
+\verb|\n| & {new line (ASCII 10)}\\
+\verb|\v| & {vertical tab (ASCII 11)}\\
+\verb|\f| & {home feed (ASCII 12)}\\
+\verb|\r| & {carrige return(ASCII 13)}\\
+\verb|\^|$C$ & {control character $C$}\\
+\verb|\"| & {character {\tt \verb|"|}}\\ %"
+\verb|\\| & {character \verb|\|}\\
+\verb|\|$ddd$ &  {the character whose code is $ddd$ in decimal}
+\\\hline
+\end{tabular}
+\end{center}
+\begin{program}
+\# \#"a";\\
+val it = \#"a" : char\\
+\# \#"\verb|\|n";\\
+val it = \#"\verb|\|n" : char
+\end{program}
+	The following primitive functions are defined on {\tt char}.
+\begin{program}
+val chr : int -> char\\
+val ord : char -> int
+\end{program}
+	{\tt chr $n$} assumes that $n$ is an ASCII code and returns the
+character of that code.
+	{\tt ord $c$} returns the ASCII code of $c$.
+\begin{program}
+\# ord \#"a";\\
+val it = 97 : int\\
+\# chr(97 + 7);\\
+val it = \#"h" : char\\
+\# ord \#"a" - ord \#"A";\\
+val it = 32 : int\\
+\# chr(ord \#"H" + 32);\\
+val it = \#"h" : char
+\end{program}
+
+\subsection{string type}
+	{\tt string} is a type for character strings.
+	{\tt string} constants are written with {\tt "} and {\tt "}.
+	A {\tt string} constant may contain escape sequences shown
+above.
+	For {\tt string} data, a print function {\tt print} and a
+concatenation binary operator {\tt \verb|^|} are defined.
+\begin{program}
+\# "SML" \verb|^| "\verb|\n|";
+val it = "SML\#\verb|\n|" : string\\
+\# print it;\\
+SML\#\\
+val it = () : unit
+\end{program}
+
+\subsection{word type}
+	{\tt word} is a type for unsigned integers.
+	{\tt word} constants are written as {\tt 0w\nonterm{d}} or
+{\tt 0wx\nonterm{h}} where \nonterm{d} is a decimal digit sequence and
+\nonterm{h} is a hexadecimal digit sequence.
+	\smlsharp{} prints {\tt word} data in a hexadecimal notation.
+\begin{program}
+\# 0w10;\\
+val it = 0xA : word\\
+\# 0wxA;\\
+val it = 0xA : word
+\end{program}
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\section{
+\txt{{\tt bool}型と条件式}
+{Type {\tt bool} and conditional expressions}
+}
+\label{sec:tutorialConditional}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	条件を含む計算も
 \begin{quote}
-\# val pi = 3.14;\\
-val pi = 3.14 : real\\
-\# val r = 1.5;\\
-val r = 1.5 : real\\
-\# 2.0 * pi * r;\\
-val it = 9.41999999999 : real\\
-\# pi * r * r;\\
-val it = 7.06499999999 : real\\
-\# r * (Math.sin (pi / 6.0));\\
-val it = 0.749655153964 : real\\
-\# Math.sqrt 2.0;\\
-val it = 1.414213562373 : real\\
-\# it  = Math.pow (2.0, 3.0);\\
-val it = 8.0 : real\\
-\# val negative = \verb|~|1.0;\\
-val negative = \verb|~|1.0 : real
+{\bf MLのプログラミングは，必要な値をもつ式を定義することを通じて行う}
 \end{quote}
-\end{tt}
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	{\tt Math.sqrt}および{\tt Math.pow}はそれぞれ
-平方根とべき乗を計算する組込み関数です．
-	最後の例のように，MLでは負の定数はチルダ記号{\tt ~}を先頭に付
-けて表記します．
+とううMLの原則に従い式で表されます．
+	式
+\begin{program}
+if $E1$ then $E2$ else $E3$
+\end{program}
+は値を表す式です．
+	その値は，以下のように求められます．
+\begin{enumerate}
+\item 式$E1$を評価し値を求める．
+\item もしその値が{\tt true}であれば$E2$を評価しその値を返す．
+\item もし$E1$の値が{\tt false}であれば$E2$を評価しその値を返す．
+\end{enumerate}
+	この$E1$の式が持つ値{\tt true},{\tt false}はそれぞれ「真」と「偽」
+を表す型{\tt bool}の２つの定数です．
+	{\tt bool}型の値を持つ式は，これら定数の他に，数の大小比較や論理
+演算などがあります．
+\begin{program}
+\# 1 < 2;\\
+val it = true : bool\\
+\# 1 < 2 andalso 1 > 2;\\
+val it = false : bool\\
+\# 1 < 2 orelse 1 > 2;\\
+val it = true : bool
+\end{program}
+	条件式は，これら{\tt bool}型を持つ式を使って定義します．
+\begin{program}
+\# if 1 < 2 then 1 else 2;\\
+val it = 1 : int
+\end{program}
+	この条件式も値を持つ式ですから，他の式と自由に組み合わせることが
+できます．
+\begin{program}
+\# (if 1 < 2 then 1 else 2) * 10;\\
+val it = 10 : int
+\end{program}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	{\tt Math.sqrt $n$} and {\tt Math.pow($n$,$m$)} are primitive
-functions to compute $\sqrt{n}$ and $n^m$ respectively.
-	As in the last example, a negative constant is written by
-prefixing with ``{\tt \verb|~|}''.
+	Following the ML principle,
+\begin{quote}
+{\bf programming is done by defining an expression that represents the desired value}.
+\end{quote}
+conditional computation is represented as an expression.
+	A conditional expression
+\begin{program}
+if $E1$ then $E2$ else $E3$
+\end{program}
+is an expression that computes a value in the following steps.
+\begin{enumerate}
+\item Evaluate $E1$ and obtain a value.
+\item If the value is {\tt true} then evaluate $E2$ and return its value.
+\item If the value of $E1$ is {\tt false} then evaluate $E3$ return its value.
+\end{enumerate}
+	{\tt true}, {\tt false} are two constants of type {\tt bool}.
+	Expressions of type {\tt bool} contains comparison expressions
+and logical operations.
+\begin{program}
+\# 1 < 2;\\
+val it = true : bool\\
+\# 1 < 2 andalso 1 > 2;\\
+val it = false : bool\\
+\# 1 < 2 orelse 1 > 2;\\
+val it = true : bool
+\end{program}
+	Conditional expressions are made up with expressions of type
+{\tt bool}.
+\begin{program}
+\# if 1 < 2 then 1 else 2;\\
+val it = 1 : int
+\end{program}
+	Since this is an expression, it can be combined with other
+expressions as show below.
+\begin{program}
+\# (if 1 < 2 then 1 else 2) * 10;\\
+val it = 10 : int
+\end{program}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	もちろんこれら簡単な式以外にも，数学の式で書けるものであればMLで
-プログラムできます．
-	例えば中学校で学んだ通り，２次方程式$ax^2 + bx + c = 0$の一つの
-解は（Firefoxなどで正常に表示できます），
-\[
-\frac{ -b + \sqrt{ b^{2} - 4 a c } }{2 a} 
-\]
-という式で表されますから，以下のようなプログラムとして書き下せます．
-\begin{program}
-(\verb|~| b + Math.sqrt(Math.pow(b,2.0) - 4.0 * a * c)) / 2.0 * a
-\end{program}
-	{\tt a}，{\tt b}，{\tt c}が定義されていれば，このプログラムは
-以下のように$\frac{ -b + \sqrt{ b^{2} - 4 a c } }{2 a}$の値を計算します．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	In addition to those simple expressions, any other mathematical
-expressions can be coded in this fashion.
-	For example, one of the quadratic formula of the equation
-$ax^2 + bx + c = 0$ is (use Firefox to display this page）
-\[
-\frac{ -b + \sqrt{ b^{2} - 4 a c } }{2 a} 
-\]
-	This is directly written in ML as:
-\begin{program}
-(\verb|~| b + Math.sqrt(Math.pow(b,2.0) - 4.0 * a * c)) / 2.0 * a
-\end{program}
-	When {\tt a}，{\tt b}，{\tt c} are defined, this expression
-computes $\frac{ -b + \sqrt{ b^{2} - 4 a c } }{2 a}$ as seen below.
-\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-\begin{program}
-\# val a = 1.0;\\
-val a = 1.0 : real\\
-\# val b = \verb|~|1.0;\\
-val b = \verb|~|1.0 : real\\
-\# val c = \verb|~|6.0;\\
-val c = \verb|~|6.0 : real\\
-\# val x = (\verb|~| b + Math.sqrt(Math.pow(b,2.0) - 4.0 * a * c)) / 2.0 * a;\\
-val x = 3.0 : real
-\end{program}
 
-\section{\txt{再帰的な関数}{Recursive functions}}
-\label{sec:tutorialRecursion}
-\txt
-{
-	前節のような定数，変数，組込み関数の組み合わせだけでは，もちろん，
-複雑な問題を解くプログラムを記述することはできません．
+\section{
+\txt{複雑な式と関数}
+{Compound expressions and function definitions}
+}
+\label{sec:tutorialExpression}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	定数，変数，組込み関数の組み合わせだけでは，もちろん，複雑な問題
+を解くプログラムを記述することはできません． 
 	MLプログラミングの原則は式を書くことによってプログラムすることで
 すが，その中で重要な役割を果たす式が関数を表す式です．
-}
-{
-	As we learned, ML programming is done by writing expressions.
-	Of course, it is not sufficient to program a solution to a
-complex problem with constant, variables and primitive functions.
-	The important expressions in ML programming are those that
-represent functions.
 
-}
-
-\txt
-{
 	関数は，すでに第\ref{sec:tutorialDeclarative}節で学んだように，
 \begin{program}
 {\bf fun}\ {\it funName}\ {\it param} = {\it expr}
@@ -2583,48 +3115,65 @@ represent functions.
 の構文で定義されます．
 	この宣言以降，変数{\it funName}は，引数{\it param}を受け取り，式
 {\it expr}の値を計算する関数として使用可能となります．
-	例えば２次方程式の解の公式を表現する関数
+	例えば$1$から$n$までの自然数の２乗の和の公式は，$n$を受け取る関
+数とみなせます．
 \[
-\mbox{$f(a,b,c)$} = \frac{ -b + \sqrt{ b^{2} - 4 a c } }{2 a} 
+\mbox{$S(n)$} = \frac{n (n + 1) (2n + 1)}{6}
 \]
-は以下のように定義できます．
-}
-{
-	As we learned in Section~\ref{sec:tutorialDeclarative}, a
-function is defined by the following syntax:
+	この定義は{\tt fun}構文により直接MLのプログラムとして定義できます．
+\begin{program}
+\# fun S(n) = (n * (n + 1) * (2*n + 1)) div 6;\\
+val S = fn : int -> int
+\end{program}
+	この関数は，以下のように使用できます．
+\begin{program}
+\# S 10;\\
+val it = 385 : int\\
+\# S 20;\\
+val it = 2870 : int
+\end{program}
+
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Of course, constant, variables and primitive functions are not
+sufficient for writing a program that solves a complex problem.
+	The important expressions in ML programming are those that
+represent functions.
+
+	As seen in an example in Section~\ref{sec:tutorialDeclarative}, 
+a function is defined by the following syntax:
 \begin{program}
 {\bf fun}\ {\it funName}\ {\it param} = {\it expr}
 \end{program}
 	After this declaration, the variable {\it funName} is bound to a
-function that takes {\it param} as its argument and returns the result 
+function that takes {\it param} as its argument and returns the result
 computed by {\it expr}.
-	For example, a function that represent a quadratic formula
-	例えば２次方程式の解の公式を表現する関数
+	For example, the equation for an arithmetic sequence we have
+seen before can be regarded as a function that takes a natural number
+$n$:
 \[
-\mbox{$f(a,b,c)$} = \frac{ -b + \sqrt{ b^{2} - 4 a c } }{2 a} 
+\mbox{$S(n)$} = \frac{n (n + 1) (2n + 1)}{6}
 \]
-can be written as follows.
-}
+	This definition can be programmed directly using {\tt fun} as follows.
 \begin{program}
-\# fun f(a,b,c) = (\verb|~|b + Math.sqrt(Math.pow(b,2.0) - 4.0 * a * c)) / 2.0 * a;\\
-val root = fn : real * real * real -> real\\
-\# f(1.0, ~8.0, 3.0);\\
-val it = 7.605551275464 : real\\
-\# f(1.0, 2.0, 3.0);\\
-val it = nan : real
+\# fun S(n) = (n * (n + 1) * (2*n + 1)) div 6;\\
+val S = fn : int -> int
 \end{program}
-\txt
-{
-	最後の例{\tt nan}は，浮動小数点演算の結果正常な数が得られなかった時に返される
-非数（not a number）です．
-}
-{
-	{\tt nan} in the last line is a special floating point number
-constant representing  ``not a number''.
-}
+	After this definition, {\tt S} can be used as follows.
+\begin{program}
+\# S 10;\\
+val it = 385 : int\\
+\# S 20;\\
+val it = 2870 : int
+\end{program}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	さらに，この{\tt fun}構文は再帰的な定義を許します．
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+\section{\txt{再帰的な関数}{Recursive functions}}
+\label{sec:tutorialRecursion}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	前節で学んだ{\tt fun}構文は再帰的な定義を許します．
 	すなわち，この構文で定義される関数{\it funName}を，関数定義本体
 {\it expr}の中で使用することができます．
 	このような再帰的な関数定義は，以下のような手順で設計していけば，
@@ -2655,48 +3204,7 @@ constant representing  ``not a number''.
 val fact = fn : int -> int
 \end{quote}
 \end{tt}
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Moreover，this {\tt fun} syntax allows recursive function
-definitions. 
-	The function name {\it funName} being defined in this
-declaration can be used in the defining body {\it expr} of this
-declaration.
 
-	A recursive function can naturally be designed in the following step.
-% 	このような再帰的な関数定義は，以下のような手順で設計していけば，
-% 通常の算術関数と同じように自然に定義できるようになります．
-\begin{enumerate}
-\item 
-	Presume the expected behavior of the function 
-{\it funName} for all the cases, and assume such function exists.
-\item 
-	For each case of the parameter {\tt param}, write the {\it expr}
-using {\tt param} and {\tt funName}.
-\end{enumerate}
-	For example，function {\tt fact} defined in
-Section~\ref{sec:tutorialDeclarative} is defined in the following
-steps.
-\begin{enumerate}
-\item Assume that you have the function {\tt fact} that correctly
-compute the factorial of any number.
-\item Using {\tt fact}, write down the body of each case as follows.
-\begin{enumerate}
-\item if the parameter is {\tt 0}, then since $0!=1$, the {\tt expr} is {\tt 1}.
-\item otherwise, from the definition of the factorial function, 
-the {\tt expr} is {\tt n * fact(n - 1)}.
-\end{enumerate}
-\end{enumerate}
-	This yields the following recursive function definition.
-\begin{tt}
-\begin{quote}
-\# fun fact 0 = 1\\
-\verb|>| \ \ \ \ \ | fact n = n * fact (n - 1);\\
-val fact = fn : int -> int
-\end{quote}
-\end{tt}
-\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	以上の考え方に従い種々の再起関数を簡単に定義できます．
 	たとえば，すべての数の和を求める関数{\tt sum}や引数$n$に対して与
 えられた定数$c$の$n$乗を計算する{\tt power}なども，これら関数がすでにあ
@@ -2711,10 +3219,44 @@ fun power 0 = 1\\
 \end{tt}
 	{\tt sum}や{\tt power}が想定した振る舞いをすると仮定すれば，
 関数が返す値は正しいので，関数全体の定義も正しいことがわかります．
+
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The summation function {\tt sum} and exponentiation  function {\tt
-power}, for example, can be written by presuming that these functions
-were already given.
+	The {\tt fun} syntax allows recursive function definitions. 
+	The function name {\it funName} being defined in this
+declaration can be used in the defining body {\it expr} of this
+declaration.
+
+	A recursive function can naturally be designed in the following step.
+\begin{enumerate}
+\item 
+	Presume the expected behavior of the function {\it funName} for
+all the cases, and assume that such function exists.
+\item 
+	For each case of the parameter {\tt param}, write the {\it expr}
+using {\tt param} and {\tt funName} for that case.
+\end{enumerate}
+	For example，function {\tt fact} shown in
+Section~\ref{sec:tutorialDeclarative} is designed in the following steps.
+\begin{enumerate}
+\item Assume that you have the function {\tt fact} that correctly
+computes the factorial of any non-negative number.
+\item Using {\tt fact}, write down the body of each case as follows.
+\begin{enumerate}
+\item If the parameter is {\tt 0}, then since $0!=1$, the {\tt expr} is {\tt 1},
+\item otherwise, from the definition of the factorial function, the {\tt
+expr} is {\tt n * fact(n - 1)}.
+\end{enumerate}
+\end{enumerate}
+	This yields the following recursive function definition.
+\begin{program}
+\# fun fact 0 = 1\\
+\verb|>| \ \ \ \ \ | fact n = n * fact (n - 1);\\
+val fact = fn : int -> int
+\end{program}
+
+	The summation function {\tt sum} and exponentiation function {\tt
+power}, for example, can similarly be written by presuming that these
+functions were already given.
 \begin{tt}
 \begin{quote}
 fun sum 0 = 0\\
@@ -2724,18 +3266,18 @@ fun power 0 = 1\\
 \end{quote}
 \end{tt}
 	Under the presumed behavior of {\tt sum} and {\tt power}, each
-case correctly computes the expected value, the entire definitions
-are correct.
+case correctly computes the expected value, and therefore the entire
+definitions are correct.
 
 	This is a recursive way of reasoning.
 	Think in this recursive way, and you can naturally write various
-recursive functions. 
+recursive functions.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{\txt{複数の引数を取る関数}{Functions with multiple arguments}}
 \label{sec:tutorialMultiargfun}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	前節の{\tt power}関数はあらじめ定義された定数{\tt C}の指数乗を計算す
 る関数でしたが，では，この指数の底{\tt C}も引数に加え，{\tt n}と{\tt C}
 を受け取って{\tt C}の{\tt n}乗を計算する関数を定義するにはどうしたらよい
@@ -2767,8 +3309,8 @@ val it = 9 : int
 義されていますから，{\tt powerUncurry(2,3)}のように使います．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The function {\tt power} defined in the previous section
-computers a power of $C$ for a given {\tt C}.
-	There are two way of generalizing this function so that it takes 
+computers the power $C^n$ of $C$ for a given {\tt C}.
+	There are two ways of generalizing this function so that it takes 
 both {\tt n} and {\tt C} and return $C^n$.
 	They are shown in the following interactive session.
 \begin{program}
@@ -2788,10 +3330,10 @@ val it = 9 : int
 that it is a function that takes a pair of integers and returns an
 integer.
 	In contrast, the type {\tt int -> int -> int} of {\tt
-powerCurry} says that it is a function that takes an integer and return
+powerCurry} says that it is a function that takes an integer and returns
 a function of type {\tt int -> int}.
 	As seen in these example, in ML, a function is defined in the
-form where it will be used.
+format as it will be used.
 	For example, {\tt powerUncurry} is defined {\tt fun powerUncurry
 (C,n) = ...} so it is used as {\tt powerUncurry(2,3)}.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -2799,7 +3341,7 @@ form where it will be used.
 \section{\txt{関数適用の文法}{Function application syntax}}
 \label{sec:tutorialApplysyntax}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	{\tt powerUncurry}は，複数引数を取るC言語の関数と同様です．
 	ML言語の強みは，これ以外に，{\tt powerCurry}にように
 引数を順番に受け取る関数が書けることです．
@@ -2875,10 +3417,11 @@ $expr - expr$, and
 $expr * expr$
 for integer addition, subtraction and multiplication.
 	Then we can write {\tt 10 - 6 - 2} but this expression
-itself does not determine the order of subtraction and addition, and as
-two different results are possible: {\tt (10 - 6) - 2 = 2} 
+itself does not determine the order of subtractions.
+	As a consequence, two different results are possible:
+{\tt (10 - 6) - 2 = 2} 
 or
-{\tt 10 - (6 - 2) = 4} .
+{\tt 10 - (6 - 2) = 4}.
 	As in elementary school arithmetic, ML interprets this 
 as {\tt (10 - 6) - 2 = 2}.
 	We say that the subtraction {\em associates to the left} or
@@ -2902,7 +3445,7 @@ function application associates to the left and its associatibity is the stronge
 \section{\txt{高階の関数}{Higher-order functions}}
 \label{sec:tutorialHeigher-order-fun}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	{\tt powerCurry 2 3}は{\tt ((powerCurry 2) 3)}と解釈されるという
 ことは，ML言語における以下の重要な性質を意味しています．
 \begin{quote}
@@ -2983,7 +3526,7 @@ function is called a {\bf higher-order function}.
 \label{sec:tutorialHeigher-order-use}
 
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MLでクールな，つまり読みやすくかつ簡潔なプログラミングを効率良く
 書いていく鍵は，高階関数の機能を理解し，高階の関数を使い，式を組み合わせ
 ていくことです．
@@ -3062,18 +3605,18 @@ examples.
 \sum_{k=1}^0 f(k) &=& 0\\
 \sum_{k=1}^{n+1} f(k) &=& f(n) + \sum_{k=1}^{n} f(k)
 \end{eqnarray*}
-	The reason for learning this notation represent a useful
-abstraction, i.e.\ summing up a sequence of expressions with integer
-indexes.
+	The reason for learning this notation is because this notation
+represents a useful abstraction, i.e.\ summing up a sequence of
+expressions with integer indexes.
 % 	高校の教科書などでこの記法を学ぶ理由は，もちろん，この$\Sigma$で
 % 表現される働きに汎用性があり便利だからです．
 	A brief analysis of the notation $\sum_{k=1}^n f(k)$ reveals the
 following.
 \begin{itemize}
 \item The notation contains 3 variables $k,n,f$.
-	Among them, $k$ is a variable only to indicate that
-expressions are index by $k=1,\ldots,n$, and is not a free variable. 
-	This is an expression containing two variables $n,f$.
+	Among them, $k$ is a variable that is only to indicate that
+expressions are index by $k=1,\ldots,n$, and is not a real variable. 
+	The variables of this expression are $n$ and $f$.
 \item Expression $\sum_{k=1}^n f(k)$ denotes the value
 $
 f(1) + f(2) + \cdots + f(n)
@@ -3128,7 +3671,7 @@ way.
 \section{\txt{MLにおける手続き的機能}{Imperative features of ML}}
 \label{sec:tutorialImperative}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	これまで学んできた通り，式の組み合わせでプログラムを構築していく
 ML言語はプログラムを宣言的に書く上で最も適した言語の一つです．
 	これまでに，$\sum$関数などの算術演算を行う関数を例に説明しました
@@ -3221,7 +3764,7 @@ order of update operations.
     {Mutable memory reference types}}
 \label{sec:tutorialRef}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MLには，以下の型と関数が組み込まれています．
 \begin{tt}
 \begin{quote}
@@ -3293,9 +3836,9 @@ maintaining a state using a reference.
 \txt{作用順，左から右への評価戦略}
     {Left-to-right applicative order evaluation}
 }
-\label{sec:tutorialSideeffect}
+\label{sec:tutorialEvalorder}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	手続き的処理を書くためにはプログラムの各部分の実行順序を決める必
 要があります．
 	値を表す式を組み合わせてプログラムを書いていく関数型言語では，書
@@ -3398,9 +3941,9 @@ fun makeNewId () =\\
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	
 \section{\txt{手続き的制御}{Procedural control}}
-\label{sec:tutorialIteration}
+\label{sec:tutorialControl}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	手続き的な処理を学んだところで，手続き的な言語での制御構造の記述
 と式による関数の記述の関係を振り返ってみましょう．
 	状態の変更を伴う手続き的処理は，外部の状態を変更するI/Oなどの機能
@@ -3495,7 +4038,7 @@ programming is inherently inefficient.
 \section{\txt{ループと末尾再帰関数}{Loop and tail recursion}}
 \label{sec:tutorialTailcall}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	くり返し処理（ループ）の設計の基本は，
 \begin{enumerate}
 \item 
@@ -3569,7 +4112,7 @@ variables：$s, i$
 \item 
 update code: $s := s + 1; i := i - 1$
 \end{itemize}
-This design yields the C function {\tt fact} in Section~\ref{sec:tutorialIteration}.
+This design yields the C function {\tt fact} in Section~\ref{sec:tutorialControl}.
 % 	この考え方に従えば，種々の複雑な処理をループとして書き下すことが
 % できます．
 
@@ -3603,7 +4146,7 @@ evaluated efficiently.
 \section{\txt{let式}{let expressions}}
 \label{sec:tutorialLetexpression}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MLプログラミングの基本は，種々の式を定義しそれらに名前を付け組み
 合わせていくことです．
 	これまで見てきた例では，名前はすべてトップレベルに記録されていま
@@ -3688,7 +4231,7 @@ decl &\mbox{\ \ }::=& \mbox{\tt val\ $x$ = $expr$}
 \section{\txt{リストデータ型}{List data type}}
 \label{sec:tutorialList}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MLプログラミングでよく使用される複合データはリストと高階多相関数
 です．
 	リストを用いたプログラムには，MLプログラミングの基本である以下の
@@ -3771,7 +4314,7 @@ the list {\tt L}.
 \section{\txt{式の組み合わせの原則}{Principle in composing expressions}}
 \label{sec:tutorialTypingprinciple}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MLプログラミングの原則は，式を組み合わせていくことでしたが，もち
 ろんどのような組み合わせでも許されるわけではありません．
 	MLでは，プログラムを構成する際，以下の基本原則に従います．
@@ -3840,6 +4383,61 @@ does its converse.
 \section{\txt{多相型を持つ関数}{Polymorphic functions}}
 \label{sec:tutorialPolymorphicfunction}
 
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	「式は型が正しい限り自由に組み合わせることができる」
+という原則を最大限に活かすためには，組み合わせを実現する関数は，種々の型
+に対応している必要があります．
+	前節のリストを構成する関数（演算子）{\tt ::}の型は以下の通りです．
+\begin{tt}
+\begin{quote}
+\# op ::;\\
+val it : ['a. 'a * 'a list -> 'a list]
+\end{quote}
+\end{tt}
+{\tt op}は，中置演算子を関数適用の構文で使うための接頭語です．
+	この式は，{\tt ::}が，任意の型{\tt 'a}と
+それと同じ型{\tt 'a}の要素とするリスト{\tt 'a list}を受け取って，
+{\tt 'a}の要素とするリスト{\tt 'a list}を返す関数を表しています．
+	ここで使われる{\tt 'a}は任意の型を表す型変数です．
+	また{\tt ['a.$\cdots$]}は「すべての型
+{\tt 'a}について，$\cdots$」である，との表明を表します．
+	このように型変数を含み，種々の型のデータに利用できる関数を
+{\bf 多相関数}と呼びます．
+	さらに，これら多相関数を組み合わせて定義された関数も以下のように
+多相型を持ちます．
+\begin{tt}
+\begin{quote}
+\# fun cons  e L  = e :: L;
+\\
+val cons = fn : ['a .'a  ->  'a list  -> 'a list]
+\end{quote}
+\end{tt}
+	MLは，式の組み合わせによるプログラミングを最大限にサポー
+トするために，関数定義に対して，その関数のもっとも一般的な使い方
+を許すような，{\bf 最も一般的な多相型}を推論します．
+	以下の関数定義を考えてみましょう．
+\begin{tt}
+\begin{quote}
+fun twice f x = f (f x);
+\end{quote}
+\end{tt}
+	この関数は，関数と引数を受け取り，関数を引数に２回適用します．
+	このふるまいを考えると，以下の型が最も一般的な利用を許す型である
+とが理解できるでしょう．
+\begin{tt}
+\begin{quote}
+ ['a. ('a -> 'a) -> 'a -> 'a]
+\end{quote}
+\end{tt}
+	実際MLでは以下のように推論されます．
+\begin{tt}
+\begin{quote}
+\# fun twice f x = f (f x);
+\\
+val twice = \_ : ['a. ('a -> 'a) -> 'a -> 'a]
+\end{quote}
+\end{tt}
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	In order to exploit the principle that  ``expressions are freely
 composed as far as they are type consistent'', primitive functions used
 to compose expressions should accept expressions of various types.
@@ -3904,6 +4502,7 @@ as the function return the same type as its argument and that the value
 has the argument type of the function.
 	This freedom and constraint is automatically guaranteed by the
 inferred typing of {\tt twice}.
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \chapter{
 \txt{\smlsharp{}の拡張機能：レコード多相性}
@@ -3911,7 +4510,7 @@ inferred typing of {\tt twice}.
 }
 \label{chap:tutorialRecordpolymorphism}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	本章以下，\smlsharp{}で導入されたStandard MLの拡張機能を例を用い
 て説明します．
 
@@ -3944,12 +4543,12 @@ ML, one cannot write ML-style program in manipulating records.
 	For this reason, we postpone explanation of records until this
 chapter.
 
-	Let now start learning record programming basics.
+	Let's start learning record programming basics.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \section{\txt{レコード構文}{Record expressions}}
 \label{sec:extensionRecordExpression}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MLではレコード式は以下の文法で定義します．
 \begin{tt}
 \begin{eqnarray*}
@@ -4013,7 +4612,7 @@ val it = (1.1, fn, "SML\#") : real * (int -> int) * string\\
 val it = (1,2) : int * int
 \end{program}
 	In Section~\ref{sec:tutorialMultiargfun}, we defined a
-multiple-argument function as {\tt powerUncurry (n,C)}.
+multiple-argument function, namely {\tt powerUncurry (n,C)}.
 	This is a function that takes a tuple.
 
 	Just like lists, record elements can contain values of any
@@ -4021,8 +4620,8 @@ types.
 % 	「式は型が正しい限り自由に組み合わせることができる」というMLの
 % 原則に従い，レコードの要素にはMLで定義できる任意の型を含むことができま
 % す．	
-	A record forming function is therefore inferred a polymorphic
-type, as seen in the following example.
+	A record forming function is therefore polymorphic, as seen in
+the following example.
 \begin{program}
 \# fun f x y = \{X=x, Y=y\};\\
 val f = \_ : ['a,'b. 'a -> 'b -> \{X:'a, Y:'b\}]\\
@@ -4031,10 +4630,10 @@ val g = \_ : ['a,'b. 'a -> 'b -> 'a * 'b]
 \end{program}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-\section{\txt{フィールド取り出し演算}{Filed selection operation}}
+\section{\txt{フィールド取り出し演算}{Field selection operation}}
 \label{sec:extensionFieldselection}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	レコードに対する演算は，レコードのフィールドの取り出しです．
 	このために，組み込み関数
 \begin{tt}\begin{quote}
@@ -4072,14 +4671,14 @@ val f = \_ : ['a\#\{X:'b,Y:\'c\},'b, 'c. 'a -> 'b * 'c]
 	\smlsharp{}が推論する型は，その性質を正確に反映した最も一般的な
 多相型です．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The basic operation on records is to select a filed value by
-specifying a filed label.
+	The basic operation on records is to select a field value by
+specifying a field label.
 	For this, the following primitive function is defined for any
 label $l$.
 \begin{program}
 \#$l$
 \end{program}
-	This function takes a record containing a filed labeled with
+	This function takes a record containing a field labeled with
 $l$, and returns the value of that label.
 	According to the ML principle, this function should be
 applicable to any record containing label $l$.
@@ -4090,7 +4689,7 @@ polymorphic typing.
 val it = \_ : ['a\#\{X:'b\},'b. 'a -> 'b]
 \end{program}
 	The notation {\tt 'a\#\{X:'b\}} is a type variable {\tt
-'a} which represents an arbitrary record type that contains a filed
+'a} which represents an arbitrary record type that contains a field
 labeled {\tt X} of type {\tt 'b}.
 	The inferred type is a most general type of {\tt \#X}.
 	Below show some examples.
@@ -4114,10 +4713,10 @@ of type {\tt 'b * 'c}.
 as far the combination is type consistent.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-\section{\txt{レコードパターン}{レコードパターン}}
+\section{\txt{レコードパターン}{Record patterns}}
 \label{sec:extensionRecordpattern}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	レコードのフィールド取り出しは，パターンマッチングの機能を用いて
 も行うことができます．
 	Standard MLには以下のパターンが含まれています．
@@ -4170,7 +4769,7 @@ field &\mbox{\ \ }::=& \mbox{\tt $l$=$pat$} \ | \ l
 	The first pattern matches a record having the specified set of
 labels, and the second pattern matches any record containing the set of
 specified labels.
-	When only a label is specified in a filed then it
+	When only a label is specified in a field then it
 is interpreted as a variable with the same name is specified.
 	For example, a pattern {\tt \{X, Y\}} is interpreted as 
 {\tt \{X = X, Y = Y\}}.
@@ -4189,13 +4788,13 @@ val f = \_ = ['a\#\{X:'b, Y:'c\}, 'b, 'c. 'a -> 'a * 'b]
 val f = \_ = ['a\#\{X:'b\},b. 'a list -> 'b]\\
 \end{quote}\end{tt}
 	In this example, {\tt f} takes a list of records containing {\tt
-X} filed, and returns the {\tt X} filed of the first record in the list.
+X} field, and returns the {\tt X} field of the first record in the list.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{\txt{フィールドの変更}{Functional record update}}
 \label{sec:extensionFieldupdate}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}言語では，以下の構文によるレコードのフィールドの（関
 数的）変更が定義されています．
 \begin{tt}
@@ -4233,10 +4832,10 @@ expr &\mbox{\ \ }::=& \cdots \\
      &|& \mbox{\tt $expr$ {\#} \{$l_1$=$expr_1$,$\cdots$, $l_n$=$expr_n$\}}
 \end{eqnarray*}
 \end{tt}
-	This expression creates a new record by modifying value of each
-label $l_i$ to $expr_i$.
-	This is an expression; the original record $expr$ is not
-mutated.
+	This expression creates a new record by modifying the value of
+each label $l_i$ to $expr_i$.
+	This is an expression to create a new record; the original
+record $expr$ is not mutated.
 	This expression has a polymorphic type according to the ML's
 principle of most general typing.
 	Below is an example using this expression.
@@ -4252,13 +4851,13 @@ val f = \_ : ['a\#\{Salary:real\}.  'a -> 'a]
 	Function {\tt reStructure} takes an employee record {\tt p} and 
 reduces its {\tt Salary} field by 8.03\%.
 	As seen in its typing, this function can be applied to any
-record as far as it contains a ，{\tt Salary} filed.
+record as far as it contains a ，{\tt Salary} field.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{\txt{レコードプログラミング例}{Record programming examples}}
 \label{sec:extensionRecordProgramming}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	多相レコード演算機能をもった言語（現在のところ\smlsharp{}しか
 ありませんが）では，レコード構造は，種々の属性に着目したモジュール性の高
 いプログラムを型安全に構築していく上で大きな武器となります．
@@ -4413,7 +5012,7 @@ to any object having many other attributes.
 \section{\txt{オブジェクトの表現}{Representing objects}}
 \label{sec:extensionObject}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	レコードは種々のデータ構造の定義の基本であり，データベースや
 オブジェクト指向プログラミングなどで使われています．
 	第\ref{chap:tutorialDatabase}章で詳しく説明する通り，多相レコー
@@ -4595,7 +5194,7 @@ errors statically.
 \section{\txt{多相バリアントの表現}{Polymorphic variants}}
 \label{sec:extensionVariant}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	レコード構造は，各要素に名前を付けたデータ構造です．
 	この構造の双対をなす概念にラベル付きバリアントがあります．
 	多くの方にとって不慣れな概念と思われますが，必要とされる機能はレ
@@ -4706,7 +5305,7 @@ in type safe way.
     {\smlsharp{} feature：other type system extensions}}
 \label{chap:tutorialOthertyping}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}では，レコード多相性に加え，以下の２つの拡張をしてい
 ます．
 \begin{enumerate}
@@ -4724,10 +5323,10 @@ ML type system  with the following.
 	This chapter briefly introduce them.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-\section{\txt{ランク１多相性}{rank 1 polymorphism}}
+\section{\txt{ランク１多相性}{Rank 1 polymorphism}}
 \label{sec:extensionRank1}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	Standard MLの多相型システムが推論できる多相型は，すべての多相型
 変数が最も外側で束縛される型です．
 	例えば関数
@@ -4842,7 +5441,7 @@ of Standard ML type system, rank 1 extension become important extension.
 }
 \label{sec:extensionValuerestriction}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MLの多相型システムは，第\ref{sec:tutorialRef}節で学んだ手続き的
 機能を導入すると，整合性が崩れることが知られています．
 	例えば参照型構成子{\tt ref}は，任意に型の参照を作ることができる
@@ -4993,7 +5592,7 @@ val g = \_ :  ['a. 'b -> int * 'b ref]
 }
 \label{sec:extensionOverloading}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	MLでよく使われる組込み演算は，オーバーロードされています．
 	例えば，加算演算子{\tt +}は，{\tt int, real, word}などを含む型の
 加算に使用できます．
@@ -5094,7 +5693,7 @@ indicates the set of allowable instance types.
 }
 \label{chap:tutorialCFFI}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}は，C言語とのシームレスな直接連携をサポートしています．
 	C言語は事実上のシステム記述言語です．
 	OSが提供するシステムサービスなども，C言語のインターフェイスとし
@@ -5113,7 +5712,7 @@ and other low-level functions implemented in C.
 \section{\txt{C関数の使用の宣言}{Declaring and using C functions}}
 \label{sec:extensionCdecl}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}からC言語で書かれた関数を呼び出すために必要なコードは，
 その関数の宣言のみです．
 	宣言は以下の文法で記述します．
@@ -5186,7 +5785,7 @@ val $id$ = \_import $string$ : $type$
 	$type$ is its type.
 	Next section explain how to write the type of a C function.
 
-	This declaration instructs \smlsharp{} compiler link an
+	This declaration instructs \smlsharp{} compiler to link an
 object file containing the named function and  bind the \smlsharp{}
 variable $id$ to that function.
 	An object file can be any file as far as it is in a standard
@@ -5276,7 +5875,7 @@ composed as far as they are type consistent''.
 %         exportOnly dir andalso List.all (isInteroperableArgTy dir) args
 %       | BuiltinType.EXNTAGty => false
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}から利用可能なC関数は，\smlsharp{}の型システムで表現
 できる型を持つ関数です．
 	{\tt \_import}宣言にこれらC関数の名前と型を記述することによって
@@ -5379,8 +5978,8 @@ $\tau$ * & $\tau$ array & $\tau$ array & if element types are representable
 pointer to a struct & record type & record type & if element types are representable
 \\
 $\tau_0$\ $id$($\tau_1$,$\ldots$,$\tau_n$) & 
-($\tau_1$,$\ldots$,$\tau_n$) -> $\tau_2$ & 
-$\tau_1$ * $\ldots$ * $\tau_n$ -> $\tau_2$ & 
+($\tau_1$,$\ldots$,$\tau_n$) -> $\tau_0$ & 
+$\tau_1$ * $\ldots$ * $\tau_n$ -> $\tau_0$ & 
 if element types are representable
 \\
 void* & unit ptr & \_ & （C pointer type ）
@@ -5411,7 +6010,7 @@ functions taking multiple parameters and structs can also be imported.
 }
 \label{sec:extensionStructFunction}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	複数引数関数や構造体を受け取るC関数を利用する場合，以下の点を理
 解する必要があります．
 \begin{itemize}
@@ -5527,7 +6126,7 @@ in parenthesis like C as follows.
 val C\_pow = \_import "pow" : (real, real) -> real
 \end{program}
 	Since the current version of \smlsharp{} does not provide
-user defined multiple argument functions, \smlsharp{} compiler convert
+user defined multiple argument functions, \smlsharp{} compiler converts
 this function to a function that takes a tuple of values.
 	For the above declaration, \smlsharp{} generates the following binding.
 \begin{program}
@@ -5616,7 +6215,7 @@ The value of the first x:2.0
 \section{\txt{動的リンクライブラリの使用}{Using dynamically linked libraries}}
 \label{sec:tutorialDynamiclinc}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	これまで説明したC関数宣言
 \begin{program}
 val $id$ = \_import $string$ : $type$
@@ -5812,7 +6411,7 @@ val it = 6 : int
 }
 \label{chap:tutorialDatabase}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	データを扱う実用的なプログラムを書くためには，データベースシステ
 ムとの連携が必要です．
 	現在もっとも普及しているデータベースシステムは，問い合わせ言語
@@ -5839,7 +6438,7 @@ polymorphically typed first-class citizens.
 \section{\txt{関係データベースとSQL}{Relational databases and SQL}}
 \label{sec:tutorialRelationalModel}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	現在の本格的なデータベースは，関係データモデルを基礎として実装さ
 れた関係データベースです．
 	\smlsharp{}のデータベース連携を理解し使いこなすための準備として，
@@ -6082,7 +6681,7 @@ This result represent the set (list) of records:
 \section{\txt{\smlsharp{}へのSQL式の導入}{Integrating SQL in \smlsharp{}}}
 \label{sec:tutorialIntoroducingSQL}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	SQLの{\tt SELECT}文は{\tt FROM}節に記述されたテーブルの集合から
 一つのテーブルを作成する式です．
 	SQL言語は，ある特定のデータベースへの接続の下でSQL式を評価する機
@@ -6206,7 +6805,7 @@ databases.
 \section{\txt{問い合わせの実行}{Query execution}}
 \label{sec:tutorialExecutingSQL}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	{\tt \_sql $x$ => $exp$}式で定義された問い合わせ関数にデータベー
 ス接続を適用すれば，データベースをアクセスできます．
 	そのために，以下の構文が用意されています．
@@ -6315,7 +6914,7 @@ close a database connection.
 \section{\txt{データベース問い合わせ実行例}{Query examples}}
 \label{sec:tutorialSQLExample}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	以上の構文を使いデータベースの問い合わせを行なってみましょう．
 	\smlsharp{}の通常のインストールでは，データベースサーバは
 PostgreSQLと接続するように設定されています．
@@ -6444,7 +7043,7 @@ val it = \{\{age=32, name="Sue"\}, \{age=41, name="Bob"\}\} : \{age:int, name: s
 \section{\txt{その他のSQL文}{Other SQL statements}}
 \label{sec:tutorialOtherSQLElement}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	SQL言語は，データベースからデータを取り出す{\tt select}文以外に，
 様々な機能が提供されています．
 	\smlsharp{}の\version{}版では，以下の機能をサポートしています．
@@ -6585,7 +7184,7 @@ delete &::=&
 }
 \label{chap:tutorialSeparatecompilation}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	実用言語としての\smlsharp{}の大きな特徴は，完全な分割コンパイル
 のサポートです．
 	以下の手順で大規模なプログラムを開発していくことができます．
@@ -6619,7 +7218,7 @@ a large software efficiently and reliably.
 \section{\txt{分割コンパイルの概要}{Separate compilation overview}}
 \label{sec:tutorialSeparateCompilation}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	分割コンパイルシステムは以下の手順で使用します．
 \begin{enumerate}
 \item システムを構成するソースをコンパイル単位に分割する．
@@ -6734,7 +7333,7 @@ this scenario.
 \section{\txt{分割コンパイル例}{Separate compilation example}}
 \label{sec:tutorialSeparateCompilationExample}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	前節のシナリオに従い，乱数を使うおみくじプログラムを例に，分割コ
 ンパイルをして実行形式ファイルを作ってみましょう．
 	システムを
@@ -6776,7 +7375,7 @@ end
 	このファイルは，{\tt random.smi}を実装するソースファイルが存在し
 なくても，コンパイルしエラーがないか確認することができます．
 \begin{program}
-\# smlsharp -c main.sml
+\$ smlsharp -c main.sml
 \end{program}
 	{\tt -c}は\smlsharp{}コンパイラにコンパイルしオブジェクトファイ
 ルを生成を指示します．
@@ -6793,25 +7392,59 @@ end
 	ここでは，これはスクラッチから開発するのではなく，既存のCでの実
 装を使うことにします．
 	種々ある乱数発生アルゴリズムの中で，その品質と速度の両方の点から
-{\tt Mersenne Twistter}が信頼できます．
-	このプログラムはCの関数として提供されています．
+{\tt Mersenne Twister}が信頼できます．
+	このアルゴリズムはCのソースファイル{\tt mt19937ar.c}として提供されています．
+
+	そこでこのファイルをダウンロードしましょう．
+	インターネットで{\tt Mersenne Twister}あるいは{\tt
+mt19937ar.c}をサーチすれば簡単に見つけることができます．
+	このファイルには以下の関数が定義されています．
+\begin{program}
+void init\_genrand(unsigned long s)\\
+void init\_by\_array(unsigned long init\_key[], int key\_length)\\
+unsigned long genrand\_int32(void)\\
+long genrand\_int31(void)\\
+double genrand\_real1(void)\\
+double genrand\_real2(void)\\
+double genrand\_real3(void)\\
+double genrand\_res53(void)\\
+int main(void)
+\end{program}
+	この中の{\tt main}は，このアルゴリズムをテストするためのメイン関
+数です．
+	我々は新たな実行形式プログラムを作成するので，{\tt main}関数は，
+我々のトップレベルファイル{\tt main.sml}をコンパイルしたオブジェクトファ
+イルに含まれているはずです．
+	そこで，{\tt mt19937ar.c}ファイルの関数{\tt int main(void)}の定
+義をコメントアウトする必要があります．
+	その他の関数は，\smlsharp{}から利用できるライブラリ関数です．
+	ここでは以下の２つを使うことにします．
+\begin{itemize}
+\item {\tt void init\_genrand(unsigned long s)}．
+シーズの長さを受け取りアルゴリズムを初期化する関数です．
+シーズ{\tt s}は非負な整数ならなんでも構いません．
+\item {\tt long genrand\_int31(void)}．初期化された後は，呼ばれる毎に31ビッ
+トの符号なし整数（32ビット非負整数）のランダムな列を返します．
+\end{itemize}
+
 	そこで，これを利用して，{\tt random.sml}を以下のように定義します．
 \begin{program}
 structure Random =\\
 struct\\
-\myem  val init = \_import "init\_by\_array" : (int, int) -> unit\\
+\myem  val init = \_import "init\_genrand" : int -> unit\\
 \myem  val genrand = \_import "genrand\_int31" : unit -> int\\
 end
 \end{program}
 	このソースファイルも，以下のコマンドにより，このファイルだけで単
 独にコンパイルできます．
 \begin{program}
-\# smlsharp -c random.sml
+\$ smlsharp -c random.sml
 \end{program}
-	このソースファイルの定義と並行して，{\tt Mersenne Twistter}を
-コンパイルし，オブジェクトファイルを生成しておきます．
+	このソースファイルの定義と並行して，（{\tt main}関数をコメントア
+ウトした）{\tt Mersenne Twister}をコンパイルし，オブジェクトファイルを生
+成しておきます．
 \begin{program}
-\# gcc -c -o mt.o mt19937ar.c
+\$ gcc -c -o mt.o mt19937ar.c
 \end{program}
 	以上ですべてのソースファイルがそれぞれコンパイルされ，オブジェク
 トファイルが作られたはずです．
@@ -6819,7 +7452,7 @@ end
 イルと必要なオブジェクトファイルを指定することによって，実行形式ファイル
 が作成されます．
 \begin{program}
-\# smlsharp main.smi mt.o
+\$ smlsharp main.smi mt.o
 \end{program}
 	\smlsharp{}コンパイラは，{\tt smi}ファイルを解析し，このファイル
 から参照されている{\tt smi}ファイルを再帰的にたどり，対応するオブジェク
@@ -6847,7 +7480,8 @@ fun main() =\\
 \myem\myem\myem\myem        val message = \\
 \myem\myem\myem\myem\myem            "あなたの運勢は，" \verb|^|\\
 \myem\myem\myem\myem\myem            (case oracle mod 4 of 0 => "大吉" | 1 => "小吉"| 2 => "吉" | 3 => "凶")\\
-\myem\myem\myem\myem\myem            \verb|^| "です．\verb|^|"\\
+\myem\myem\myem\myem\myem            \verb|^| "です．\verb|\n|"\\
+\myem\myem\myem\myem        val message = print message\\
 \myem\myem\myem      in\\
 \myem\myem\myem\myem        main ()\\
 \myem\myem\myem      end\\
@@ -6868,7 +7502,7 @@ develop an Omikuji (Japanese written oracle drawing) program as an example.
 random number generator.
 	The system is divided into
 \begin{itemize}
-\item {\tt random}: a random number generator,
+\item {\tt random}: a random number generator, and
 \item {\tt main}: the main part.
 \end{itemize}
 	The fist step is to design interface files as follows.
@@ -6879,7 +7513,7 @@ structure Random =
 \\
 struct
 \\\myem
-  val intit : int * int -> unit
+  val intit : int -> unit
 \\\myem
   val genrand : unit -> int
 \\
@@ -6902,9 +7536,9 @@ are developed independently.
 	This file can be compiled without any source file that implements
 {\tt random.smi}, and checks syntax and type errors by typing:
 \begin{program}
-\# smlsharp -c main.sml
+\$ smlsharp -c main.sml
 \end{program}
-	The {\tt -c} switch instruct \smlsharp{} compiler
+	The {\tt -c} switch instructs \smlsharp{} compiler
 to compile the specified source file to an object file.
 	The compiler checks its syntax and types and if no error is
 detected then it produces {\tt main.o} file.
@@ -6914,36 +7548,70 @@ directive {\tt \_interface $filePath$} at the beginning of the source
 file.
 
 	Next，we develop {\tt random.sml}.
-	Development of a high quality random number generator require
+	Development of a high quality random number generator requires
 expert knowledge in algebraic number theory and careful coding.
 	Here, instead of developing one from scratch, we try to find
 some existing quality code.
 	Among a large number of implementations, perhaps {\tt Mersenne
-Twistter} is the best in its quality and efficiency.
-	So we decide to use this function, which is available as a C
-source file.
+Twister} is the best in its quality and efficiency.
+	So we decide to use this algorithm, which is available as a C
+source file {\tt mt19937ar.c}.
+	
+	Let us obtain the C source from the Internet by searching for
+{\tt Mersenne Twister} or {\tt mt19937ar.c}.
+	The file contains the following function definitions.
+\begin{program}
+void init\_genrand(unsigned long s)\\
+void init\_by\_array(unsigned long init\_key[], int key\_length)\\
+unsigned long genrand\_int32(void)\\
+long genrand\_int31(void)\\
+double genrand\_real1(void)\\
+double genrand\_real2(void)\\
+double genrand\_real3(void)\\
+double genrand\_res53(void)\\
+int main(void)
+\end{program}
+	Among thme, {\tt main} is a main function that test the
+algorithm.
+	Since we are defining our executable, the main function should
+be in the compiled object file of our top level source file {\tt main.sml}.
+	So we comment out {\tt int main(void)} function in the
+file. {\tt mt19937ar.c}.
+	All the others functions can be used from our program.
+	Here we decide to use the following two.
+\begin{itemize}
+\item {\tt void init\_genrand(unsigned long s)} for initializing the
+algorithm with the seed length {\tt s}, which can be any non-negative
+integer.
+\item {\tt long genrand\_int31(void)} for generating 31 bit unsigned
+(i.e.\ 32 bit non-negative) random number sequence.
+\end{itemize}
+	The {\tt random.sml} can then be defined as the following code
+that simply call these functions.
 \begin{program}
 structure Random =\\
 struct\\
-\myem  val init = \_import "init\_by\_array" : (int, int) -> unit\\
+\myem  val init = \_import "init\_genrand" : int -> unit\\
 \myem  val genrand = \_import "genrand\_int31" : unit -> int\\
 end
 \end{program}
+
 	This source file can be compiled independently of other files
 by the following command.
 \begin{program}
-\# smlsharp -c random.sml
+\$ smlsharp -c random.sml
 \end{program}
-	In doing this, we compile {\tt Mersenne Twistter}.
+	In doing this, we compile {\tt Mersenne Twister} (aftre
+commenting out its {\tt main} function).
 \begin{program}
-\# gcc -c -o mt.o mt19937ar.c
+\$ gcc -c -o mt.o mt19937ar.c
 \end{program}
 	We now have all the object files for the program.
 	We can link them to an executable file by specifying the
 top-level interface file and the external object files referenced
 through {\tt \_import} declarations.
 \begin{program}
-\# smlsharp main.smi mt.o
+\$ smlsharp main.smi mt.o
 \end{program}
 	\smlsharp{} analyzes {\tt smi} file，traverse all the interface
 files referenced from this file, make a list of object files
@@ -6972,7 +7640,8 @@ fun main() =\\
 \myem\myem\myem\myem        val message = \\
 \myem\myem\myem\myem\myem            " あなたの運勢は，" \verb|^|\\
 \myem\myem\myem\myem\myem            (case oracle mod 4 of 0 => "大吉" | 1 => "小吉"| 2 => "吉" | 3 => "凶")\\
-\myem\myem\myem\myem\myem            \verb|^| "です．\verb|^|"\\
+\myem\myem\myem\myem\myem            \verb|^| "です．\verb|\n|"\\
+\myem\myem\myem\myem        val message = print message\\
 \myem\myem\myem      in\\
 \myem\myem\myem\myem        main ()\\
 \myem\myem\myem      end\\
@@ -6990,7 +7659,7 @@ val \_ = main();
 \section{\txt{インターフェイスファイルの構造}{Structure of interface files}}
 \label{sec:tutorialInterfaceFile}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	インターフェイスファイルは，分割コンパイルするコンパイル単位のイ
 ンターフェイスを記述したファイルです．
 	インターフェイスファイルの内容は，
@@ -7189,7 +7858,7 @@ declarations.
 \section{\txt{型の隠蔽}{Opaque types}}
 \label{sec:tutorialOpaqueTypeInterface}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	前節の例から理解されるとおり，インターフェイスファイルの基本的考え
 方は，以下のとおりです．
 \begin{enumerate}
@@ -7294,7 +7963,7 @@ visible to the code that use it through {\tt \_require} declaration.
 \section{\txt{シグネチャの扱い}{Treatment of signatures}}
 \label{sec:tutorialSignatureInInterface}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	Standard ML言語では，第\ref{sec:tutorialInterfaceFile}節で説明した資源以
 外に，シグネチャも名前の付いた資源です．
 	例えば，{\tt Queue}ストラクチャに対しては，{\tt QUEUE}シグネチャ
@@ -7397,7 +8066,7 @@ structures.
 \item A signature itself does not define any type.
 \end{itemize}
 	To deal with this situation properly, \smlsharp{} compiler 
-treat {\tt \_require $sigFilePath$} declaration as follows.
+treats {\tt \_require $sigFilePath$} declaration as follows.
 \begin{itemize}
 \item 
 	Evaluate the signature in the file $sigFilePath$
@@ -7465,7 +8134,7 @@ end
 \section{\txt{ファンクタのサポート}{Functor support}}
 \label{sec:tutorialFunctorInInterface}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}の分割コンパイルシステムは，ファンクタもオブジェク
 トファイルに分割コンパイルし，他のコンパイル単位から{\tt \_require}宣言
 を通じて利用することができます．
@@ -7633,10 +8302,10 @@ end
 \end{program}
 \end{minipage}
 \end{quote}	
-	This is exactly the mechanism of separate compilation achieves.
+	This is exactly what separate compilation achieves.
 	A system such as \smlsharp{} where a complete separate
-compilation is supported, this form of functor usage is unnecessary and
-undesirable.
+compilation is supported, this form of functor usage is unnecessary 
+and undesirable.
 
 \item {\bf Usage of functor incurs some overhead.}
 	Functors can take types as parameters and therefore strictly
@@ -7656,7 +8325,7 @@ parameterization is really required.
 \section{\txt{リプリケーション宣言}{Replications}}
 \label{sec:tutorialReplicationInInterface}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	インタフェイスファイルは，資源の実体の表現です．
 	従って，例えば
 \begin{program}
@@ -7754,7 +8423,7 @@ end
 \section{\txt{インタフェイス言語の文法}{Syntax of the interface language}}
 \label{sec:tutorialInterfaceSyntax}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	インタフェイス言語の文法の概要を以下に示します．
 	\nonterm{conbind}などの定義が無い非終端記号は，The Definition of
 Standard MLの同名のものと同一です．
@@ -7823,32 +8492,20 @@ defined here are the same as those in the Definition of Standard ML.
 \part{\txt{参照マニュアル}{Reference manual}}
 \label{part:referenceManual}
 
-\ifx\jp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	以下の内容の参照マニュアルを準備中です．
 	完成までは，チュートリアルを参考にお使いください．
 	細かな疑問点などは，開発チームにメールでお尋ねください．
-\begin{enumerate}
-\item 
-Standard ML言語
-\item 
-\smlsharp{}による言語拡張
-\item 
-分割コンパイルシステム
-\item 
-smlsharpコマンド
-\item 
-プログラミングツール
-\item 
-\smlsharp{}コンパイルとインストール
-\end{enumerate}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Reference manual is in preparation.
 	For the time being, consult the tutorials, or ask the \smlsharp{}
 development team for some the details.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	
+\part{\txt{\smlsharp{}のプログラミングツール}{Programming tools for \smlsharp{}}}
+\label{part:tools}
 
-\part{\txt{参考文献，その他}{References and other materials}}
+\part{\txt{参考文献，その他}{Bibliography and other documents}}
 \label{part:bib}
 
 % \bibliographystyle{plain}
