@@ -1,0 +1,650 @@
+\chapter{\txt
+{メインモジュール：\code{main}}
+{The main module : \code{main}}
+}
+\label{chap:SimpleMain}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\begin{enumerate}
+\item ソースロケーション
+\code{src/compiler/main}以下のファイルおよび
+\code{src/config/main/Config.sml}．
+
+\item 機能概要
+	\smlsharp{}コンパイラコマンドとしてのメインモジュール
+\item 処理概要
+\begin{enumerate}
+\item \smlsharp{}コマンドパラメタを解釈し，smlsharp{}の実行モードを決定する．
+\item \smlsharp{}コンパイラのトップモジュールやシステムリンカを呼び出し，
+コンパイルやリンクを行う．
+\end{enumerate}
+\item 他モジュールとのインターフェイス
+\begin{enumerate}
+\item \smlsharp{}コマンドの初期化処理\module{src/runtime/main/}{main.c}から呼び出される．
+\item \smlsharp{}コンパイラのトップレベル
+\module{src/compiler/toplevel2/main/}{Top.sml}を呼び出す．
+\end{enumerate}
+\end{enumerate}
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{enumerate}
+\item Functionality.
+	The main module of the \smlsharp{} compiler command.
+\item Task Overview.
+\begin{enumerate}
+\item Interprete the \smlsharp{} command paraemters, and  determine the
+excecution mode of the \smlsharp{} compiler.
+\item Call the \smlsharp{} compiler toplevel and the system linkers
+to compile and link source files.
+\end{enumerate}
+\item Interface with Other Modules
+\begin{enumerate}
+\item Called from the \smlsharp{} command initialization \module{src/runtime/main/}{main.c}.
+\item Call the \smlsharp{} compiler top-level
+\module{src/compiler/toplevel2/main/}{Top.sml}.
+\end{enumerate}
+\end{enumerate}
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\section{\txt{\smlsharp{}コンパイラによる実行形式プログラムの生成}{Creating an
+executable command by \smlsharp{} compiler}}
+\label{sec:SimpleMain.reateExec}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%% 日本語
+	\smlsharp{}コンパイラは，\smlsharp{}言語のソースコードとして書か
+れている．
+	\smlsharp{}コンパイラコマンド\code{smlsharp}も，ほぼ通常の
+\smlsharp{}言語のソースコードと同様にコンパイル・リンクされ，実行ファイ
+ルとして生成される．
+	本節では，\smlsharp{}コンパイラが通常のソースファイルをコンパイ
+ルし，OSから起動できる実行形式コマンドを生成する機構を記述する．
+	次節で，\smlsharp{}コンパイラソースコード特有の処理を記述する．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% English 
+	The \smlsharp{} compiler is written in the \smlsharp{} language.
+	The \smlsharp{} compiler compiles the \smlsharp{} compiler
+source codes, links them together and generates an executable file
+mostly following its routine process of compiling an ordinary source
+code.
+	This section describes this process.
+	In the next section, we show the issues and treatments specific
+to the \smlsharp{} source codes.
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	分割コンパイルモードを仮定する．
+	対話型モードは分割コンパイルモードの上に作られた処理であり，第
+\ref{chap:interactivemode}章で記述する．
+
+	\smlsharp{}コンパイラは，複数のファイルに分割されたソースファイ
+ルをコンパイルしオブジェクトファイルを生成し，それらオブジェクトファイル
+をシステムリンカを呼び出しリンクし，実行形式ファイルを生成する．
+	分割コンパイルの単位である各ソースコードのトップレベルのコンポー
+ネントは\smlsharp{}言語の宣言の列である．
+	\smlsharp{}言語の宣言は，変数を束縛すると同時に，副作用を伴う実
+行文でもある．
+	\smlsharp{}コンパイラが，分割コンパイルとリンクを通じて，この実
+行文としての効果を実現する方法は，第\ref{chap:GenerateMain}章で記述する．
+	OSから見た\smlsharp{}のソースコード全体は，一つの実行文とみなせ
+る．
+	本節では，このトップレベルの実行文をOSから呼び出す機構を記述する．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	This section assumes the separate compilation mode.
+	In the \smlsharp{} compiler, the interactive mode is realized
+on top of the separate compilation mode, whose details are described in
+Chapter \ref{chap:interactivemode}.
+
+	The \smlsharp{} compiler compiles source codes decomposed in a
+set of separetely compilable files into a set of object files, and
+invokes a system linker to link them together into an executable file.
+	The top-level components in each source code file are 
+declarations.
+	In the \smlsharp{} language, each declaration is not only a
+variable binding statement but also a side-effecting command 
+statement in the sense of an ordinary imperative langauge.
+	The mechanism that \smlsharp{} compiler realizes this double
+roles of variable bindings and side-effecting commands through separate
+compilation and linking is described in details in Chapter
+\ref{chap:generatemain}.
+	From the OS perspectie, it is sufficient and faithful to regard
+the entire \smlsharp{} source cores as a single side-effecting command
+stamenent.
+	This section describe the mechanism to call this command
+stamente from the operating system.
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	この機構は，\smlsharp{}コンパイラの以下のコンポーネントによって
+実現される．
+	この機構は，ソースコード中に分散して存在するので，その詳細を記述
+する．
+\begin{enumerate}
+\item \smlsharp{}ソースプログラムのトップレベルコマンドへの外部名の付加．
+
+	外部名は，\code{\_SMLmain}の文字列としてコンパイラの中にハードコー
+ドされている．
+	この名前は以下の手順で生成される．
+\begin{enumerate}
+\item \module{src/compiler/toplevel2/main/Top.sml}{Top}の中の
+\code{generateMain}関数が呼び出すコード生成関数\code{doLLVMGen}関数への
+引数として\code{main}がハードコードされている．
+\item \module{src/compiler/llvmgen/main/LLVMgen.sml}{LLVMgen}の中のロー
+カル関数\code{toplevelSymbolToSymbol}によって\code{\_SML}のプレフィック
+スが付加される．
+\end{enumerate}
+
+\item トップレベル呼び出し関数\module{src/runtime/main.c}{main}のリンク．
+
+	このソースファイルには外部名\code{\_SMLmain}が宣言としてハードコー
+ドされており，\code{main}関数は，\smlsharp{}の実行時処理系の初期化処理の
+後この外部名を呼び出す．
+	この\code{main}関数が，Ｃ言語のメイン関数であり，OSから呼び出さ
+れる関数である．
+
+	このソースコードは，コンパイルされ，そのオブジェクトファイルが，
+\code{smlsharp\_entry.o}の名前で，\smlsharp{}のインストールライブラリに
+登録されている．
+	\smlsharp{}コンパイラは，ソースコードをコンパイルしたオブジェク
+トファイルに加えて，\code{smlsharp\_entry.o}をリンクする．
+	このリンクコードは，
+\module{src/compiler/main/main/SimpleMain.sml}{SipleMain}ストラクチャの
+中の\code{Link}式の処理の中で文字列定数としてハードコードされている．
+\end{enumerate}
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	This mechanism is realized trough the following \smlsharp{}
+components.
+	They are distributed in the compiler source code.
+	So we describe its details here.
+\begin{enumerate}
+\item Giving the external name to the top-level command of an
+\smlsharp{} source program.
+
+	The external name is the constant literal \code{\_SMLmain},
+hard-coded in the compiler source.
+	This name is generated in the following steps.
+\begin{enumerate}
+\item The \code{generateMain} function in the 
+\module{src/compiler/toplevel2/main/Top.sml}{Top}
+structure gives the string lietral \code{"main"} as
+the main componet name to the LLVM code generator 
+\code{doLLVMGen}.
+\item 
+	In a local function \code{toplevelSymbolToSymbol} defined
+in the \module{src/compiler/llvmgen/main/LLVMgen.sml}{LLVMgen} structure
+prefix the constant literat \code{\_SML} to the given name parameter.
+\end{enumerate}
+
+\item Linking the top-lebel calling function \module{src/runtime/main.c}{main}.
+
+	This source file declaras the external name \code{\_SMLmain}.
+	The C function \code{main}, which is the main function called
+from the OS, calls this external function after initializing 
+the \smlsharp{} runtime system.
+
+	This source code is compiled to an object file, 
+and installed in the \smlsharp{} object library as the constant name
+\code{smlsharp\_entry.o}.
+	The \smlsharp{} compiler links this object file after compiling
+all the source files.
+	This link code is hardcoded in the
+\module{src/compiler/main/main/SimpleMain.sml}{SipleMain}
+structure as a constant lieteral \code{"smlsharp\_entry.o"}
+\end{enumerate}
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\section{\txt{\smlsharp{}コンパイラコマンドの起動}{Invoking \smlsharp{} compiler command}}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	\smlsharp{}コンパイラの主なコンポーネントは，\code{src/compiler}
+以下の\smlsharp{}で書かれてたコンパイル本体と，
+\code{src/runtime}以下のＣで書かれた実行時処理系である．
+	
+	\smlsharp{}のコンパイラコマンドのトップレベルは，
+\code{src/compiler/smlsharp.sml}ファイルである．
+	この中身は以下の４行である．
+\begin{quote}
+\code{val commandLineName = CommandLine.name ()}
+\\
+\code{val commandArgs = CommandLine.arguments ()}
+\\
+\code{val status = Main.main (commandLineName, commandArgs)}
+\\
+\code{val () = OS.Process.exit status}
+\end{quote}
+	このように\smlsharp{}のプログラムは宣言の列であり，トップレベル
+のプログラムによる外部との相互作用は，宣言が実行する副作用である．
+	\code{src/compiler/smlsharp.sml}のインターフェイスファイル
+\code{src/compiler/smlsharp.smi}には
+\begin{program}
+\_require "../prelude.smi"
+\\
+\_require "main/main/SimpleMain.smi"
+\end{program}
+と宣言されている．
+	\code{Main.main}は，\code{src/main/main/SimpleMain.sml}が定義す
+るコンパイラのメイン関数である．
+
+	\smlsharp{}のコンパイラコマンドは，以上のコードを\smlsharp{}言語
+のソースコートとしてコンパイルし，前節の\smlsharp{}コンパイラのコマンド
+生成機能によって\code{\_SMLmain}の外部名が与えられ，
+\code{src/runtime/main.c}ファイルのコンパイル結果であるオブジェクトファ
+イル\code{smlsharp\_entry.o}とリンクすることによって生成される．
+
+	ただし，\smlsharp{}コマンドの生成はインストール前であるため，
+オブジェクトファイル\code{smlsharp\_entry.o}自体をこの名前で直接作成し，
+リンクしている．
+	この処理は，\code{Makefile}にハードコードされている．
+	この処理の中で，\smlsharp{}コンパイラに，\code{-nostdpath}スイッ
+チが与えられ，\code{smlsharp\_entry.o}をライブラリからではなく通常のオブ
+ジェクトファイルとしてリンクしている．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% English 
+	The major componets of the \smlsharp{} compiler are 
+\smlsharp{} files for the compilation function in \code{src/compiler}
+directory, and C files for the runtime environment in \code{src/runtime}
+directory.
+	The top-level of the \smlsharp{} compilation function is the
+\code{src/compiler/smlsharp.sml} file.
+	This consists of the following 4 lines.
+\begin{quote}
+\code{val commandLineName = CommandLine.name ()}
+\\
+\code{val commandArgs = CommandLine.arguments ()}
+\\
+\code{val status = Main.main (commandLineName, commandArgs)}
+\\
+\code{val () = OS.Process.exit status}
+\end{quote}
+	Like this example, \smlsharp{} programs are list of
+decralations, whose extenral interactions are realized through 
+their side effects.
+	\code{src/compiler/smlsharp.sml} has the interface file
+\code{src/compiler/smlsharp.smi} containing the following:
+\begin{program}
+\_require "../prelude.smi"
+\\
+\_require "main/main/SimpleMain.smi"
+\end{program}
+	The \code{Main.main} function is defined in
+\code{src/main/main/SimpleMain.sml}.
+
+	The \smlsharp{} command is generated through the 
+exectuable command generation function described in the previous section
+by compiling the above top-level source codes, generates a top-level
+command function having the name \code{\_SMLmain}, and link it with all
+the object files and the objet file \code{smlsharp\_entry.o} generated 
+from the main function \code{src/runtime/main.c}.
+
+	In this case, however, the \smlsharp{} assumes that the object
+library containing \code{smlsharp\_entry.o} has not yet installed, 
+and directly generates \code{smlsharp\_entry.o} file from 
+\code{src/runtime/main.c}.
+	This procedure is hard-coded in \code{Makefile}.
+	In this code, the compile is given the switch \code{-nostdpath},
+indicating that all the necessary object files including 
+\code{smlsharp\_entry.o} are explicitly given.
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\section{\txt{\code{main}モジュールの詳細}{The details of \code{main} module}}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	コンパイラのメイン関数ディレクトリ\code{src/compiler/main/main/}
+に含まれる主なファイルの機能を記述する．
+
+\subsection{\code{ExecutablePath}}
+\begin{enumerate}
+\item 機能概要 コンパイラのOSが\code{MinGW}システムの場合，実行中のコマ
+ンドのパス名を返す．
+	\code{MinGW}以外なら空列を返す．
+\item 処理概要 Ｃプリミティブで実装
+\item インターフェイス \code{SimpleMain}でデフォールトディレクトリの決定に使用される．
+\end{enumerate}
+	
+\subsection{\code{FilenameMap}}
+\begin{enumerate}
+\item 機能概要 \code{.smi}ファイルと\code{.o}ファイルとの対応関係を維持する．
+\item 処理概要 
+\begin{itemize}
+\item \smlsharp{}コンパイラの\code{-filemap}パラメタで指定された
+\code{.smi}ファイルと\code{.o}ファイルとの対応記述ファイルを読み，
+対応辞書を作成．
+\item 辞書を検索し，\code{.smi}ファイルに対応する\code{.o}ファイルを返す．
+\end{itemize}
+\item インターフェイス \code{SimpleMain}モジュールで使用．
+\end{enumerate}
+
+\subsection{\code{GetOpt}}
+\begin{enumerate}
+\item 機能概要 \smlsharp{}コマンドの起動パラメタを解釈
+\item 処理概要 
+\begin{itemize}
+\item コマンドオプション表現のデータ型\code{'a 'a optionDesc}の提供
+\item コマンドオプション表現記述とコマンド引数要素リストを受け取り，各引
+数文字列解釈し，\code{'a arg}データを返す．
+\end{itemize}
+\item インターフェイス 
+\begin{enumerate}
+\item 以下の多相型が提供される．
+\begin{quote}
+\begin{tt}
+  datatype 'a arg =\\
+\myem\ \ OPTION of 'a\\
+\myem    | ARG of string\\
+  datatype 'a argDesc =\\
+\myem\ \     NOARG of 'a\\
+\myem    | REQUIRED of string -> 'a\\
+\myem    | OPTIONAL of string option -> 'a\\
+  datatype 'a optionDesc =\\
+\myem\ \       SHORT of char * 'a argDesc\\
+\myem    | SLONG of string * 'a argDesc\\
+\myem    | DLONG of string * 'a argDesc
+\end{tt}
+\end{quote}
+	ただし，これら多相型の型引数\code{'a}には\code{SimpleMain}の
+\code{commandLineArgs}が代入される．
+	多相型として定義は，\code{commandLineArgs}の\code{SourceFile}と，
+本モジュールでのオプション解析結果を一つの型として扱うためである．
+\item \code{SimpleMain}による\code{commandLineArgs optionDesc}データの作成，
+
+	\code{SimpleMain}モジュールでは，可能なオプションの形を
+\code{commandLineArgs optionDesc}型データとして定義し，このリストを
+引数として\code{GetOpt.getopt}を呼び出す．
+\end{enumerate}
+\end{enumerate}
+
+\subsection{\code{RunLoop}}
+\begin{enumerate}
+\item 機能概要 対話型ループを実現
+\item 処理概要 起動オプションと環境を受け取り，対話型入力ストリームをセッ
+トアップした後，以下の処理を繰り返す．
+\begin{enumerate}
+\item コンパイラトップレベルを入力ストリームに対して呼び出し，コンパイル
+単位をコンパイル．
+\item システムリンカーにより，コンパイルされたオブジェクトファイルリンク
+しを動的リンクライブラリに登録
+\item 動的リンクライブラリをオープンし，コンパイルしたトップレベル関数
+をロード
+\item ロードされた関数を，コンパイラの自己反映機能を使って呼び出す．
+\end{enumerate}
+\item インターフェイス \code{SimpleMain}でから呼び出され，対話型プログラ
+ミングループを実現．
+\end{enumerate}
+
+\subsection{\module{src/config/main/Config.sml}{SMLSharp\_Config}}
+\begin{enumerate}
+\item 機能概要 \code{configure}パラメータをセットする．
+\item 処理概要 \smlsharp{}コンパイラがインストールされたシステムベースディ
+レクトリを引数として受け取り，\code{configure}スクリプトで設定された
+\code{src/config.mk}ファイルの値を，対応する変数に設定する．
+\item インターフェイス \code{SimpleMain}でから呼び出され，システム依存の
+モジュール以下のモジュールで使用される．
+\begin{itemize}
+\item \code{src/compiler/main/main/RunLoop.sml}
+\item \code{src/compiler/main/main/SimpleMain.sml}
+\item \code{src/compiler/llvmgen/main/LLVMGen.sml}
+\item \code{src/compiler/llvmgen/main/LLVMGen.sml}
+\item \code{src/compiler/toolchain/main/CoreUtils.sml}
+\item \code{src/compiler/toolchain/main/BinUtils.sml}
+\item \code{src/sql/main/MySQL.sml}
+\item \code{src/sql/main/PGSQL.sml}
+\end{itemize}
+\end{enumerate}
+
+\subsection{\code{SimpleMain}}
+\begin{enumerate}
+\item 機能概要 \smlsharp{}で書かれたコンパイル処理のメイン関数
+\item 処理概要 
+\begin{enumerate}
+\item \smlsharp{}の可能なコマンドオプションを定義する．
+
+	\code{commandLineArgs GetOpt.optionDesc}型のリストリテラル
+\code{optionDesc}である．
+	このリストの各要素は
+\begin{program}
+\code{SHORT (\#"o", REQUIRED OutputFile)}
+\end{program}
+や
+\begin{program}
+\code{SLONG ("Wl", REQUIRED (fn x => LinkerFlags (splitComma x)))}
+\end{program}
+のように\code{OutputFile}などの\code{commandLineArgs}型の要素や
+\code{fn x => LinkerFlags (splitComma x)}などの\code{commandLineArgs}型
+を生成する関数を含む．
+	\smlsharp{}の起動オプションを追加するには，
+\code{commandLineArgs}型を拡張し追加するオプションの動作を表すエントリを
+加えるとともに，オプションの定義リストにオプションの形に応じた要素を追加する．
+
+処理の本体は，このデータを用いて行う\code{main}関数の以下の３行である．
+\begin{program}
+\code{val args = parseArgs args}\\
+\code{val mainExp = compileArgs (progname, args)}\\
+\code{val result = evalMain emptyEnv mainExp}
+\end{program}
+その概要は以下の通り．
+
+\item \code{parseArgs args}：\code{getOpt}を用いてコマンドオプションを解
+析し，結果を\code{commandLineArgs}型のリストに変換する．
+\item \code{compileArgs (progname, args)}：
+	\code{commandLineArgs}型の要素に応じて，\code{SimpleMain}内の参
+照型変数を更新し，情報を設定する．
+	その後，コマンド引数の解析結果の情報を基に，実行すべき内容を表現
+する式を生成する．
+	この処理は，設定した参照変数に応じた
+\begin{program}
+\code{case (!help, !mode, !outputFilename, !sources) of}
+\end{program}
+の形の場合分け処理である．
+	この各組合せに応じて，\code{mainExp}型のデータが作成される．
+	このデータは，変数をもつ言語である．
+	その意味は以下の通りである．
+
+\begin{tabular}{ll}
+\code{Let(E1, E2)} & \code{E1}を環境スタックにプッシュし\code{E2}を実行
+\\
+\code{Var 0} & 環境スタックトップをアクセス
+\\
+\code{List EList} & 式のリスト\code{Elist}を評価し，結果リストを生成
+\\
+\code{Sequence EList} & 式のリスト\code{Elist}を評価し，最後の結果を返す
+\\
+\code{Ignore E} & 評価し結果を無視
+\\
+\code{CodeOf E} 
+& LLVMコードモジュール
+\\
+\code{CompileSML(options, context, filename)}
+& ソースファイルをコンパイル\code{SML}データを生成
+\\
+\code{LoadSMI(options, context, filename)}
+& インターフェイスファイルをロードし\code{SMI}データを生成
+\\
+\code{GenerateMain(context, E)}
+& \code{E}（\code{SMI}または\code{SML}オブジェクト）のエントリーコードを生成
+\\
+\code{RequiredObjects(FilenameMapOption, E)}
+& \code{E}のリンクに必要なオブジェクトファイルリストを生成
+\\
+\code{LinkFile filename}
+& リンク対象ファイル名
+\\
+\code{LoadBitcode filename}
+& LLVMコードをコンパイルしLLVMコードを生成
+\\
+\code{Link(writeOptions, linkOptions, EList)}
+& \code{Elist}（オブジェクトファイルリスト）をリンクする
+\\
+\code{WriteLLVMIR(filename, E)}
+\\
+\code{WriteBitcode(filename, E)}
+\\
+\code{WriteAssembly(writeOptions, filename, E)}
+\\
+\code{WriteObject(writeOptions, filename, E)}
+\\
+\code{PrinterOutput(filenameOption, E)}
+\\
+\code{PrintDependCompile(options, E)}
+\\
+\code{PrintDependLink(options, E)}
+\\
+\code{PrintVersion}
+\\
+\code{PrintHelp\{progname, forDevelopers\}}
+\\
+\code{Interactive(options, Top.context)}
+\\
+\code{PrintHashes E}
+\\
+\code{PrintSHA1 filename}
+\\
+\end{tabular}
+
+\item 生成された式を評価する．
+
+ここで，評価結果の値は以下の通り．
+
+\begin{tabular}{ll}
+\code{SUCCESS} & 結果はファイル等に出力済み
+\\
+\code{LIST (list)} & リスト知
+\\
+\code{SML(dependency, CodeOption)} & コードとリンク依存リスト
+\\
+\code{SMI(dependency, interfaceFileKind)} & リンク対象リスト
+\\
+\code{CODE LLVMModuleRef} & LLVMコード
+\\
+\code{LINKFILE filename} & リンク対象ファイル
+\end{tabular}
+\end{enumerate}
+
+\item インターフェイス 
+\begin{itemize}
+\item \code{src/compiler/toplevel2/main/Top.smi} コンパイラの呼び出し
+\item \code{llvm/main/LLVM.smi} LLVMデータ
+\item \code{src/absyn/main/AbsynInterface.ppg.smi} インターフェイスデータの参照s
+\item \code{rc/parser2/main/Parser.smi} 入力ストリーム作成
+\item \code{src/reflection/main/ReifiedTermData.smi} 対話型モードの初期化
+\item \code{src/loadfile/main/LoadFile.smi} インターフェイスファイルデータの参照
+\item \code{src/loadfile/main/SHA1.smi} ファイルのSHAデータの計算（印字のため）
+\end{itemize}
+\end{enumerate}
+
+
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	コンパイラのメイン関数ディレクトリ\code{src/compiler/main/main/}
+に含まれる主なファイルの機能を記述する．
+	以下，\code{.sml, .smi}拡張子を省略する．
+
+\subsection{\code{ExecutablePath}}
+\begin{enumerate}
+\item 機能概要 コンパイラのOSが\code{MinGW}システムの場合，実行中のコマ
+ンドのパス名を返す．
+	\code{MinGW}以外なら空列を返す．
+\item 処理概要 Ｃプリミティブで実装
+\item インターフェイス \code{SimpleMain}でデフォールトディレクトリの決定に使用される．
+\end{enumerate}
+	
+\subsection{\code{FilenameMap}}
+\begin{enumerate}
+\item 機能概要 \code{.smi}ファイルと\code{.o}ファイルとの対応関係を維持する．
+\item 処理概要 
+\begin{itemize}
+\item \smlsharp{}コンパイラの\code{-filemap}パラメタで指定された
+\code{.smi}ファイルと\code{.o}ファイルとの対応記述ファイルを読み，
+対応辞書を作成．
+\item 辞書を検索し，\code{.smi}ファイルに対応する\code{.o}ファイルを返す．
+\end{itemize}
+\item インターフェイス \code{SimpleMain}モジュールで使用．
+\end{enumerate}
+
+\subsection{\code{GetOpt}}
+\begin{enumerate}
+\item 機能概要 \smlsharp{}コマンドの起動パラメタを解釈
+\item 処理概要 
+\begin{itemize}
+\item コマンドオプション表現のデータ型\code{'a 'a optionDesc}の提供
+\item コマンドオプション表現記述とコマンド引数要素リストを受け取り，各引
+数文字列解釈し，\code{'a arg}データを返す．
+\end{itemize}
+\item インターフェイス 
+\begin{enumerate}
+\item 以下の多相型が提供される．
+\begin{quote}
+\begin{tt}
+  datatype 'a arg =\\
+\myem\ \ OPTION of 'a\\
+\myem    | ARG of string\\
+  datatype 'a argDesc =\\
+\myem\ \     NOARG of 'a\\
+\myem    | REQUIRED of string -> 'a\\
+\myem    | OPTIONAL of string option -> 'a\\
+  datatype 'a optionDesc =\\
+\myem\ \       SHORT of char * 'a argDesc\\
+\myem    | SLONG of string * 'a argDesc\\
+\myem    | DLONG of string * 'a argDesc
+\end{tt}
+\end{quote}
+	ただし，これら多相型の型引数\code{'a}には\code{SimpleMain}の
+\code{commandLineArgs}が代入される．
+	多相型として定義は，\code{commandLineArgs}の\code{SourceFile}と，
+本モジュールでのオプション解析結果を一つの型として扱うためである．
+\item \code{SimpleMain}による\code{commandLineArgs optionDesc}データの作成，
+
+	\code{SimpleMain}モジュールでは，可能なオプションの形を
+\code{commandLineArgs optionDesc}型データとして定義し，このリストを
+引数として\code{GetOpt.getopt}を呼び出す．
+\end{enumerate}
+\end{enumerate}
+
+\subsection{\code{RunLoop}}
+\begin{enumerate}
+\item 機能概要 対話型ループを実現
+\item 処理概要 起動オプションと環境を受け取り，対話型入力ストリームをセッ
+トアップした後，以下の処理を繰り返す．
+\begin{enumerate}
+\item コンパイラトップレベルを入力ストリームに対して呼び出し，コンパイル
+単位をコンパイル．
+\item システムリンカーにより，コンパイルされたオブジェクトファイルリンク
+しを動的リンクライブラリに登録
+\item 動的リンクライブラリをオープンし，コンパイルしたトップレベル関数
+をロード
+\item ロードされた関数を，コンパイラの自己反映機能を使って呼び出す．
+\end{enumerate}
+\item インターフェイス \code{SimpleMain}でから呼び出され，対話型プログラ
+ミングループを実現．
+\end{enumerate}
+
+\subsection{\module{src/config/main/Config.sml}{SMLSharp\_Config}}
+\begin{enumerate}
+\item 機能概要 \code{configure}パラメータをセットする．
+\item 処理概要 \smlsharp{}コンパイラがインストールされたシステムベースディ
+レクトリを引数として受け取り，\code{configure}スクリプトで設定された
+\code{src/config.mk}ファイルの値を，対応する変数に設定する．
+\item インターフェイス \code{SimpleMain}でから呼び出され，システム依存の
+モジュール以下のモジュールで使用される．
+\begin{itemize}
+\item \code{src/compiler/main/main/RunLoop.sml}
+\item \code{src/compiler/main/main/SimpleMain.sml}
+\item \code{src/compiler/llvmgen/main/LLVMGen.sml}
+\item \code{src/compiler/llvmgen/main/LLVMGen.sml}
+\item \code{src/compiler/toolchain/main/CoreUtils.sml}
+\item \code{src/compiler/toolchain/main/BinUtils.sml}
+\item \code{src/sql/main/MySQL.sml}
+\item \code{src/sql/main/PGSQL.sml}
+\end{itemize}
+\end{enumerate}
+
+\subsection{\code{SimpleMain}}
+	\code{SimpleMain}ストラクチャは以下の機能を実現する．
+\begin{enumerate}
+\item \smlsharp{}の可能なコマンドオプションを定義する．
+\item \code{getOpt}を用いてコマンドオプションを解析し，その結果を
+変数に設定する．
+\item コマンド引数の解析結果の情報を基に，実行すべき内容を表現する式を生
+成する．
+\item 生成された式を評価する．
+\end{enumerate}
+
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+

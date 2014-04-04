@@ -1,0 +1,576 @@
+\chapter{\txt
+{\code{IDCalc}データ構造}
+{The \code{IDCalc} data structure}
+}
+\label{chap:IDCalc}
+
+\chapter{\txt
+{名前解析処理}
+{Name Evaluation}
+}
+\label{chap:nameevaluation}
+
+\chapter{\txt
+{相互再帰関数最適化}
+{Mutual recursive function optimization}
+}
+\label{chap:valrecoptimize}
+
+\chapter{\txt
+{\code{TypedCalc}データ構造}
+{The \code{TypedCalc} data structure}
+}
+\label{chap:TypedCalc}
+
+\chapter{\txt
+{型推論}
+{Type Inferene}
+}
+\label{chap:typeinference}
+
+\chapter{\txt
+{\code{RecordCalc}データ構造}
+{The \code{Recordcalc} data structure}
+}
+\label{chap:RecordCalc}
+
+\chapter{\txt
+{パターンマッチングコンパイル処理}
+{Pattern Matching Compilation}
+}
+\label{chap:matchcompilation}
+
+\chapter{\txt
+{外部関数のコンパイル処理}
+{Foreign function Compilation}
+}
+\label{chap:fficompilation}
+
+\chapter{\txt
+{型主導レコードコンパイル}
+{Type-Directed Record Compilation}
+}
+\label{chap:recorcdcompilation}
+
+\chapter{\txt
+{\code{TypedLambda}データ構造}
+{The \code{TypedLambda} data structure}
+}
+\label{chap:TypedLambda}
+
+\chapter{\txt
+{データ型のコンパイル}
+{Datatype Compilation}
+}
+\label{chap:datatypecompilation}
+
+\chapter{\txt
+{\code{BitmapCalc}データ構造}
+{The \code{BitmapCalc} data structure}
+}
+\label{chap:BitmapCalc}
+
+\chapter{\txt
+{型主導ビットマップ生成処理}
+{Type-Directed Bitmap Generation}
+}
+\label{chap:bitmapgeneration}
+
+\chapter{\txt
+{\code{ClosureCalc}データ構造}
+{The \code{ClosureCalc} data structure}
+}
+\label{chap:ClosureCalc}
+
+\chapter{\txt
+{クロージャー変換}
+{Closure Conversion}
+}
+\label{chap:closureconversion}
+
+\chapter{\txt
+{\code{RuntimeCalc}データ構造}
+{The \code{RuntimeCalc} data structure}
+}
+\label{chap:RuntimeCalc}
+
+\chapter{\txt
+{型主導のコーリングコンベンション生成}
+{Type-Directed Calling Convension Generation}
+}
+\label{chap:callingconventiongeneration}
+
+\chapter{\txt
+{\code{ANornal}データ構造}
+{The \code{ANormal} data structure}
+}
+\label{chap:ANormal}
+
+\chapter{\txt
+{A正規化処理}
+{A-Normalization}
+}
+\label{chap:anormalization}
+
+\chapter{\txt
+{\code{MachineCode}データ構造}
+{The \code{MachineCode} data structure}
+}
+\label{chap:MachineCode}
+
+\chapter{\txt
+{抽象機械語生成}
+{Abstract Machine Code Generation}
+}
+\label{chap:abstractcodegeneratrion}
+
+\chapter{\txt
+{フレームスタック割り当て}
+{Stack Frame Allocation}
+}
+\label{chap:stackframeallocation}
+
+\chapter{\txt
+{\code{LLVMIR}データ構造}
+{The \code{LLVMIR} data structure}
+}
+\label{chap:LLVMIR}
+
+\chapter{\txt
+{LLVMコード生成}
+{LLVM Code Generation}
+}
+\label{chap:LLVMCodegeneration}
+
+\chapter{\txt
+{\smlsharp{}の組込データ型}
+{Builtin Datatypes in \smlsharp{}}
+}
+\label{chap:bootstraping}
+
+\section{概要}
+\begin{enumerate}
+\item 機能概要．
+	コンパイラに組み込まれた型の定義と束縛を実現．
+\item 処理概要
+	\smlsharp{}コンパイラが，起動時に構成する組込み型の定義，その環
+境への束縛，組込み方の属性取り出し等を実現するために，一連の定義ファイル
+およびユーテリティ関数を用意．
+\item 関連モジュール．型を扱うコンパイラのフェーズすべて．
+
+\end{enumerate}
+
+\section{処理の詳細}
+\begin{enumerate}
+\item \smlsharp{}における型の意味論的な実体．
+	\smlsharp{}言語では，型は\code{int}などの組込型定数や
+\code{datatype}などの構文で定義される．
+	\smlsharp{}コンパイラにおけるこれら構文論的な型の意味論的実体は，
+\code{TypID.id}型のユニークなIDである．
+	このIDを持つ意味論的な型は\code{NameEval}ストラクチャで
+\code{tfun}型の値として生成され，その表現が\code{InferTypes2}で
+\code{tyCon}型の値に変換される．
+	ただし，型の意味論であるIDは変化しない．
+
+	意味論的な型は，コンパイラは\code{NameEval}おいて，構文論的型を
+解釈するための環境の中に保持し，構文論的な型を意味論的な型に変換している．
+	\code{NameEval}での環境は以下の構造である．
+\begin{verbatim}
+  type topEnv = {Env:env, FunE:funE, SigE: sigE}
+  type env = ENV of {varE: IDCalc.varE, tyE: tyE, strE: strE}
+  type tyE = tstr SymbolEnv.map
+  datatype tstr
+    =  TSTR of IDCalc.tfun
+    |  TSTR_DTY of {tfun:IDCalc.tfun, varE:IDCalc.varE,
+                    formals:IDCalc.formals, conSpec:IDCalc.conSpec}
+\end{verbatim}
+
+
+\item 組込型を扱う主なファイル・ストラクチャ．
+
+	コンパイラは，組込型の実現のために，構文論的な組込型に対応する意
+味論的な型を，コンパイラの環境にあらかじめセットする．
+	そのための主なデータ構造は以下の通りである．
+
+\begin{itemize}
+\item \module{compiler/runtimetypes/main/RuntimeTypes.ppg}{RuntimeTypes}
+
+	実行時の型の定義．
+	組込型はすべて\code{runtimeTy}フィールドに実行時型を持つ．
+
+\item \module{builtin.smi}{SMLSharp\_Builtin 他}
+
+	コンパイラが使用するために，組込み型を束縛するインターフェイスファ
+イル．
+	このファイルを\code{NameEval.loadInterface}で読み込むことによっ
+て組込み型が使用可能になる．
+	コンパイラの\code{SimpleMain}の\code{loadBuiltin}で読み込まれる．
+
+\item \module{compiler/builtin2/main/BuiltinTypeNames.ppg}{BuiltinTypeNames}
+
+	コンパイラで組込型を扱うための名前としてのデータ構造を定義してい
+る．
+
+\item \module{compiler/builtin2/main/BuiltinTypes.sml}{BuiltinTypes}
+
+	\code{BuiltinTypeNames}で定義された組込型の実体を定義．
+	型は通常\code{NameEval}によって，ユーザの\code{datatype}宣言文から生
+成される．
+	ここで生成された型の識別子\code{TypID.id}は，コンパイルフェーズ
+中受け継がれる．
+	\code{BuiltinTypes}ストラクチャは，\code{NameEval}で生成される形
+式の組込み型を直接生成している．
+\end{itemize}
+
+\item コンパイル対象言語の組込型の生成．
+
+	以上のデータ構造を使い，コンパイラは，以下の手順で組込型を環境に
+設定する．
+\begin{enumerate}
+\item コンパイラの起動時に，\code{BuiltinTypes}ストラクチャがロードされ，
+その時の副作用として，組込型の意味論的実体が生成される．
+	この実体は，各型毎に，\code{NameEval}で使用する\code{tstr}と，そ
+れを変換し\code{InferTypes2}のための変換した\code{tyCon}として，インター
+フェイスファイルを通じて外部に提供される．
+
+\item コンパイラ起動時に，\code{SimpleMain}の\code{loadBuiltin}が
+\code{builtin.smi}を読み込み，コンパイラの環境にロードしている．
+	このファイルは，言語組込型を提供するため，オブジェクトレベルのス
+トラクチャとして実現できない．
+	そこで，\code{builtin.smi}は，対応するストラクチャを持たないイン
+ターフェイスファイルとして実現し，\code{BuiltinType}で直接生成した
+組込型の意味論的実体を直接参照する必要がある．
+	そのための特殊構文として，
+\begin{verbatim}
+  datatype int  = _builtin datatype int
+\end{verbatim}
+を用意している．
+	\code{loadBuiltin}から\code{Top.loadBuiltin}を経由して呼び出され
+た\code{NameEval}の\code{evalBuiltin}は，この\code{\_builtin}とマークさ
+れた名前\code{int}を，\code{BuiltinTypes}で直接定義された組込型と解
+釈し，\code{BuiltinTypes}の\code{findTstrInfo}関数を用いて意味論的型
+を取り出し，環境に設定する．
+\end{enumerate}
+\item 組込型の追加手順．
+
+	以下の手順で組込型を\code{foo}追加できる．
+\begin{enumerate}
+\item \module{compiler/builtin2/main/BuiltinTypes.sml}{BuiltinTypes}
+に\code{foo}の定義を追加．
+\begin{enumerate}
+\item 意味論的実体を直接生成するため，他の例にならい，
+\code{foo}に必要な引数の適当に設定し\code{makeTfun}を呼び出す．
+\item この結果を変数として束縛し，\code{NameEval}で参照するため，
+\code{makeTfun}の呼出し結果を束縛する変数を{BuiltinTypes.smi}に追加する．
+\item \code{NameEval}の\code{evalBuiltin}で束縛した変数を参照するため，
+\code{findTstr}関数に\code{foo}のケースを追加．
+\end{enumerate}
+\item 以上のソースでコンパイラを再コンパイルする．
+	再コンパイルによって作成されたコンパイラは，\code{BuiltinTypes}
+に\code{foo}の意味論的型が追加されており，\code{foo}型を解釈することがで
+きる．
+\item \module{builtin.smi}{foo}に\code{foo}エントリを追加．
+	再コンパイルしたコンパイラのソースの\code{builtin.smi}ファイルに
+\code{foo}エントリを追加し，インストールする．
+	これによって，このコンパイラは，\code{foo}を組込型として利用する
+ソースファイルをコンパイル可能である．
+\item \module{compiler/builtin2/main/BuiltinTypeNames.ppg}{BuiltinTypeNames}の
+\code{dty}にも\code{foo}エントリを追加する．
+	このステップは，その組込型が新しい実行時型である場合などに必要となる．
+\end{enumerate}
+	これ以降は，ユーザレベルで\code{foo}と書けば，組込型として解釈さ
+れる．
+	ただし，この変更後このコンパイラーソースは，そのソースツリーの
+\code{minismlsharp}ではコンパイルできない．
+	このコンパイラのコンパイルには，\code{SMLSHARP=<newsmlsharp>}と
+して新しいコンパイラを指定する必要がある．
+\end{enumerate}
+
+
+\chapter{\txt
+{SQL言語の埋め込み}
+{SQL Integration}
+}
+\label{chap:sqlintegration}
+
+\section{概要}
+\begin{enumerate}
+\item 機能概要．
+	\smlsharp{}にSQL言語を多相型をもつ式としてシームレスに埋め込む．
+\item 処理概要．
+	SQLの型理論（SIGMOD89，TODS96）を用いて，SQLの埋め込み方式
+（ICFP2011）に従い，以下の手順で，SQLをシームレスに埋め込む．
+\begin{enumerate}
+\item \smlsharp{}の構文木にSQL文法を追加．
+\item パーザの文法規則の追加．
+\item ElaborateフェーズでのSQL構文のコンパイル．
+\item 型推論時に，存在型を導入し，SQL接続の一貫性を保証する．
+\end{enumerate}
+\item 他モジュールとのインターフェイス
+\begin{enumerate}
+\item AbsynへのSQL構文の埋め込み
+\item 上記埋め込みの構文解析のたの\code{iml.grm}と\code{iml.lex}の変更.
+\item EraborateCoreからElaborateSQLの呼び出しを追加．
+\item 型推論モジュールにて\code{\_sqlserver}式の型を内部表現に変換．
+\end{enumerate}
+\end{enumerate}
+
+\section{処理の詳細}
+\begin{enumerate}
+\item \smlsharp{}の構文木にSQL文法を追加．
+	\code{Absyn}モジュールにケースエントリ\code{EXPSQL}を追加し，
+この項に，SQL言語全体を埋め込む．
+	SQL式内で\smlsharp{}式が使用出来るためSQL式と\smlsharp{}式は相互
+に依存しあう構造をしている．
+	SQLのモジュール性の高い埋め込みを実現するため，以下の構造により，
+相互再帰構造を分解する．
+\begin{verbatim}
+  structure AbsynSQL = 
+  struct
+    datatype exp = ...
+      | EXPSQL of (exp, pat, ty) AbsynSQL.exp * loc
+      ...
+  end
+  structure AbsynSQL =
+  struct
+    datatype ('exp, 'pat, 'ty) exp =
+    ...
+  end
+\end{verbatim}
+	後者の型パラメタ\code{'exp}，\code{'pat}，\code{'ty}には，
+\code{Absyn.exp}，\code{Absyn.pat}，\code{Absyn.ty}が代入される．
+	この構造により，\code{AbsynSQL}を独立のファイルとして定義できる．
+\item パーザの文法規則の追加．
+
+	SQLと\smlsharp{}ではキーワード集合が異なる．
+	ここでは，SQL構文では，SQLキーワドと\smlsharp{}キーワード双方を
+キーワードとして扱い，\smlsharp{}の式では\smlsharp{}キーワードのみキーワー
+ドとして扱い，SQLキーワードは通常の識別子として使用出来る仕様とする．
+	Standard MLとの後方互換性を維持する上で必要である．
+	この実現のため，文法定義を以下のように拡張する．
+\begin{itemize}
+\item SQLの{\tt SELECT}などのキーワードを終端記号として追加．
+\item \smlsharp{}の識別子\code{id}，\code{longid}，原子式\code{atexp}，
+アプライ式\code{appexp}をそれぞれ，
+\begin{enumerate}
+\item SQLキーワードを含まないもの
+（\code{id\_noSQL}，\code{longid\_noSQL}，\code{atexp\_noSQL}，\code{appexp\_noSQL}）
+\item 従来の\smlsharp{}の要素（\code{id}，\code{longid}，\code{atexp}，\code{appexp}）
+\end{enumerate}
+に分割．
+	SQL構文では，{\tt appexp\_noSQL}を使用し，それ以外の\smlsharp{}
+構文では{\tt appexp}を使用する．
+\end{itemize}
+\item SQL構文のコンパイル．
+
+	Elaborateフェーズで\code{AbsynSQL}で表現されるSQL構文を，
+\code{SQL}用のライブラリ呼び出しを含む\smlsharp{}の式に変換する．
+	この式は，ICFP2011の枠組みを用いて，
+\begin{itemize}
+\item SQL構文の結果の型を表現する（擬似）項
+\item SQLサーバへ送信する文字列を生成する項
+\end{itemize}
+の２つの組みを生成する．
+	この処理は\code{ElaboreteSQL}に定義され，\code{Absyn}の構造に従
+い，\code{Absyn.exp}を翻訳する\code{ElaborateCore.elabExp}
+から，\code{AbsynSQL.exp}の中に現れる
+\code{Absyn.exp}と\code{Absyn.pat}を処理するための
+\code{ElaborateCore.elabExp}と\code{ElaborateCore.elabPat}
+とともに呼び出される．
+
+\item \smlsharp{}の型とSQLの型の相互変換．
+	SQLの型はRDBサーバーによって定義されている型であり，クライアント
+側ではそれら値は文字列で表現される．
+	SQLを\smlsharp{}に埋め込むには，それらSQL型を\smlsharp{}の型とし
+て扱えなければならない．
+	そのために以下の処理を行う．
+\begin{itemize}
+\item SQL組込み型と\smlsharp{}の型の対応の確立．
+	SQLの組込み型は，対応する\smlsharp{}の型として扱う．
+	\code{InferType}モジュールで，\code{isCompatibleWithSQL}関数が
+\code{true}を返す型が，\smlsharp{}でSQLデータとしても扱うことができる型
+であり，\code{\_sqlserver}式でカラムの型として宣言できる．
+\item SQLサーバでの型名の記録
+	コンパイラは，SQLと互換の型のSQLサーバ上での名前を記録している．
+	この情報を使い，\code{SQL.connect}関数で動的型チェックされる．
+	現在SQLサーバ上での名前は，\code{PGSQLBackend}の
+\code{translateType}関数にハードコードされている．
+	この関数を使って，SQLのカタログテーブルの型名が\code{SQLPrim}の
+\code{connect}が型の対応をとり，動的型チェックがなされる．
+
+\item SQL文字列表現と対応する\smlsharp{}の型間の相互変換．
+	\code{SELECT}文の結果得られるSQL型の値はすべて文字列で表現されて
+いる．
+	\smlsharp{}でのSQL対応型は，SQLの問い合わせの生成時に文字列に変
+換され，問い合わせの結果の取り出し関数で，文字列から逆変換される．
+\begin{enumerate}
+\item 問い合わせの結果の変換．
+	問い合わせの結果は，\smlsharp{}では\code{'a rel}型のオブジェクト
+である．
+	この型は，
+\begin{verbatim}
+  val fetch : 'a rel -> ('a * 'a rel) option
+\end{verbatim}
+で{\tt 'a}型に変換される．
+	この変換は，問い合わせ生成時に，結果の文字列からの変換関数をあら
+かじめ用意することによって実現される．
+	この変換関数は，\code{SQLPrim}で\code{fromSQL}として多重定義され
+ている．
+	そのインスタンスは，\code{SQLPrim}に型毎に定義されており，そこか
+らサーバー依存の\code{Bckend}の\code{getXXX}が参照されている．
+	サーバー依存の\code{Bckend}では，実際の文字列変換が行う
+\code{getXXX}が定義されている．
+
+\item SQL文字列への変換．
+
+	SQL問い合わせは，\smlsharp{}でSQLとの互換型を使用して作成される．
+	このSQL互換型$\tau$の値は，問い合わせ内部では
+\code{($\tau$,$witness$)SQL.value}型として使用することが要求される．
+	\code{($\tau$,$witness$) SQL.value}型は，内部にSQL文字列表現と
+問い合わせの一貫性を保証する$witness$変数をもつ．
+	$witness$の詳細は本文書では省略する．
+
+	$\tau$型から\code{($\tau$,$witness$) SQL.value}型への変換は，
+\code{SQL.smi}で定義された多重定義関数\code{toSQL}で行われる．
+	そのインスタンス実体は\code{SQLPrim.sml}で定義されている．
+	そのインスタンス実体の中で，各型を文字列に変換する関数が適用され
+る．
+
+\end{enumerate}
+\end{itemize}
+\end{enumerate}
+
+\section{現状でのSQL互換型追加の流れ}
+	SQLのより完全なサポートのためには，SQL型のより系統的な扱いが必要
+である．
+	その方針は，次節で述べる．
+	ここでは，現状のコードにおいて新しいSQL互換型$T$互換型の
+追加手順を述べる，\code{timestamp}における例を記述する．
+\begin{enumerate}
+
+\item 追加するSQL互換型$T$を組込み型としてコンパイラに追加する．
+
+	「組込み型の定義と束縛」を参考に追加し，さらに，型推論ストラクチャ
+\code{InferTypes2}の\code{isSQLBuiltinTy}に\code{true}エントリーを追加す
+る．
+
+	ただし，SQL互換型は数多く存在し，さらに，\smlsharp{}の型と類似の
+名前も多い．
+	このため，束縛の際には，統一的な名前とスコープの管理が課題である．
+	当面，SQL互換型の束縛は以下の方針をとる．
+\begin{itemize}
+\item \code{builtin.smi}に\code{SMLSharp.SQL.SQLPrimitiveTyoes}ストラク
+チャを定義し，そこに型の束縛を追加する．
+\item \code{SQL.smi}に，トップレベルの束縛を追加する．
+	従って，ユーザは，
+\begin{enumerate}
+\item \code{\_require "basis.smi"}
+\item \code{\_require "sql.smi"}
+\end{enumerate}
+の順で記述すると，SQL互換型がトップレベルで使用可能となる．
+
+	\code{timestamp}型の場合，\code{timestamp}型をコンパイラにを追加
+し，\code{basis.smi}に
+\begin{verbatim}
+  structure SQLPrimitiveTypes =
+  struct
+    datatype timestamp = _builtin datatype timestamp
+  end
+\end{verbatim}
+の束縛を追加し，\code{sql/main/SQL.smi}に
+\begin{verbatim}
+  type timestamp = SMLSharp.SQLPrimitiveTypes.timestamp
+\end{verbatim}
+の束縛を追加すれば実現できる．
+
+\end{itemize}
+\item サポートストラクチャの構築．
+
+	追加したSQL互換型のための種々のプリミティブ関数をサポートするスト
+ラクチャとインタフェイスファイルを\code{src/sql/builtintypes/$typeName$/}
+以下に作成する．
+	この中で，SQL文字列との相互変換のため
+\begin{verbatim}
+  val toString : timestamp -> string
+  val fromString : string -> timestamp
+\end{verbatim}
+の２つは標準でサポートすることとする．
+
+	\code{timestamp}の場合，\code{TimeStamp.sml}と
+\code{TimeStamp.smi}を構築する．
+	サポートライブラリ実現のためのC関数が必要であれば，それらを作成
+し同一ディレクトリに置く．
+	\code{timestamp}の場合，文字列との変換のために，
+\code{string\_to\_time\_t.c}と\code{timeval\_to\_string.c}を作成した．
+
+\item SQL組込み型と\smlsharp{}の型の対応の確立．
+
+	\code{InferType}モジュールの\code{isCompatibleWithSQL}関数を拡張
+し，\code{timestamp}型が\code{true}を返すように拡張する．
+
+\item SQLサーバでの型名の記録
+
+	\code{PGSQLBackend}の\code{translateType}関数を
+\code{timestampe}文字列を\code{timestampe}型と解釈するように変更する．
+
+\item SQL文字列表現と対応する\smlsharp{}の型間の相互変換．
+
+	\code{timestamp}型が\smlsharp{}での対応する内部構造に変換される
+よう，以下の定義を追加する．
+\begin{enumerate}
+\item 問い合わせの結果の変換．
+
+	\code{SQLPrim}の\code{fromSQL}多重定義を拡張する．
+	さらに，サーバー依存の\code{Bckend}に\code{get$T$}を追加．
+
+\item SQL文字列への変換．
+
+	\code{SQL.smi}で定義された多重定義関数\code{toSQL}を新しい互換型
+$T$へ拡張し，そのインスタンス実体を\code{SQLPrim.sml}に定義する．
+
+\item \code{SQLCompilation}における\code{compileColumn}の拡張
+
+	
+	SQLCompilationでの\code{\_sqlServer}式をコンパイル時に，サーバに
+指定された各カラムを型チェックし，各型の式を作っている．
+	そこで，SQL互換型に対して，\code{compileColumn}の型チェックケー
+スを加え，さらに，\code{stringConst}などを例に，新しく加えたSQL互換型の
+項を\code{RecordCalc}言語の項を生成する．
+	
+	問題点としては，型によっては定数などの簡単に生成する型が存在しな
+い場合がある．
+	そこで，この項の生成は，よりユニフォームに行うのがよいであろう．
+	実際の定数は必要としないので，例えば\code{Cast 0 : $T$}等で十分
+とおもわれる．
+	この項が実行時に評価されるのであれば，実行時の型が一致している必
+要があり，面倒である．
+	評価しないようにすべきであろう．
+\end{enumerate}
+\end{enumerate}
+
+
+\chapter{\txt
+{オーバーロード演算子の処理}
+{Primitive Operator Overloading}
+}
+\label{chap:primitiveoverloading}
+
+\chapter{\txt
+{対話型環境}
+{Interactive mode}
+}
+\label{chap:interactivemode}
+
+\chapter{\txt
+{\smlsharp{}の実行時処理系}
+{\smlsharp{} Runtime System }
+}
+\label{chap:runtimesystem}
+
+\chapter{\txt
+{\smlsharp{}のビルド環境}
+{Building Environment of \smlsharp{}}
+}
+\label{chap:buildsystem}
+
+
