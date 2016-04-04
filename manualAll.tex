@@ -1,20 +1,20 @@
-% #!platex manualAll; latexml --noparse --destination=./manual.xml manualAll.tex; latexmlpost --format=xhtml --destination=./docs/2.0/ja/manual.xhtml --split  --novalidate manual.xml
+%#!platex manualAll; latexml --noparse --destination=./manual.xml manualAll.tex; latexmlpost --format=xhtml --destination=./docs/3.0/en/manual.xhtml --split  --novalidate manual.xml
 
-%#!platex manualAll
+% #!platex manualAll
 
 \documentclass{jbook}
 
 \newif\ifjp
 
-%%%%% 日本語；--destinationを... docs/2.0/ja/ ...
-% とし以下２をアクティブにする
-\jptrue
-\newcommand{\txt}[2]{#1}
+% %%%%% 日本語；--destinationを... docs/2.0/ja/ ...
+% % とし以下２をアクティブにする
+% \jptrue
+% \newcommand{\txt}[2]{#1}
 
-%%%%% 英語；--destinationを... docs/2.0/en/ ...
+%%% 英語；--destinationを... docs/2.0/en/ ...
 % とし以下２をアクティブにする
-% \jpfalse
-% \newcommand{\txt}[2]{#2}
+\jpfalse
+\newcommand{\txt}[2]{#2}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 %% 日本語
@@ -64,7 +64,7 @@ RIEC, Tohoku University
 \newcommand{\smlsharp}{SML\#}
 \newcommand{\version}{3.0.0}
 
-\newcommand{\releaseDate}{2016-03-31 10:23:45 JST}
+\newcommand{\releaseDate}{2016-03-31 01:23:45 JST}
 
 \newcommand{\seeJapanese}{The Englishversion is under construction. See
 the official Japanese documents.}
@@ -1527,7 +1527,7 @@ each of the supported operating systems.
 \item
 	\smlsharp{}をインストールします．
 \begin{program}
-\$ brew install https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp.rb
+\$ brew install http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp.rb
 \end{program}
 \end{enumerate}
 
@@ -1564,7 +1564,7 @@ lastest version so that LLVM 3.7.1 is to be installed.
 \item
 	Install \smlsharp{} by using our own formula.
 \begin{program}
-\$ brew install https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp.rb
+\$ brew install http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp.rb
 \end{program}
 \end{enumerate}
 
@@ -1594,9 +1594,9 @@ Debian系システム向けのソースパッケージを用意しています�
 	下記URLより\smlsharp{}のdebパッケージをダウンロードします．
 \begin{itemize}
 %\item Ubuntu i386版：
-%\eurl{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-\version-1_ubuntu-i386.deb}
+%\eurl{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp_\version-1_ubuntu-i386.deb}
 \item Ubuntu amd64版：
-\eurl{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-\version-1_amd64.deb}
+\eurl{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp_\version-1_amd64.deb}
 \end{itemize}
 	最新のdebパッケージは
 \url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/?Download}からも取得できます．
@@ -1611,7 +1611,7 @@ Debian系システム向けのソースパッケージを用意しています�
 以下のコマンドをroot権限で実行します．
 \begin{program}
 \# apt-get install llvm-3.7 libgmp-dev\\
-\# dpkg --install smlsharp-\version{}-1\_amd64.deb
+\# dpkg --install smlsharp\char`\_\version{}-1\_amd64.deb
 \end{program}
 \end{enumerate}
 
@@ -1628,7 +1628,7 @@ Debian系システム向けのソースパッケージを用意しています�
 	その際，{\tt -u}オプションを指定し，署名の検査をスキップ
 してください．
 \begin{program}
-\$ dget -u http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp\_\version-1.dsc
+\$ dget -u http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp\char`\_\version-1.dsc
 \end{program}
 \item
 	{\tt debuild}コマンドで\smlsharp{}をコンパイルし，
@@ -1651,7 +1651,7 @@ UbuntuあるいはDebianのパッケージ検索でバージョン3.7.1以降の
 インストールします．
 \begin{program}
 \$ cd ..\\
-\$ dpkg -i smlsharp\_\version-1.deb
+\$ dpkg -i smlsharp\char`\_\version-1.deb
 \end{program}
 \end{enumerate}
 
@@ -1681,7 +1681,7 @@ package.
 %\item Ubuntu i386 version:
 %\eurl{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-\version-1_ubuntu-i386.deb}
 \item Ubuntu amd64 version:
-\eurl{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-\version-1\_amd64.deb}
+\eurl{http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp_\version-1\_amd64.deb}
 \end{itemize}
 	The latest deb packages is also available from
 \url{http://www.pllab.riec.tohoku.ac.jp/smlsharp/?Download}.
@@ -1696,7 +1696,7 @@ command and do {\tt dpkg --install} command again.
 do the following commands with root privilege.
 \begin{program}
 \# apt-get install llvm-3.7 libgmp-dev\\
-\# dpkg --install smlsharp-\version{}-1\_amd64.deb
+\# dpkg --install smlsharp\_\version{}-1\_amd64.deb
 \end{program}
 \end{enumerate}
 
@@ -1714,7 +1714,7 @@ source packages.
 specify {\tt -u} option to {\tt dget} command to skip signature
 check.
 \begin{program}
-\$ dget -u http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp\_\version-1.dsc
+\$ dget -u http://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp\char`\_\version-1.dsc
 \end{program}
 \item
 	Build a binary package by {\tt debuild} command.
@@ -1736,7 +1736,7 @@ similarly to \smlsharp{}.
 	Install generated {\tt deb} package by {\tt dpkg} command.
 \begin{program}
 \$ cd ..\\
-\$ dpkg -i smlsharp\_\version-1.deb
+\$ dpkg -i smlsharp\char`\_\version-1.deb
 \end{program}
 \end{enumerate}
 
@@ -1799,9 +1799,11 @@ similarly to \smlsharp{}.
 	LLVMのWebページ \url{http://llvm.org/} などからLLVMのソースコード
 {\tt llvm-3.7.1.src.tar.xz}%
 %（あるいは3.7系列でより新しいソースコード{\tt llvm-3.7.X.src.tar.xz}）
-を入手，展開し，以下の3ステップでビルドします．
+を入手，展開し，以下の5ステップでビルドします．
 \begin{program}
-\$ ./configure --prefix=/WHERE/LLVM/IS --enable-shared --enable-optimized --disable-bindings\\
+\$ mkdir build\\
+\$ cd build\\
+\$ ../configure --prefix=/WHERE/LLVM/IS --enable-shared --enable-optimized --disable-bindings\\
 \$ make\\
 \$ make install
 \end{program}
@@ -1903,9 +1905,11 @@ at the time when we write this document.
 % (or later version of 3.7 series like {\tt llvm-3.7.X.tar.xz})
 from LLVM web site \url{http://llvm.org/}.
 	After expanding the tar archive,
-do the following three commands:
+do the following five commands:
 \begin{program}
-\$ ./configure --prefix=/WHERE/LLVM/IS --enable-shared --enable-optimized --disable-bindings\\
+\$ mkdir build\\
+\$ cd build\\
+\$ ../configure --prefix=/WHERE/LLVM/IS --enable-shared --enable-optimized --disable-bindings\\
 \$ make\\
 \$ make install
 \end{program}
