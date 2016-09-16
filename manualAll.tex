@@ -1,4 +1,4 @@
-%#!platex manualAll; latexml --noparse --destination=./manual.xml manualAll.tex; latexmlpost --format=xhtml --destination=./docs/3.0/en/manual.xhtml --split  --novalidate manual.xml
+%#!platex manualAll; latexml --noparse --destination=./manual.xml manualAll.tex; latexmlpost --format=xhtml --destination=./docs/3.0/ja/manual.xhtml --split  --novalidate manual.xml
 
 % #!platex manualAll
 
@@ -8,13 +8,13 @@
 
 % %%%%% 日本語；--destinationを... docs/2.0/ja/ ...
 % % とし以下２をアクティブにする
-% \jptrue
-% \newcommand{\txt}[2]{#1}
+\jptrue
+\newcommand{\txt}[2]{#1}
 
 %%% 英語；--destinationを... docs/2.0/en/ ...
 % とし以下２をアクティブにする
-\jpfalse
-\newcommand{\txt}[2]{#2}
+% \jpfalse
+% \newcommand{\txt}[2]{#2}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 %% 日本語
@@ -8979,7 +8979,8 @@ values
 \begin{tabular}{lcll}
 \nonterm{vid} &:=& \nonterm{alphaId} \vbar \nonterm{symbolId}
 \\
-\nonterm{lab} &:=& \nonterm{alphaId} \vbar \nonterm{digit} *
+\nonterm{lab} &:=& \nonterm{alphaId} \vbar [1-9][0-9]* \vbar [1-9][0-9]* \term{\_} \nonterm{alphaId}
+                 & （注1）
 \\
 \nonterm{strid} &:=& \nonterm{alphaId} 
 \\
@@ -8992,6 +8993,27 @@ values
 \nonterm{tycon} &:=& \nonterm{alphaId} \vbar \nonterm{symbolId}
 \end{tabular}
 \end{center}%
+注
+\begin{enumerate}
+\item 
+	レコードラベルは，
+文字列ラベル（\nonterm{alphaId}），
+整数ラベル(\term{[1-9][0-9]*})，
+順序付き文字列ラベル(\term{[1-9][0-9]}* \code{\_} \nonterm{alphaId})
+の３種類がある．
+	\smlsharp{}では，レコードは，ラベルの順序に従ってソートされ，メ
+モリーが割り当てられる．
+	文字列ラベルの順序は，文字列の順序\code{String.compare}である．
+	数字ラベルの順序は，数字列を自然数と解釈した時の自然数の順序であ
+る．
+
+	\nonterm{digit} *の順序は，この文字列を数字と解釈した時の整数の
+順序であり，
+\nonterm{digit} * \nonterm{alphaId}の形のレコードラベルは，
+
+\end{enumerate}
+
+
 
 	各文字クラスの定義は以下の通り．
 
