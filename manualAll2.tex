@@ -58,14 +58,14 @@ RIEC, Tohoku University
 }
 }
 
-\renewcommand{\today}{\txt{令和元年12月}{December, 2019}}
+\renewcommand{\today}{\txt{令和2年5月}{May, 2020}}
 \date{\today}
 \newcommand{\smlsharp}{SML\#}
-\newcommand{\version}{3.5.0}
-\newcommand{\releaseDate}{2019-12-24}
+\newcommand{\version}{3.6.0}
+\newcommand{\releaseDate}{2020-05-29}
 
 \newcommand{\mythversion}{1.00}
-\newcommand{\llvmversion}{9.0.0}
+\newcommand{\llvmversion}{10.0.0}
 
 \newcommand{\seeJapanese}{The English version of this document is under
 construction. See the official Japanese documents (unfortunately in Japanese).}
@@ -1112,7 +1112,7 @@ setting up a programming environment.
 \item MassiveThreads \mythversion
 \item GNU Multiple Precision Arithmetic Library (GMP) ライブラリ
 \item yajl (Yet Another JSON Library) 2.1 ライブラリ
-\item LLVM 3.9.1以降（LLVM 9を推奨．新しいものが望ましい）
+\item LLVM 3.9.1以降（LLVM 10を推奨．新しいものが望ましい）
 \end{itemize}
 	MassiveThreadsはBSDスタイルライセンスの下で配布されている
 フリーソフトウェアです．
@@ -1184,7 +1184,7 @@ platforms.
 \item MassiveThreads \mythversion{}
 \item GNU Multiple Precision Arithmetic (GMP) library
 \item yajl (Yet Another JSON Library) 2.1
-\item LLVM 3.9.1 or above (LLVM 9 is recommended; the latest one available is preferrable)
+\item LLVM 3.9.1 or above (LLVM 10 is recommended; the latest one available is preferrable)
 \end{itemize}
 	MassiveThreads is a free software distributed under a BSD-style
 license.
@@ -1378,14 +1378,14 @@ install and update the \smlsharp{} compiler by the {\tt apt} command.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{itemize}
-\item Ubuntu 19.10 (Eoan):
+\item Ubuntu 20.04 LTS (Focal):
 \begin{program}
-wget -O- https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/eoan/signing-key-pub.asc | apt-key add -\\
-wget -O/etc/apt/sources.list.d/smlsharp.list https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/eoan/smlsharp.list\\
+wget -O- https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/focal/signing-key-pub.asc | apt-key add -\\
+wget -O/etc/apt/sources.list.d/smlsharp.list https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/focal/smlsharp.list\\
 apt update\\
 apt install smlsharp
 \end{program}
-\item Ubuntu 18.04 (Bionic):
+\item Ubuntu 18.04 LTS (Bionic):
 \begin{program}
 wget -O- https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/bionic/signing-key-pub.asc | apt-key add -\\
 wget -O/etc/apt/sources.list.d/smlsharp.list https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/bionic/smlsharp.list\\
@@ -1426,12 +1426,12 @@ install and update \smlsharp{} by {\tt dnf} command.
 \item Fedora:
 \begin{program}
 rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/fedora/smlsharp-release-fedora-31-0.noarch.rpm\\
-dnf install smlsharp smlformat smllex smlyacc
+dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \item Fedora Rawhide:
 \begin{program}
 rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/fedora/smlsharp-release-rawhide-31-0.noarch.rpm\\
-dnf install smlsharp smlformat smllex smlyacc
+dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \end{itemize}
 
@@ -1464,7 +1464,7 @@ rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/fedora/smlsharp-rel
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{program}
-dnf install smlsharp smlformat smllex smlyacc
+dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -1508,13 +1508,13 @@ install and update \smlsharp{} by {\tt yum} or {\tt dnf} command.
 \item CentOS 8:
 \begin{program}
 rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/centos/smlsharp-release-centos-8-0.noarch.rpm\\
-dnf install --enablerepo=PowerTools smlsharp smlformat smllex smlyacc
+dnf install --enablerepo=PowerTools smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \item CentOS 7:
 \begin{program}
 yum install epel-release\\
 rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/centos/smlsharp-release-centos-7-0.noarch.rpm\\
-yum install smlsharp smlformat smllex smlyacc
+yum install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \end{itemize}
 
@@ -1896,6 +1896,22 @@ by the following commands.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
 \$ src/compiler/smlsharp -Bsrc
+\end{program}
+
+\item
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	（オプション）
+以下のコマンドで，
+ビルドした\smlsharp{}コンパイラで
+\smlsharp{}コンパイラをビルドし直すことができます．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	(Optional)
+The following commands build the \smlsharp{} compiler by the
+\smlsharp{} compiler you built in the previous step.
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+\begin{program}
+\$ make stage\\
+\$ make
 \end{program}
 
 \item
@@ -5312,7 +5328,7 @@ val pointClass =\\
 \myem\myem\}
 \end{program}
 	オブジェクトは，メッセージを受け取り，このクラスの中からメソッド
-スイートの中から，対応する関数を選択し自分の状態に適応する関数です．
+スイートの中から，対応する関数を選択し自分の状態に適用する関数です．
 	関数を値として使用できるMLでは，以下のようにコードできます．
 \begin{program}
 local\\
@@ -6952,7 +6968,7 @@ val it = 267914296 : int
 と書くことは危険です．
 	なぜなら，ガベージコレクタが関数式の生成するクロージャを
 別スレッドで関数が呼び出される前に回収してしまう可能性があるからです．
-	ガベージコレクションの影響については\label{sec:gc}節を
+	ガベージコレクションの影響については\ref{sec:gc}節を
 参照してください．
 
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -7645,13 +7661,11 @@ This result represent the set (list) of records:
 \begin{program}
 val it = fn
 \\\myem    : ['a\#\{Persons: 'b list\},
-\\\myem\myem\     'b\#\{age: 'c, name: 'e, salary: 'g\},
+\\\myem\myem\     'b\#\{age: 'c, name: 'e, salary: int\},
 \\\myem\myem\     'c::\{int, intInf, word, char,...\},
 \\\myem\myem\     'd::\{int, intInf, word, char,...\},
 \\\myem\myem\     'e::\{int, intInf, word, char,...\},
 \\\myem\myem\     'f::\{int, intInf, word, char,...\},
-\\\myem\myem\     'g::\{int, intInf, 'h option\},
-\\\myem\myem\     'h::\{int, intInf\}.
 \\\myem\myem\myem\       'a SQL.conn -> \{age: 'c, name: 'e\} SQL.cursor]
 \end{program}
 	この型は，{\tt 'a}の構造を持つデータベース接続の型
@@ -7755,7 +7769,7 @@ databases.
 	テーブルの名前とその構造をレコード型の文法で指定します．
 	この式を評価すると，{\tt $\tau$ SQL.server}型をもつデータベースサー
 バー定義が得られます．
-	詳細は\label{sec:reference:sqlserver}節をご覧ください．
+	詳細は\ref{sec:reference:sqlserver}節をご覧ください．
 \item データベースへの接続プリミティブ関数．
 \begin{program}
 SQL.connect : ['a. 'a SQL.server -> 'a SQL.conn]
@@ -7812,7 +7826,7 @@ of record types.
 	Evaluating this expression always succeeds and  yields a
 database server object of type {\tt $\tau$ SQL.server}, which contains
 the database server information.
-	See Section \label{sec:reference:sqlserver} for details.
+	See Section \ref{sec:reference:sqlserver} for details.
 \item Database connection primitive.
 \begin{program}
 SQL.connect : ['a. 'a SQL.server -> 'a SQL.conn]
@@ -8845,7 +8859,7 @@ val friendlyNames = map getFriendlyName vl
 	多相レコード型と動的レコード型が組み合わさっていることに
 注意してください．
 	これは，JSONを処理する観点からは，直感的には
-{\tt \{name :\ string\} Dynamic.dyn -> string]}と同様の意味を持つように
+{\tt \{name :\ string\} Dynamic.dyn -> string}と同様の意味を持つように
 見えますが，
 これらの厳密な意味は異なります．
 	後者は，
@@ -8910,7 +8924,7 @@ partially dynamic type constitutes this type.
 	What does this type mean?
 	Intuitively, from the perspective of JSON manipulation,
 one would say that this seems similar to
-{\tt \{name :\ string\} Dynamic.dyn -> string]}.
+{\tt \{name :\ string\} Dynamic.dyn -> string}.
 	Strictly speaking, the meaning of these two types are different.
 	Latter one can take a JSON object
 only if exactly its {\tt name} field is known and thus
@@ -9716,7 +9730,7 @@ declarations.
 \end{enumerate}
 	これら情報が，コンパイラがこのインターフェイスファイルを使う別のソー
 スコードをコンパイルする上で必要かつ十分な情報です．
-	しかし，この原則だけでば，Standard MLのモジュールシステムが提供
+	しかし，この原則だけでは，Standard MLのモジュールシステムが提供
 する型情報の隠蔽の機能を使うことができません．
 	例えば，前節のインターフェイスファイル{\tt queue.smi}では，{\tt
 'a queue}の実装が，{\tt Q of 'a list * 'a list}と定義され公開されていま
@@ -12797,7 +12811,7 @@ atomic expressions (\nonterm{atexp}).
 &\vbar &\term{\_sqlserver}\ \optional{\nonterm{appexp}}\ \term{:}\
 	\nonterm{ty}
 	& \txt{SQLサーバ}{SQL servers}\\
-&\vbar &\term{\_sql}\ \nonterm{pat}\ \term{=>}\ \nonterm{sql}
+&\vbar &\term{\_sql}\ \nonterm{pat}\ \term{=>}\ \nonterm{sqlfn}
 	& \txt{SQL実行関数}{SQL execution function}\\
 &\vbar &\term{\_sql}\ \nonterm{sql}
 	& \txt{SQLクエリ断片}{SQL query fragments}\\
@@ -12812,19 +12826,6 @@ atomic expressions (\nonterm{atexp}).
 \\
 \end{tabular}
 
-
-\txt
-{
-\nonterm{cfunty}の定義は第\ref{sec:reference:cffi}節に，
-\nonterm{sql}の定義は
-第\ref{sec:reference:sqlsyntax}節に
-それぞれ与える．
-}
-{
-The definitions for \nonterm{cfunty} is given in Section~\ref{sec:reference:cffi}
-and those for \nonterm{sql} and \nonterm{sqlexp} are given in
-Chapter~\ref{chap:reference:sql}.
-}
 
 \item \txt{演算子式}{infix operator expressions}\\
 
@@ -12887,6 +12888,19 @@ Chapter~\ref{chap:reference:sql}.
 \end{tabular}
 
 \end{itemize}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\nonterm{cfunty}の定義は第\ref{sec:reference:cffi}節に，
+\nonterm{sql}および
+\nonterm{sqlfn}の定義は
+第\ref{sec:reference:sqlsyntax}節に
+それぞれ与える．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The definitions for \nonterm{cfunty} is given in Section~\ref{sec:reference:cffi}
+and those for \nonterm{sql} and \nonterm{sqlfn}
+are given in Chapter~\ref{chap:reference:sql}.
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	この階層によって，構文の結合力（まとまりの強さ）が表現される．
@@ -13663,7 +13677,7 @@ entire expression.
 \end{enumerate}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-\section{\txt{関数適応式}{Function application expression}
+\section{\txt{関数適用式}{Function application expression}
 \code{\nonterm{appexp}\ \nonterm{atexp}}}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -13685,11 +13699,11 @@ entire expression.
 \item 式\nonterm{appexp}を静的に評価し，型を求める．
 	もし型が関数型\code{\nonterm{ty$_1$} -> \nonterm{ty$_2$}}でなければ，
 型エラーとなる．
-\item 式\nonterm{appexp}を静的に評価し，\nonterm{ty$_3$}型を求める．
+\item 式\nonterm{atexp}を静的に評価し，\nonterm{ty$_3$}型を求める．
 	\nonterm{ty$_1$}と\nonterm{ty$_3$}が同一でなければ型エラーとなる．
-\item 式\nonterm{appexp}を動的的に評価し，値$\mathit{Cls}$を求める．
+\item 式\nonterm{appexp}を動的に評価し，値$\mathit{Cls}$を求める．
 	値は関数クロージャである．
-\item 式\nonterm{atexp}を動的的に評価し，値$v$を求める．
+\item 式\nonterm{atexp}を動的に評価し，値$v$を求める．
 	関数クロージャ$\mathit{Cls}$に保存された環境に，仮引数の値$v$への束縛を追加し，
 その環境の下で，関数クロージャ$\mathit{Cls}$に保存されたコードを実行し，動的な値$v'$を求める．
 	型\nonterm{ty$_2$}と$v'$が，関数適用式の型と値である．
@@ -16303,6 +16317,7 @@ make a complete SQL query by combining them at runtime.
 \label{sec:reference:sqltype}
 
 \subsection{\txt{SQLの基本型}{SQL Basic Types}}
+\label{sec:reference:sqlbasictype}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	NULLを除いて，
@@ -16481,7 +16496,7 @@ CREATE TABLE foo (bar INT, baz TEXT NOT NULL);
 	is represented by the following \smlsharp{} type:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-\{bar : int, baz : string option\}\ list
+\{bar : int option, baz : string\}\ list
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 という型で表現される．
@@ -16813,11 +16828,17 @@ val Q' : ['a\#\{employeeTable : 'b list\},\\
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 である．
+	この関数\code{Q'}のことを，SQLクエリ\code{Q}のトイプログラムと
+呼ぶ．
+
 	このSQLクエリと\smlsharp{}式の対応を通じて，
 上述のクエリ\code{Q}には，
 「このリストを扱う\smlsharp{}プログラムと同等のことを
 データベースサーバーが実行するSQLクエリ」を表す以下の型が与えられる．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	In what follows,
+we refer to this function \code{Q'} as a {\em toy program\/} of \code{Q}.
+
 	Through this correspondence between SQL queries and \smlsharp{}
 expresions,
 \smlsharp{} gives the above query \code{Q} the following type,
@@ -16939,7 +16960,7 @@ constructs for SQL queries:
 	\nonterm{ty}
 	& \txt{SQLサーバ}{SQL servers}
 \\&\vbar&
-	\term{\_sql}\ \nonterm{pat}\ \term{=>}\ \nonterm{sql}
+	\term{\_sql}\ \nonterm{pat}\ \term{=>}\ \nonterm{sqlfn}
 	& \txt{SQL実行関数}{SQL execution function}
 \\&\vbar&
 	\term{\_sql}\ \nonterm{sql}
@@ -16954,9 +16975,9 @@ constructs for SQL queries:
 \end{tabular}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\nonterm{sql}は以下のいずれかである．
+	\nonterm{sql}および\nonterm{sqlfn}は以下の通りである．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\nonterm{sql} is one of the following:
+	\nonterm{sql} and \nonterm{sqlfn} are given below:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{tabular}{lcll}
@@ -16964,6 +16985,20 @@ constructs for SQL queries:
 &::=&
 	\nonterm{sqlexp}
 	& \txt{SQL評価式}{SQL value expressions}
+\\&\vbar&
+	\nonterm{sqlselect}
+	& \txt{SELECTクエリ}{SELECT queries}
+\\&\vbar&
+	\nonterm{sqlclause}
+	& \txt{SQLクエリ句}{SQL query clauses}
+\\&\vbar&
+	\nonterm{sqlcommand}
+	& \txt{SQLコマンド}{SQL commands}
+\\
+\nonterm{sqlfn}
+&::=&
+	\term{...}\ \term{(}\ \nonterm{exp}\ \term{)}
+	& \txt{SQLコマンドの埋め込み}{embedded SQL commands}
 \\&\vbar&
 	\nonterm{sqlselect}
 	& \txt{SELECTクエリ}{SELECT queries}
@@ -16995,8 +17030,10 @@ defined in Section \ref{sec:reference:sqlcommand}.
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	これらの構文のうち\term{\_sql}で始まる式に現れる
 \nonterm{pat}および\nonterm{sql}の中では，
-\code{...(\nonterm{exp})}という形で囲われる\nonterm{exp}の中を除き
-（\ref{sec:reference:sqlselect}節参照），
+\code{...(\nonterm{exp})}または
+\code{(...\nonterm{exp})}という形で囲われる\nonterm{exp}の中を除き
+（\ref{sec:reference:sqlselect}節および
+\ref{sec:reference:sqlexp}節参照），
 以下は予約語として扱われる
 （この予約語のリストは
 第\ref{sec:reference:lexicalitems}節からの再掲である）．
@@ -17005,7 +17042,10 @@ defined in Section \ref{sec:reference:sqlcommand}.
 	In the expressions that begins with \term{\_sql},
 except for the position surrounded by
 \code{...(\nonterm{exp})}
-(see Section \ref{sec:reference:sqlselect} for details),
+or
+\code{(...\nonterm{exp})}
+(see Section \ref{sec:reference:sqlselect} and
+\ref{sec:reference:sqlexp} for details),
 the following words are recognized as keywords
 (this list of keywords is reused from
 Section \ref{sec:reference:lexicalitems}).
@@ -17036,13 +17076,11 @@ a left parenthesize ``\code{(}.''
 \item
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	式（トップレベル）の
-\term{\_sql\ \nonterm{pat} => \nonterm{sql}}および
 \term{\_sql\ \nonterm{sql}}の
 \nonterm{sql}は，
 SQL予約語で始まらなければならない．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The \nonterm{sql} of
-\term{\_sql\ \nonterm{pat} => \nonterm{sql}} and
 \term{\_sql\ \nonterm{sql}} as expressions (top-level)
 must begin with an SQL keyword.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17258,7 +17296,7 @@ the database server.
 	For example, the \smlsharp{}'s SQL value expression
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-\_sql(1 + 2 * 3)
+\_sql(1 + \#employee.salary)
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 という\smlsharp{}のSQL評価式は，サーバーに送信するSQLクエリの断片
@@ -17266,27 +17304,50 @@ the database server.
 is evaluated to the SQL value expression
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-1 + 2 * 3
+1 + employee.salary
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 に評価される．
-	このクエリ断片を評価し7を計算するのは，
-このクエリを送信した先のデータベースサーバーである．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 as a fragment of an SQL command to be sent to a database server.
-	Note that this fragment is not evaluated immediately,
-but just constructed.
-	When a query containing this fragment is sent to a database
-server, the fragment is evaluated on the server.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	SQL評価式が\smlsharp{}で評価できる部分式を含んでいる場合，
+その部分式はSQL評価式構築時に評価され，評価された値がサーバーに
+送信するSQLクエリに埋め込まれる．
+	例えば，
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	If an SQL value expression contains a subexpression that can
+be evaluated by \smlsharp{}, the subexpression evaluates to a value
+and the value is embedded in an SQL command to be sent to a database server.
+	For example,
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+\_sql(1 + 2 + \#employee.salary)
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+という\smlsharp{}のSQL評価式は，サーバーに送信するSQLクエリの断片
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+is evaluated to the SQL value expression
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+3 + employee.salary
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+に評価される．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+of a fragment of an SQL command.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\smlsharp{}では以下に階層的に定義される標準SQLのサブセット
-\nonterm{sqlexp}をSQL評価式として
+を含む式\nonterm{sqlexp}をSQL評価式として
 使用することができる．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The following subset \nonterm{sqlexp} of value expressions
-of the standard SQL is available in \smlsharp{}:
+	The following set of expressions \nonterm{sqlexp},
+which includes a subset of value expressions of the standard SQL,
+is available in \smlsharp{}:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{itemize}
@@ -17310,20 +17371,33 @@ of the standard SQL is available in \smlsharp{}:
 \begin{tabular}{lcll}
 \nonterm{sqlinfexp}
 &::=&
-	\nonterm{sqlappexp}
+	\nonterm{sqlcastexp}
 \\&$\vbar$&
 	\term{\nonterm{sqlinfexp}\ \nonterm{vid}\ \nonterm{sqlinfexp}}
-	& \txt{\smlsharp{}の二項演算}{\smlsharp{}'s infix expresssions}
+	& \txt{二項演算}{infix expresssions}
 \end{tabular}
 
+\item \txt{SQL型キャスト式}{SQL type cast expressions}\\
+\begin{tabular}{lcll}
+\nonterm{sqlcastexp}
+&::=&
+	\nonterm{sqlappexp}
+\\&$\vbar$&
+	\term{(\nonterm{vid}) \nonterm{sqlcastexp}}
+	& \txt{型キャスト}{type cast}
+\end{tabular}
+\\
 \item \txt{SQL関数適用式}{SQL function application expressions}\\
 \begin{tabular}{lcll}
 \nonterm{sqlappexp}
 &::=&
 	\nonterm{sqlatexp}
 \\&$\vbar$&
+	\term{\nonterm{vid} \nonterm{sqlatexp}}
+	& \txt{関数適用}{function applications}
+\\&$\vbar$&
 	\term{\nonterm{sqlappexp}\ \nonterm{sqlatexp}}
-	& \txt{\smlsharp{}の関数適用}{\smlsharp{}'s function applications}
+	& \txt{\smlsharp{}の関数適用}{function applications}
 \\&$\vbar$&
 	\term{\nonterm{sqlappexp} is \optional{not} \nonterm{sqlis}}
 	& \txt{SQLのIS述語}{SQL's IS predicates}
@@ -17338,16 +17412,16 @@ of the standard SQL is available in \smlsharp{}:
 \nonterm{sqlatexp}
 &::=&
 	\nonterm{scon}
-	& \txt{SQLの定数}{SQL's constant literals}
+	& \txt{\smlsharp{}の定数}{constant literals}
+\\&$\vbar$&
+	\term{true}
+	& \txt{\smlsharp{}のtrueリテラル}{\smlsharp{}'s true literal}
+\\&$\vbar$&
+	\term{false}
+	& \txt{\smlsharp{}のfalseリテラル}{\smlsharp{}'s false literal}
 \\&$\vbar$&
 	\term{null}
 	& \txt{SQLのNULLリテラル}{SQL's NULL literal}
-\\&$\vbar$&
-	\term{true}
-	& \txt{SQLのTRUEリテラル}{SQL's TRUE literal}
-\\&$\vbar$&
-	\term{false}
-	& \txt{SQLのFALSEリテラル}{SQL's FALSE literal}
 \\&$\vbar$&
 	\term{\#\nonterm{lab}.\nonterm{lab}}
 	& \txt{名前のある関係に属するカラムの参照}
@@ -17364,7 +17438,7 @@ of the standard SQL is available in \smlsharp{}:
 	& \txt{\smlsharp{}の変数参照}{\smlsharp{}'s variable reference}
 \\&$\vbar$&
 	\term{(\nonterm{sqlexp}, $\cdots$, \nonterm{sqlexp})}
-	& \txt{\smlsharp{}の組}{\smlsharp{}'s tuples}
+	& \txt{組}{\smlsharp{}'s tuples}
 \\&$\vbar$&
 	\term{(\optional{\term{\_sql}} \nonterm{sqlselect})}
 	& \txt{SQLのSELECTサブクエリ}{SQL's SELECT subqueries}
@@ -17376,8 +17450,13 @@ of the standard SQL is available in \smlsharp{}:
 \\&$\vbar$&
 	\term{(\optional{\term{\_sql}} \nonterm{sqlclause})}
 \\&$\vbar$&
-        \term{(\nonterm{sqlexp})}
+	\term{(\nonterm{sqlexp})}
+\\&$\vbar$&
+	\term{( ... \nonterm{exp} )}
+	& \txt{SQL評価式の埋め込み}{embedded SQL value expressions}
 \end{tabular}
+
+\end{itemize}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	他のSQL関連構文との見た目上の統一感を出すために，
@@ -17391,87 +17470,235 @@ value expressions to be written in the same manner of the outermost one.
 	These \term{\_sql} keywords are simply ignored.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\end{itemize}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	SQL評価式\nonterm{sqlexp}の型$\tau$は，
+静的な文脈として与えられるテーブル集合の型$\tau'$および
+データベース接続を識別するための型$w$の下で
+決定される．
+	ひとつのSQL評価式に含まれる全ての部分式の型は，同じ
+$\tau'$および$w$の下で与えられる．
+	以下，式$e$が$\tau'$および$w$の下で型$\tau$を持つことを，$e$の型は
+$(\tau',w)\triangleright\tau$型である，と言う．
+	$\tau'$および$w$に言及する必要がない場合は単に，
+$e$の型は$\tau$である，と言う．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	The type of an SQL value expression \nonterm{sqlexp}
+is determined under the
+type $\tau'$ of a set of tables and $w$ of the database connection
+identification, both of which are given in the static context.
+	The type of every subexpression in an SQL value expression
+is given under the same $\tau'$ and $w$.
+	In what follows,
+we write that the type of an expression $e$ is $(T,w)\triangleright\tau$
+if $e$ has type $\tau$ under $\tau'$ and $w$.
+	If $\tau'$ and $w$ do not need to be described,
+we simply write that the type of $e$ is $\tau$.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\txt{SQL定数式}{SQL Constant Expressions}}
+\subsection{\txt{\smlsharp{}で評価される式}
+                {Expressions evaluated by \smlsharp{}}}
+\label{sec:reference:sqlmlexp}
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	以下の再帰的な条件を満たすSQL評価式は
+\smlsharp{}で評価され，その値がデータベースサーバーに送信される
+クエリに埋め込まれる．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	An SQL value expression satisfying the
+following inductive condition is {\em evaluated by \smlsharp{}\/} and
+their values are embedded in the SQL command to be sent to
+the database server.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{enumerate}
+\item
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	定数式\nonterm{scon}は\smlsharp{}で評価される．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	A constant expression \nonterm{scon} is evaluated by \smlsharp{}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	変数式\nonterm{vid}および\term{op \nonterm{longvid}}は\smlsharp{}で
+評価される．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Variable expressions \nonterm{vid} and \term{op \nonterm{longvid}}
+are evaluated by \smlsharp{}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	組\term{(\nonterm{sqlexp$_1$}, $\cdots$, \nonterm{sqlexp$_n$})}は，
+全ての\nonterm{sqlexp$_i$}が\smlsharp{}で評価される式ならば，
+\smlsharp{}で評価される．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	A tuple
+\term{(\nonterm{sqlexp$_1$}, $\cdots$, \nonterm{sqlexp$_n$})}
+is evaluated by \smlsharp{} if
+\nonterm{sqlexp$_i$} is evaluated by \smlsharp{}
+for any $i$.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	関数適用式\term{\nonterm{vid} \nonterm{sqlatexp}}は，
+\nonterm{sqlatexp}が\smlsharp{}で評価される式ならば，
+\smlsharp{}で評価される．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	A function application \term{\nonterm{vid} \nonterm{sqlatexp}}
+is evaluated by \smlsharp{} if
+\nonterm{sqlatexp} is evaluated by \smlsharp{}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	二項演算式
+\term{\nonterm{sqlinfexp$_1$}\ \nonterm{vid}\ \nonterm{sqlinfexp$_2$}}は，
+全ての\nonterm{sqlinfexp$_i$}が\smlsharp{}で評価される式ならば，
+\smlsharp{}で評価される．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	An infix expression
+\term{\nonterm{sqlinfexp$_1$}\ \nonterm{vid}\ \nonterm{sqlinfexp$_2$}}
+is evaluated by \smlsharp{} if
+\nonterm{sqlinfexp$_i$} is evaluated by \smlsharp{}
+for any $i$.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\smlsharp{}の関数適用式
+\term{\nonterm{sqlappexp}\ \nonterm{sqlatexp}}は
+\smlsharp{}で評価される．
+	\nonterm{sqlappexp}または\nonterm{sqlatexp}が
+\smlsharp{}で評価される式でない場合は構文エラーである．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	An \smlsharp{}'s function application
+\term{\nonterm{sqlappexp}\ \nonterm{sqlatexp}}
+is evaluated by \smlsharp{}.
+	A syntax error occurs if
+either \nonterm{sqlappexp} or \nonterm{sqlatexp}
+is not evaluated by \smlsharp{}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{enumerate}
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	例えば，SQLクエリ
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	For example, consider the following SQL query:
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+val q = \_sql db => select SOME 1 + sum(\#a.b) from \#db.a group by \#a.c;
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+において，部分式\term{SOME 1}は\smlsharp{}で評価され，
+その値がSQLクエリ断片に埋め込まれる
+（もし\term{SOME}が未定義ならば未定義変数エラーが発生する）．
+	\term{sum(\#a.b)}は\smlsharp{}で評価されず，そのまま
+SQLクエリ断片に含まれる．
+	\code{q}を実行したときにサーバーに送信されるSQLクエリは
+以下の通りである．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	The subexpression \term{SOME 1} is evaluated by \smlsharp{}
+and its value is embedded in the SQL query fragment
+(if \term{SOME} is not defined, it causes an undefined variable error).
+	\term{sum(\#a.b)} is not evaluated by \smlsharp{} and
+therefore embedded in the query without any modification.
+	The SQL query that is sent to the server when executing \term{q}
+is the following:
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+SELECT 1 + SUM(a.b) AS "1" FROM a GROUP BY a.c
+\end{program}
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\smlsharp{}で評価される式の型は，
+\ref{sec:reference:sqlbasictype}節で定義したSQLの基本型のうちの
+いずれかでなければならない．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	The type of expressions that are evalutated by \smlsharp{}
+must be one of the SQL basic types defined in Subsection
+\ref{sec:reference:sqlbasictype}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	SQL評価式に含まれる\smlsharp{}で評価される式は，
+通常の\smlsharp{}の式と同じ順番で，
+SQL評価式が評価されるときにただちに評価される．
+	\smlsharp{}で評価される式に関数適用式を含むSQL評価式は
+expansiveである．
+	SQL評価式やSQLクエリは多くの場合多相的であるため，
+\smlsharp{}で評価される関数適用式を含むSQL評価式は
+トップレベルでvalue restrcition警告を引き起こす．
+	例えば，以下のようになる．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Each subexpression evaluated by \smlsharp{} in an SQL value
+expression
+is evaluated immediately at the time when the SQL value expression
+is evaluated.
+	The evaluation order of such subexpressions
+are also same as \smlsharp{} expressions.
+	An SQL value expression is expansive, i.e, avoided to have
+polymorphic types, if it contains a function application
+in a subexpression evaluated by \smlsharp{}.
+	Since SQL queries are polymorphic in almost cases,
+SQL value expressions including function applicaions evaluated by
+\smlsharp{} often cause
+``value restriction'' warnings, as seen in the following example:
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+\#~\_sql(1 + 2);\\
+none:\char`\~1.\char`\~1-\char`\~1.\char`\~1 Warning:\\
+  (type inference 065) dummy type variable(s) are introduced due to value\\
+  restriction in: it\\
+val it = \_ : (?X1 -> int, ?X0) SQL.exp
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	SQL評価式をトップレベルに書いたり，多相的に使いたいときは，
+\code{fn () => $\cdots$}を付けるなどして，
+value restrictionを回避する必要がある．
+	例えば，上記の警告は以下のようにすれば回避できる．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	To use an SQL expression polymorphically or to put it at
+the program toplevel,
+enclose it with \code{fn () => $\cdots$} to avoid the warning.
+	For example, in contrast to the above, the following example does
+not cause the warning:
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+\#~fn () => \_sql(1 + 2);\\
+val it = fn : ['a, 'b. unit -> ('a -> int, 'b) SQL.exp]
+\end{program}
+
+\subsection{\txt{SQL定数式}{SQL constant expressions}}
 \label{sec:reference:sqlconst}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	SQL定数式は，第\ref{sec:scon}節で定義した\smlsharp{}の定数式
-と同じ構文であるか，あるいは
-SQLの定数
-\term{null}，
-\term{true}，および
-\term{false}の
-いずれかである．
+	定数式は全て\smlsharp{}で評価される式である．
 	定数リテラルの書き方は\smlsharp{}の文法に準じる．
 	そのため，特に文字列リテラルの書き方については，
 標準SQLとは大きく異なる．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	An SQL constant expression is either the same syntax as
-\smlsharp{}'s constants defined in Section \ref{sec:scon} or
-one of the following SQL constant literals: \term{null}, \term{true},
-or \term{false}.
-	The \smlsharp{}'s syntax is used to write SQL constants;
-therefore, they looks differently from the standard SQL.
+	Any constant expression in an SQL value expression is
+evaluated by \smlsharp{}.
+	The \smlsharp{}'s syntax is used to write SQL
+constants; therefore, they looks differently from the standard SQL.
 	In particular, string literals are totally
 different than the standard one.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	SQL定数式は，
-定数の型を$\tau$とすると，
-\code{['a,'b. ('a -> $\tau$, 'b) SQL.exp]}型を持つ．
-	$\tau$はSQLの基本型の範囲で以下の表の通りにオーバーロードされている．
+	\code{true}および\code{false}が
+\code{SQL.bool3}型を持たないことに注意しなければならない．
+	これらは第一級の真偽値のリテラルであり，
+論理演算式としては使えない．
+	論理演算式と真偽値の区別については
+\ref{sec:reference:sqlboolean}節を参照せよ．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The type of SQL constant expression is
-\code{['a,'b. ('a -> $\tau$, 'b) SQL.exp]}
-where $\tau$ is the type of the constant value.
-	$\tau$ is overloaded amang SQL basic types as shown in the
-following table:
+	Note that neither the \code{true} nor \code{false} has
+\code{SQL.bool3} type.
+	They denotes a first-class boolean value and therefore they
+are distinguished from boolean expressions.
+	See Section \ref{sec:reference:sqlboolean} for
+the distinction between boolean expressions and values.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{tabular}{|l|l|}
-\hline
-\txt{クラス}{class} & \txt{取りうる型$\tau$の集合}{possible types}
-\\\hline
-\nonterm{int} & {\tt int}, {\tt intInf}, {\tt int option}, {\tt intInf option}
-\\
-\nonterm{word} & {\tt word}, {\tt word option}
-\\
-\nonterm{real} & {\tt real}, {\tt real32}, {\tt real option}, {\tt real32 option}
-\\
-\nonterm{string} & {\tt string}, {\tt string opiton}
-\\
-\term{null} & {\tt 'a option}\\
-\term{true} & {\tt bool}, {\tt bool option}\\
-\term{false} & {\tt bool}, {\tt bool option}\\
-\hline
-\end{tabular}
-
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\smlsharp{}の定数式とは異なり，
-$\tau$が文脈から一意に型が定まらなくても，
-SQL定数式はオーバーロードされた多相型を持つ．
-	例えば，以下のようになる．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Different from \smlsharp{} constant expressions,
-an SQL constant expression has a overloaded polymorphic type
-if $\tau$ is not uniquely determined from the context.
-	For example, the following constant expressions have
-polymorphic types:
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-\#\ \_sql(1);\\
-val it = \_~: ['a, 'b::\{int, intInf, 'c option\}, 'c::\{int, intInf\}, 'd.\\
-~~~~~~~~~~~~~('a -> 'b, 'd) SMLSharp\_SQL\_Prim.exp]\\
-\#\ \_sql("abc");\\
-val it = \_~: ['a, 'b::\{string, string option\}, 'c.\\
-~~~~~~~~~~~~~('a -> 'b, 'c) SQL.exp]
-\end{program}
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	なお，SQL99の機能T031に定義されているUNKNOWNリテラルは，
+	SQL99の機能T031に定義されているUNKNOWNリテラルは，
 \smlsharp{}では提供されない．
 	これは，主要なRDBMSの中では唯一T031を実装している
 PostgreSQLがUNKNOWNリテラルを持たないからであり，また将来
@@ -17488,22 +17715,6 @@ would appear in the future, UNKNOWN can be substituted by NULL
 without changing its meaning
 (this interchangable use of UNKNOWN and NULL has been criticized
 since it is not compatible with the SQL core).
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\code{true}および\code{false}リテラルが
-\code{SQL.bool3}型を持たないことに注意しなければならない．
-	これらは第一級の真偽値のリテラルであり，
-論理演算式としては使えない．
-	論理演算式と真偽値の区別については
-\ref{sec:reference:sqlboolean}節を参照せよ．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Note that neither the \code{true} nor \code{false} literals has
-\code{SQL.bool3} type.
-	They denotes a first-class boolean value and therefore they
-are distinguished from boolean expressions.
-	See Section \ref{sec:reference:sqlboolean} for
-the distinction between boolean expressions and values.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\txt{SQL識別子式}{SQL identifier expressions}}
@@ -17526,11 +17737,9 @@ begin with the \term{op} keyword.
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	SQL評価式の中では
-ストラクチャ\code{SQL.Op}が自動的に\code{open}され，
-さらにいくつかの識別子が以下の通りinfix宣言される．
+いくつかの識別子が以下の通りinfix宣言される．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	In the SQL value expressions,
-the \code{SQL.Op} structure is implicitly \code{open}-ed and
 the infixity of some identifiers are declared as follows:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
@@ -17538,187 +17747,95 @@ infix 7 \%\\
 infix 5 like ||\\
 nonfix mod
 \end{program}
+
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	SQL識別子式の型と値は，
-\code{SQL.Op}か，あるいは
-現在の\smlsharp{}の環境の中で，
-その識別子が束縛された型と値である．
+	識別子の型と値は，
+その識別子が\smlsharp{}で評価される式に現れているかどうかによって
+異なる．
+	識別子が\smlsharp{}で評価される式に現れているならば，
+その型と値は
+現在の\smlsharp{}の環境の中でその識別子が束縛された型と値である．
+	そうでなければ，識別子は\code{SQL.Op}ストラクチャに定義された
+型と値を持つ．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The type and value of an SQL identifier expression is
-those of the identifier bound in either the \code{SQL.Op} structure
-or the current context of the \smlsharp{} program.
+	The type and value of an identifier expression is
+varied depending on whether or not the identifier occurs in an
+expression evaluated by \smlsharp{}.
+	If an identifier occurs in an expression evaluted by \smlsharp{},
+its type and value are
+those of the identifier bound in the current context of the \smlsharp{}
+program.
+        Otherwise, the type and value of an identifier are
+those of the identifier bound in the \code{SQL.Op} structure.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	SQL評価式中に
-SQL評価式の外で定義された\smlsharp{}の変数を書くことで，
-その変数が束縛されているSQL評価式をその変数の出現位置に埋め込むことが
-できる．
-	例えば，以下のように書ける．
+	例えば，式
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	This expression allows to embed an SQL value expression
-into another one through a free variable, as shown in the following
-example:
+	For example, the two \code{+} identifiers occured in the
+expression
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-\#~val x = \_sql(1)\\
-\ ~val y = fn () => \_sql(x + 2);\\
-val x = \_ : ['a, 'b::\{int, intInf, 'c option\}, 'c::\{int, intInf\}, 'd.\\
-~~~~~~~~~~~~~('a -> 'b, 'd) SQL.exp]\\
-val y = fn : ['a, 'b::\{int, intInf, 'c option\}, 'c::\{int, intInf\}, 'd.\\
-~~~~~~~~~~~~~unit -> ('a -> 'b, 'd) SQL.exp]\\
-\#~SQL.expToString (y ());\\
-val it = "1 + 2" : string
+\_sql(1 + 2 + \#a.b)
 \end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+に現れる2つの\code{+}は意味が異なる．
+	最初の\code{+}は現在の\smlsharp{}の環境で束縛されている
+\code{+}であり，2つ目の\code{+}は\code{SQL.Op.+}である．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+have different meanings.
+	The first \code{+} is the \code{+} bound in the current \smlsharp{}
+environment, and the second \code{+} is \code{SQL.Op.+}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\smlsharp{}で評価される式でない箇所に現れる識別子は，
+SQLクエリに現れない関数適用式\term{(\nonterm{vid}) \nonterm{sqlappexp}}の
+\nonterm{vid}を除いて（\ref{sec:reference:sqlcast}節参照），
+識別子がそのまま大文字に変換されてからSQLクエリに埋め込まれる．
+	\code{SQL.Op}ストラクチャの値が実際に参照されるのは，
+トイプログラムを実行（\ref{sec:reference:sqllib_query}節参照）
+した場合に限られる．
+	\code{SQL.Op}ストラクチャに定義された識別子の型は
+SQL評価式の型付けに用いられる．
+	例えば\code{\_sql(1 + \#a.b)}が\smlsharp{}で何型を持つかは，
+\code{SQL.Op.+}の型を調べることで分かる．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	An identifier occuring in an expression that is not evaluated
+by \smlsharp{}, except for \nonterm{vid} of
+\term{(\nonterm{vid}) \nonterm{sqlappexp}} \ref{sec:reference:sqlcast}),
+is embedded in the SQL query after translating it by the following rules:
+\begin{itemize}
+\item All lower case alphabets are replaced with upper case alphabets.
+\end{itemize}
+	The value of an identifier defined in the \code{SQL.Op}
+structure is referred only when the toy program of the SQL query is executed
+(see Subsection \ref{sec:reference:sqllib_query}).
+	Its type is used for typing SQL value expressions.
+	For example, the type of \code{\_sql(1 + \#a.b)}
+in \smlsharp{} can be determined by looking for the type of \code{SQL.Op.+}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\txt{SQL関数適用式およびSQL演算子式}{SQL function applications and infix expressions}}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	SQL関数適用式およびSQL演算子式は，
-組み込み構文になっている論理演算子を除いて，
+組み込み構文になっている論理演算子式を除いて，
 \smlsharp{}の関数適用式および演算子式と同様に，
-\smlsharp{}の式として構文解析および評価される．
-	SQL演算子式は，\smlsharp{}の演算子式と同様に，
-\smlsharp{}の組への関数適用に展開される糖衣構文であり，
-その結合力は\smlsharp{}の演算子宣言によって決定される．
+\smlsharp{}の式として構文解析される．
+	演算子の結合力は\smlsharp{}の演算子宣言によって決定される．
 	そのため，\term{infix}宣言の使い方によっては，
-標準SQLとは異なる演算子の結合順位で構文解析されることに
+標準SQLとは異なる演算子の結合順位でSQLクエリが構築されることに
 注意が必要である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	SQL function application and infix expressions are
-parsed and evaluated in the same way as those of \smlsharp{},
+parsed in the same way as those of \smlsharp{},
 except for builtin logical expressions.
-	Similarly to \smlsharp{}'s infix expressions, each infix expression
-in an SQL value expression are expanded to a function application with
-one pair argument.
 	The associatibity of infix expressions is decided by
 \smlsharp{}'s infix declarations.
 	Thus, \smlsharp{}'s SQL infix operators may have different
 associatibity than the standard SQL in accordance with the use of
 the infix declarations.
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	論理演算子以外のSQLの演算子および関数は，
-クエリ断片を受け取りクエリ断片を返す
-\smlsharp{}のライブラリ関数として提供されている．
-	\smlsharp{}のSQL評価式で使用可能な演算子の一覧は
-第\ref{sec:reference:sqllib_operators}節にある．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Each of the SQL infix operators and functions, except for builtin
-logical operators, is provided as an \smlsharp{} library function
-that takes two query fragments and returns the fragment obtained by
-concatinating the two with the infix operator of the same name as
-the function.
-	The list of avaiable SQL operators is shown in Section
-\ref{sec:reference:sqllib_operators}.
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	SQL評価式から呼び出される\smlsharp{}関数の適用は，
-通常の\smlsharp{}の関数適用式と同じ順番で，
-SQL評価式が評価されるときにただちに評価される．
-	関数適用式を含むSQL評価式は
-expansiveである．
-	SQL評価式やSQLクエリは多くの場合多相的であるため，
-二項演算子を含むSQL評価式はトップレベルでvalue restrcition警告を引き起こす．
-	例えば，以下のようになる．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	An \smlsharp{} function application in an SQL value expression
-is evaluated immediately at the time when the SQL value expression
-is evaluated.
-	The evaluation order of function applications are also same
-as \smlsharp{} expressions.
-	An SQL value expression is expansive, i.e, avoided to introduce
-polymorphic types, if it contains a function application.
-	Since SQL queries are polymorphic in almost cases,
-SQL value expressions including function applicaions often cause
-``value restriction'' warnings, as seen in the following example:
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-\#~\_sql(1 + 2);\\
-none:\char`\~1.\char`\~1-\char`\~1.\char`\~1 Warning:\\
-  (type inference 065) dummy type variable(s) are introduced due to value\\
-  restriction in: it\\
-val it = \_ : (?X4 -> int, ?X1) SQL.exp
-\end{program}
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	SQL評価式をトップレベルに書いたり，多相的に使いたいときは，
-\code{fn () => $\cdots$}を付けるなどして，
-value restrictionを回避する必要がある．
-	例えば，上記の警告は以下のようにすれば回避できる．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	To use an SQL expression polymorphically or to put it at
-the program toplevel,
-enclose it with \code{fn () => $\cdots$} to avoid the warning.
-	For example, in contrast to the above, the following example does
-not cause the warning:
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-\#~fn () => \_sql(1 + 2);\\
-val it = fn : ['a, 'b::{int, intInf, 'c option}, 'c::{int, intInf}, 'd.\\
-~~~~~~~~~~~~~~unit -> ('a -> 'b, 'd) SQL.exp]
-\end{program}
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	SQL関数適用式およびSQL演算子式を用いて，
-\smlsharp{}でユーザーが定義したSQLクエリ構築関数を呼び出すことも
-可能である．
-	クエリを構築する関数を定義するときは，
-SQL評価式はサーバーに送信するクエリを構築する式であり，
-計算結果をクエリに埋め込む式ではないことに注意されたい．
-        例えば，以下の再帰関数\code{nat $n$}は，
-\code{1}が$n$個ならんだSQL評価式\code{1 + 1 + $\cdots$ + 1}を構築する
-関数であり，その評価結果である$n$を計算する関数ではない．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	User-defined SQL construction function can be defined and
-can be called in a SQL value expression.
-	Note that the SQL value expression in \smlsharp{} is the
-expression that constructs a query to be sent to a server and therefore
-it is not evaluated to a value before sending a query to the server.
-	For example,
-the following function \code{nat $n$} does not return the value $n$
-but returns the SQL value expression \code{1 + 1 + $\cdots$ + 1}
-where the number of \code{1}s is $n$:
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-\#~fun nat 1 = \_sql(1)\\
-\ ~~~| nat n = let val x = nat (n - 1) in \_sql(1 + x) end;\\
-val nat = fn : ['a, 'b::{int, intInf, 'c option}, 'c::{int, intInf}, 'd.\\
-~~~~~~~~~~~~~~~int -> ('a -> 'b, 'd) SQL.exp]\\
-\#~SQL.expToString (nat 5);\\
-val it = "1 + 1 + 1 + 1 + 1" : string
-\end{program}
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	サーバーで計算される整数型のSQL式（\code{SQL.exp}型）と
-\smlsharp{}プログラムが計算する整数（\code{int}型）は型で区別される．
-	これらを混同したプログラムを書くと型エラーが起こる．
-	例えば，上述の\code{nat}関数を\code{let}を使わずに
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The SQL expressions to be evaluated on a server (\code{SQL.exp})
-and integer expression computed in \smlsharp{} (\code{int}) are
-distinguished by their types.
-	If these two expressions are mixed up,
-the \smlsharp{} compiler reports an type error.
-	For example, it is not allowed to write the above \code{nat}
-function without using the \code{let} expression as follows:
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-fun nat 1 = \_sql(1)\\
-~~| nat n = \_sql(1 + nat (n - 1));
-\end{program}
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-と書くことはできない．
-	なぜなら，SQL評価式の中で\code{nat (n - 1)}の\code{1}は，
-データベースサーバーが評価する定数式（\code{SQL.exp}型）である一方，
-\code{nat}関数の引数\code{n}は\smlsharp{}が計算する整数（\code{int}型）
-だからである．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	This is because
-the integer literal \code{1} of \code{nat (n - 1)} is an SQL constant
-literal of type \code{SQL.exp}, which will be evaluated on a server,
-but \code{n}, the argument of \code{nat}, is bound to an integer
-of type \code{int}, which \smlsharp{} computes.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17760,6 +17877,194 @@ expression that applies the \code{SQL.Op.avg} function to the argument
 \code{\#e.age}.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	論理演算子以外のSQLの演算子および関数は，
+\code{SQL.Op}ストラクチャに定義された
+\smlsharp{}のライブラリ関数として提供されている．
+	\smlsharp{}で評価されないSQL評価式で使用可能な関数および
+演算子の一覧は第\ref{sec:reference:sqllib_operators}節にある．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Each of the SQL infix operators and functions, except for builtin
+logical operators, is provided as an \smlsharp{} library function
+defined in the \code{SQL.Op} structure.
+	The list of SQL functions and operators available in expressions
+that are not evaluated by \smlsharp{} is shown in Section
+\ref{sec:reference:sqllib_operators}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        SQL関数適用式およびSQL演算子式は
+\smlsharp{}のそれらと同様に型付けされる．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	An SQL function application expression and SQL infix expression
+is typechecked in the same way as those of \smlsharp{}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{\txt{型キャスト式}{Type cast expressions}}
+\label{sec:reference:sqlcast}
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\smlsharp{}のSQL評価式では，
+識別子だけを丸括弧で囲った式は特別な意味を持つ．
+	丸括弧で囲った識別子を式の前に前置すると，
+その式の評価結果に丸括弧で囲った識別子が指す関数を適用することを
+表す．
+	ただし，丸括弧で囲った識別子はサーバーに送信される
+SQLクエリには現れない．
+	丸括弧で囲われた識別子は\code{SQL.Op}ストラクチャに定義された
+識別子でなければならない．
+	以下，丸括弧で囲われた識別子を前置した式を，
+型キャスト式という．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	In a \smlsharp{}'s SQL value expression,
+the expression consisting of a single identifier surrounded by parenthesizes
+has a special meaning.
+	By putting an identifier surrounded by parenthesizes
+in front of an expression,
+the value of the expression is applied to the function identified by
+the identifier.
+	The identifier and its surrounding parenthesizes do not appear
+in the SQL query to be sent to the database server.
+	An identifier surrounded by parenthesizes must be defined in
+the \code{SQL.Op} structure.
+	In what follows, an expression prefixed with an identifier
+surrounded by parenthesizes is referred to as {\em a type cast expression}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	型キャスト式は，
+\smlsharp{}がサポートしない
+暗黙のキャストやオーバーロードへの対応として，
+\smlsharp{}で型の辻褄を合わせるために用いられる．
+	主な使用用途のひとつは\code{option}型や数値型の取り扱いである．
+	\ref{sec:reference:sqltype}節で述べたとおり，
+\smlsharp{}はNULLになる可能性を\code{option}型を用いて
+型上で区別する．
+	一方，標準SQLでは，NULLはどの基本型にも含まれる．
+	この違いのため，
+SQLでは型エラーでないクエリでも，
+\smlsharp{}では型エラーとなることがある．
+	また，数値型についても，
+標準SQLでは暗黙に数値型のキャストが行われる一方，
+\smlsharp{}は暗黙のキャストを行わないため，
+\smlsharp{}では型エラーとなることがある．
+	例えば，
+部署ごとの平均年齢より若い人の問い合わせる以下のクエリを見てみよう．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	A type cast expression
+corresponds to implicit type cast in SQL, which is not
+supported by \smlsharp{}'s type system.
+	One of its typical usage is to deal with the \code{option} and
+numeric types.
+	As described in Section \ref{sec:reference:sqltype},
+\smlsharp{} distinguish values being possibly NULL from non-NULL values
+by using \code{option} type.
+	In contrast,
+the standard SQL allows NULL in any type.
+	Due to this difference,
+the \smlsharp{} compiler reports a type error
+even for a query type-correct in the standard SQL.
+	Similarly,
+\smlsharp{} does not allow implicit numeric type conversion,
+which the standard SQL allows.
+	For example,
+consider the following that queries people younger than
+the average in each deparment:
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+fn db => \_sql select \#e.department as department, \#e.name as name\\
+~~~~~~~~~~~~~~from \#db.empoloyee as e\\
+~~~~~~~~~~~~~~where \#e.age < (select avg(\#t.age)\\
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~from \#db.employee as t\\
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~where \#t.department = \#e.department\\
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~group by ())
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	この式には型がつくものの，
+\code{employee}テーブルの\code{age}カラムの型は
+\code{SQL.numeric option}と推論される．
+	従って，
+\code{age}が\code{int}型のデータベースに対してこのクエリを実行できない．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	This expression is typechecked,
+but the type of \code{age} column of \code{employee} table is
+infered as \code{SQL.numeric option}.
+	Thus, this query cannot be executed
+if the \code{age} column is of \code{int}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	この原因は，
+集約関数\code{avg}の結果とカラム\code{\#e.age}を比較していることにある．
+	\code{avg}の結果の型は
+\code{SQL.numeric option}型である．
+	\smlsharp{}におけるSQL比較演算子の型付け規則により，
+比較演算子の左右の式の型は一致していなければならない．
+	従って，
+\code{\#e.age}の型は
+\code{SQL.numeric option}型となる．
+	標準SQLであれば，
+暗黙に\code{NUMERIC}型へのキャストが行われるため，
+\code{age}カラムの型は数値型ならばどの型でも良いはずである．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	The source of this inference is that
+the result of the aggregate function \code{avg} is compared with
+\code{\#e.age}.
+	The result type of \code{avg} is
+\code{SQL.numeric option}.
+	The comparison operator forces the two expressions to have
+the same type.
+	Therefore,
+the type of \code{\#e.age} is \code{SQL.numeric option}.
+	In the standard SQL,
+\code{age} may have an arbitrary numeric type
+since its type is implicitly casted to \code{NUMERIC}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	このような，
+\smlsharp{}がサポートしない
+暗黙のキャストやオーバーロードに対応するため，
+以下のように比較演算の箇所に\code{Num}関数への適用を加えると，
+任意の数値型の\code{age}カラムに対して
+このクエリを実行できるようになる．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	For the above example,
+inserting \code{Num} function to the left side of the comparison operator
+allows \code{age} to have an arbitrary numeric type.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+fn db => \_sql select \#e.department as department, \#e.name as name\\
+~~~~~~~~~~~~~~from \#db.empoloyee as e\\
+~~~~~~~~~~~~~~where (Num)\#e.age < (select avg(\#t.age)\\
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~from \#db.employee as t\\
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~where \#t.department = \#e.department\\
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~group by ())
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	この\code{(Num)}はSQLクエリの生成では無視される．
+	従って\code{(Num)}の有無にかかわらず
+サーバーに送信されるSQLクエリは変化しない．
+	\code{(Num)}はSQL評価式の型付けのためだけに
+静的に評価される．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	This \code{(Num)} is ignored when an SQL query is composed;
+therefore, regardless of the existence of \code{(Num)},
+the SQL query to be sent to the database server is not changed.
+	The \code{(Num)} is evaluated statically only for
+the typechecking of the SQL value expression.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	型キャスト式のために用意されている
+関数の一覧については
+\ref{sec:reference:sqllib_none}節を
+参照せよ．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	For the set of identifiers provided for type cast expressions,
+see Subsection \ref{sec:reference:sqllib_none}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{\txt{SQL論理演算式}{SQL logical expressions}}
 \label{sec:reference:sqllogical}
 
@@ -17792,52 +18097,39 @@ to avoid conflict with other \smlsharp{} syntax,
 	For example, the following causes a parse error:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-\#~fn () => \_sql where \#t.c is true and 10 < 20;\\
-(interactive):1.33-1.33 Error: syntax error found at AND
+\#~fn () => \_sql where \#t.c >= 10 and \#t.c <= 20;\\
+(interactive):1.31-1.35 Error: Syntax error: deleting  AND HASH
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	以下の例のように\term{and}を含む式全体を括弧で囲むことで
+構文エラーを回避できる．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	By surrounding the expression including the \term{and} operator
 with parenthesizes, the parse error is avoided, as seen in the following:
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-\#~fn () => \_sql where (\#t.c is true and 10 < 20);\\
-val it = fn : ['a\#{t: 'b}, 'b\#{c: SQL.bool3}, 'c.\\
+\#~fn () => \_sql where (\#t.c >= 10 and \#t.c <= 20);\\
+val it = fn : ['a\#{t: 'b}, 'b\#{c: int}, 'c.\\
 ~~~~~~~~~~~~~~~unit -> ('a list -> 'a list, 'c) SQL.whr]
 \end{program}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	これらの論理演算式はそれぞれ，その全ての部分式が
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The type of a logical expression is
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-($\tau$ -> SQL.bool3, $w$) SQL.exp
-\end{program}
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-型のとき，
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if its all subexpressions is of the
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-($\tau$ -> SQL.bool3, $w$) SQL.exp
-\end{program}
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-型を持つ．
+\code{SQL.bool3}型のとき，
+\code{SQL.bool3}型を持つ．
 	また，ライブラリ関数として提供されるSQL比較演算子
 （\ref{sec:reference:sqllib_operators}節参照）もすべて，
+\code{SQL.bool3}型のクエリを返す．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	The type of a logical expression is
+\code{SQL.bool3}
+if its all subexpressions is of the
+\code{SQL.bool3}
 type.
 	Similarly,
 all SQL comparison operators provided as \smlsharp{} library functions
 return a query of the
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-($\tau$ -> SQL.bool3, $w$) SQL.exp
-\end{program}
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-型のクエリを返す．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\code{SQL.bool3}
 type.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -17866,7 +18158,7 @@ is not allowed to be a boolean expression.
 (interactive):1.14-1.26 Error:\\
   (type inference 016) operator and operand don't agree\\
   operator domain: SQL.bool3\\
-          operand: 'HBP::{bool, bool option}
+          operand: 'HBP::bool
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	一方，以下の例は型エラーにならない．
@@ -17874,14 +18166,14 @@ is not allowed to be a boolean expression.
 	In contrast, the following does not cause type error
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-\#~fn () => \_sql(true = true is false);\\
+\#~fn () => \_sql(\#t.c = true is false);\\
 val it = fn : ['a, 'b. unit -> ('a -> SQL.bool3, 'b) SQL.exp]
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	なぜなら，\code{true}は真偽値リテラルであるが，
-\code{true = true}は論理演算式だからである．
+\code{\#t.c = true}は\code{SQL.bool3}型の比較演算式だからである．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-because \code{true = true} is an boolean expression
+because \code{\#t.c = true} is an boolean expression
 whereas \code{true} itself denotes an boolean value.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -17894,7 +18186,9 @@ whereas \code{true} itself denotes an boolean value.
 	ここで，
 \nonterm{lab$_1$}はテーブルの名前，
 \nonterm{lab$_2$}はカラムの名前である．
-	SQLカラム参照式の型は
+	SQLカラム参照式の型は，文脈で与えらえるテーブル集合の型のうち，
+テーブル\nonterm{lab$_1$}の
+カラム\nonterm{lab$_2$}の型である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	To reference a certain column of a certain table,
 write
@@ -17903,14 +18197,9 @@ where
 \nonterm{lab$_1$} and \nonterm{lab$_2$} are the names of
 the table and column, respectively.
 	The type of a column reference is
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-[ 'a\#\{\nonterm{lab$_1$}: 'b\}, 'b\#\{\nonterm{lab$_2$}: 'c\}.
-('a -> 'c, 'w) SQL.exp ]\txt{}{\normalfont .}
-\end{program}
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-である．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+that of the column \nonterm{lab$_2$}
+of the table \nonterm{lab$_1$} as specified in the type of table sets
+given by the static context.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17948,7 +18237,7 @@ SELECT Employee.name FROM EMPLOYEE
 is a valid query in the standard SQL, but in \smlsharp{},
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-\_sql db => select Employee.name from \#db.EMPLOYEE
+\_sql db => select \#Employee.name from \#db.EMPLOYEE
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 と書くと型エラーとなる．
@@ -17970,7 +18259,7 @@ the table and column names appears in the same case as the
 参照するときである．
 	このようなカラムへの参照は，\smlsharp{}では
 \term{\#.\nonterm{lab}}と書く．
-	その型は，
+	その型はカラム\nonterm{lab}の型である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Sometimes in SQL,
 a column in an anonymous table is referenced.
@@ -17978,13 +18267,9 @@ a column in an anonymous table is referenced.
 that refers to a column computed by the SELECT clause.
 	In \smlsharp{}, such kind of column references is written
 as \term{\#.\nonterm{lab}}.
-	Its type is
+	Its type is the type of the column \nonterm{lab}.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-[ 'a\#\{\nonterm{lab}: 'b\}, 'b, 'w. ('a -> 'b, 'w) SQL.exp ]\txt{}{\normalfont .}
-\end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-である．
 	例えば，SQLクエリ
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	For example, the SQL query
@@ -18059,17 +18344,15 @@ and therefore it is checked at compile time.
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 型を持たなければならない．
 	このとき，サブクエリ\term{(\nonterm{sqlselect})}の型は，
+ある$\tau'$について$(\tau',w)\triangleright\tau$である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 in \smlsharp{}.
 	If it is satisfied,
 the type of the subquery expression
 \term{(\nonterm{sqlselect})} is
+$(T,w)\triangleright\tau$ for some $\tau'$.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-['a. ('a -> $\tau$, $w$) SQL.exp]\txt{}{\normalfont .}
-\end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-である．
 	サブクエリが返す行数は，クエリを実行するサーバーが実行時に
 チェックする．
 	クエリを実行したときに\nonterm{sqlselect}が0行または2行以上の行を
@@ -18094,18 +18377,137 @@ if \nonterm{sqlselect} is of type
 ($\tau$ list, $w$) SQL.query\txt{}{\normalfont ,}
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-のとき，型
+のとき，ある$\tau'$について型$(\tau',w)\triangleright\code{SQL.bool3}$を持つ．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 then the entire expression is of type
+$(\tau',w)\triangleright\code{SQL.bool3}$ for some $\tau'$.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\txt{SQL評価式の埋め込み}{Embedded SQL value expressions}}
+\label{sec:reference:sqlembed}
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	SQL評価式\nonterm{sqlexp}を第一級の\smlsharp{}オブジェクトとして
+取り出すには\term{\_sql(\nonterm{sqlexp})}と書く．
+	\nonterm{sqlexp}の型が
+$(\tau',w)\triangleright\tau$のとき，
+式\term{\_sql(\nonterm{sqlexp})}の型は
+\term{($\tau'$ -> $\tau$, $w$) SQL.exp}である．
+	例えば，
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	To obtain a first-class \smlsharp{} object of an SQL value
+expression \nonterm{sqlexp}, write an expression
+\term{\_sql(\nonterm{sqlexp})}.
+	The type of \term{\_sql(\nonterm{sqlexp})} is
+\term{($\tau'$ -> $\tau$, $w$) SQL.exp}
+if \nonterm{sqlexp} is of type $(\tau',w)\triangleright\tau$.
+	For example, the type of
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-['a. ('a -> SQL.bool3, $w$) SQL.query]\txt{}{\normalfont .}
+val q = \_sql(1 + \#employee.salary)
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-を持つ．
+の型は
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+is
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+val q : [ 'a\#\{employee: 'b\}, 'b\#\{salary: int\}, 'w.
+('a -> int, 'w) SQL.exp ]\txt{}{\normalfont .}
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        このようにして取り出したSQL評価式の断片を
+別のSQL評価式に埋め込むには
+埋め込み式\term{(...\nonterm{exp})}を用いる．
+	例えば，上述のSQL評価式断片\code{q}を用いて
+以下のようにSQL評価式を構築できる．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	To embed a fragment of SQL value expression obtained in such
+a way in another SQL value expression,
+use the \term{(...\nonterm{exp})} expression.
+	For example,
+the following expression is constructed by embedding \code{q} in it:
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+\_sql((...q) > 10)
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	このSQL評価式は以下のSQLクエリを表す．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	This expression denotes the following SQL query:
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+1 + employee.salary > 10
+\end{program}
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	式\term{(...\nonterm{exp})}の型は，
+\nonterm{exp}の型が
+\code{($\tau'$ -> $\tau$, $w$) SQL.exp}のとき，
+$(\tau',w)\triangleright\tau$である．
+	埋め込み先の式が参照するテーブルの型と$\tau'$に
+齟齬がある場合，型エラーとなる．
+	例えば，以下の式は型エラーである．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	The type of \term{(...\nonterm{exp})} is
+$(\tau',w)\triangleright\tau$
+if the type of \nonterm{exp} is
+\code{($\tau'$ -> $\tau$, $w$) SQL.exp}.
+	If $\tau'$ is inconsistent with the type of tables referenced
+by the expression where the \nonterm{exp} is embedded in,
+a type error occurs.
+	For example, the following expression causes a type error:
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+\_sql((...q) > 10 and \#employee.salary = "abc")
+\end{program}
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\term{(...\nonterm{exp}}記法に含まれる
+\nonterm{exp}は，SQL評価式ではなく，
+\smlsharp{}の式である．
+	この\nonterm{exp}の中では，
+通常の\smlsharp{}の式と同様に，
+SQL予約語は予約語ではなく識別子と解釈される．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	The \nonterm{exp} in
+the \term{(...\nonterm{exp})} notation is not an SQL value expression
+but an \smlsharp{} expression.
+	In \nonterm{exp},
+SQL keywords are not keywords but ordinary identifiers as well as ordinary
+\smlsharp{} expressions.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	SQL評価式を埋め込んだ結果に定数式が現れたとしても，
+その定数式は\smlsharp{}で評価されない．
+	SQL評価式が\smlsharp{}で評価される式かどうかは，
+静的な構文構造によってのみ定まる．
+	例えば，以下の再帰関数\code{nat $n$}は，
+\code{1}が$n$個ならんだSQL評価式\code{1 + 1 + $\cdots$ + 1}を構築する
+関数であり，その評価結果である$n$を計算する関数ではない．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Although an embedded SQL value expresssion constitutes a
+constant expression in the resulting SQL value expression,
+the constant expression is not evaluated by \smlsharp{}.
+	Whether or not an SQL value expression is evaluated by \smlsharp{}
+is determined only by the static syntacitic structure of the expression.
+	For example,
+the following function \code{nat $n$} does not return the value $n$,
+but returns the SQL value expression \code{1 + 1 + $\cdots$ + 1}
+where the number of \code{1}s is $n$
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{program}
+\#~fun nat 1 = \_sql(1)\\
+\ ~~~| nat n = \_sql(1 + (...nat (n - 1)));\\
+val nat = fn : ['a, 'b. int -> ('a -> int, 'd) SQL.exp]\\
+\#~SQL.expToString (nat 5);\\
+val it = "(1 + (1 + (1 + (1 + 1))))" : string
+\end{program}
 
 \section{\txt{SELECTクエリ}{SELECT queries}}
 \label{sec:reference:sqlselect}
@@ -18343,14 +18745,6 @@ val q = fn db => \_sql select...(s) from...(f db)
 	この\nonterm{exp}の中では，
 通常の\smlsharp{}の式と同様に，
 SQL予約語は予約語ではなく識別子と解釈される．
-	また，定数式も
-SQLの定数式ではなく，\smlsharp{}の定数式と解釈される．
-	ただし，識別子については，\nonterm{exp}は
-ストラクチャ\code{SQL.Op}が\code{open}された文脈で評価されるため，
-\code{SQL.Op}で束縛されている識別子を参照することがある．
-	特に，一般的な二項演算子\code{+}，\code{-}などが，
-基本ライブラリのそれらではなく，
-\code{SQL.Op.+}，\code{SQL.Op.-}を指していることに注意が必要である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The \nonterm{exp} in
 the \term{...(\nonterm{exp})} notation is not an SQL value expression
@@ -18358,16 +18752,6 @@ but an \smlsharp{} expression.
 	In \nonterm{exp},
 SQL keywords are not keywords but ordinary identifiers as well as ordinary
 \smlsharp{} expressions.
-	Constant expressions are also interpreted as \smlsharp{} constants.
-	For identifier expressions,
-since the \code{SQL.Op} structure is implicitly \code{open}-ed in
-the SQL expressions,
-some of them refers to the variables bound in the
-\code{SQL.Op} structure rather than the current context.
-	In particular,
-note that popular infix operators such as \code{+} and \code{-} are
-overriden by the \code{SQL.Op} structure and therefore
-they refers to \code{SQL.Op.+}, \code{SQL.Op.-}, and others.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\txt{SELECT句}{SELECT clauses}}
@@ -18428,9 +18812,7 @@ if the \nonterm{sqlexp$_i$} of its $i$-th field ($1 \le i \le n$)
 \term{\nonterm{sqlexp$_i$} as \nonterm{lab$_i$}}
 has the
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-($\tau$ -> $\tau_i$, $w$) SQL.exp
-\end{program}
+$(\tau,w)\triangleright\tau_i$
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 のとき，
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18766,7 +19148,7 @@ clauses refer to these labels.
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	最初の構文がWHERE句を構成する．
 	\nonterm{sqlexp}の型が
-\code{($\tau$ -> SQL.bool3, $w$) SQL.exp}のとき，
+$(\tau,w)\triangleright\code{SQL.bool3}$のとき，
 WHERE句の型は
 \code{($\tau$ -> $\tau$, $w$) SQL.whr}である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18774,7 +19156,7 @@ WHERE句の型は
 	Its type is
 \code{($\tau$ -> $\tau$, $w$) SQL.whr}
 if \nonterm{sqlexp} has type
-\code{($\tau$ -> SQL.bool3, $w$) SQL.exp}.
+$(\tau,w)\triangleright\code{SQL.bool3}$.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18828,14 +19210,14 @@ a SELECT and FROM clauses.
 \code{($\tau$, $w$) SQL.from}型とすると，
 GROUP BY句にコンマ区切りで並べられている
 \nonterm{sqlexp$_i$}はそれぞれ，
-\code{($\tau$ -> $\tau_i$, $w$) SQL.exp}型でなければならない．
+$(\tau,w)\triangleright\tau_i$型でなければならない．
 	GROUP BY句はこれらの式の評価結果の組をキーとして，
 FROM句が計算したテーブルを複数の行のグループに分割する．
 	行のグループのテーブルの型$\tau'$は後述する方法で計算される．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Each \nonterm{sqlexp$_i$} comma-separated in a GROUP BY
 clause must be of type
-\code{($\tau$ -> $\tau_i$, $w$) SQL.exp}
+$(\tau,w)\triangleright\tau_i$
 where the type of the associated FROM clause is
 \code{($\tau$, $w$) SQL.from}.
 	The GROUP BY clause splits the table computed by the
@@ -18847,12 +19229,12 @@ FROM clause to the groups of rows by using keys specified in
 	GROUP BY句は高々ひとつのHAVING句を持ってもよい．
 	HAVING句のSQL評価式は
 GROUP BY句の評価後に行のグループをフィルタするための条件式であり，
-従ってその型は\code{($\tau'$ -> SQL.bool3, $w$) SQL.exp}である．
+従ってその型は$(\tau',w)\triangleright\code{SQL.bool3}$である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	A GROUP BY clause may have just one HAVING clause.
 	The value expression of a HAVING clause is a condition
 to filter the row groups; therefore, its type must be
-\code{($\tau'$ -> SQL.bool3, $w$) SQL.exp}.
+$(\tau',w)\triangleright\code{SQL.bool3}$.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19140,7 +19522,7 @@ SELECT句が計算した結果のテーブルに対して
 行の並び替えを行う．
 	SELECT句の結果の型を$\tau$とすると，
 ORDER BY句に現れる各\nonterm{sqlexp$_i$}は
-\code{($\tau$ -> $\tau_i$, $w$) SQL.exp}型であり，
+$(\tau,w)\triangleright\tau_i$型であり，
 ORDER BY句全体の型は
 \code{($\tau$ -> $\tau$, $w$) SQL.orderby}である．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19148,7 +19530,7 @@ ORDER BY句全体の型は
 the SELECT clause.
 	For the SELECT query computing the rows of type $\tau$,
 Each \nonterm{sqlexp$_i$} in the ORDER BY clause must be
-\code{($\tau$ -> $\tau_i$, $w$) SQL.exp},
+$(\tau,w)\triangleright\tau_i$,
 and the entire ORDER BY clause must be of type
 \code{($\tau$ -> $\tau$, $w$) SQL.orderby}.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19282,13 +19664,13 @@ the expression must be parenthesized.
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	これらの句に現れる
 \nonterm{sqlexp}または\nonterm{sqlatexp}の型は
-\code{(\{\}\ -> int, $w$) SQL.exp}である．
+$(\code{\{\}},w)\triangleright\code{int}$である．
 	従って，
 これらの句の中にカラム参照式を書くことはできない．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The type of
 \nonterm{sqlexp} and \nonterm{sqlatexp} must be
-\code{(\{\}\ -> int, $w$) SQL.exp}.
+$(\code{\{\}},w)\triangleright\code{int}$.
 	Therefore,
 no column reference may appear in these clauses.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19585,6 +19967,10 @@ then the resulting SQL query is correct.
         \term{values \nonterm{insertRow}, $\cdots$, \nonterm{insertRow}}
 \\&\vbar&
 	\term{insert into \#\nonterm{vid}.\nonterm{lab}}
+	\ \term{(\nonterm{lab}, $\cdots$, \nonterm{lab})}\\&&
+	\term{values \nonterm{insertVar}}
+\\&\vbar&
+	\term{insert into \#\nonterm{vid}.\nonterm{lab}}
 	\ \optional{\term{(\nonterm{lab}, $\cdots$, \nonterm{lab})}}
         \nonterm{sqlselect}
 \\
@@ -19595,6 +19981,10 @@ then the resulting SQL query is correct.
 \nonterm{insertVal}
 &::=&
 	\nonterm{sqlexp} \vbar \term{default}
+\\
+\nonterm{insertVar}
+&::=&
+	\nonterm{vid} \vbar \term{op \nonterm{longvid}}
 \end{tabular}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19630,6 +20020,10 @@ labels in \term{(\nonterm{lab}, $\cdots$, \nonterm{lab})}.
 \term{values}句で指定された各行あるいは
 \nonterm{sqlselect}クエリの評価結果の各行を，
 指定したテーブルに挿入する．
+	\term{values}句に\smlsharp{}の変数
+\nonterm{vid}または\term{op \nonterm{longvid}}を書いた場合，
+ラベル\nonterm{lab$_1$}, $\cdots$, \nonterm{lab$_n$}を持つ
+レコードのリストをテーブルに挿入する．
 	挿入しようとしている行が挿入先テーブルのカラムを網羅していないとき，
 指定のないカラムには，テーブル作成時に指定されたデフォルト値が
 挿入される．
@@ -19642,6 +20036,12 @@ labels in \term{(\nonterm{lab}, $\cdots$, \nonterm{lab})}.
 	An INSERT command inserts the rows in either
 the \term{values} subclause or the result of the \nonterm{sqlselect}
 query into the designated table.
+	If an \smlsharp{} variable
+\nonterm{vid} or \term{op \nonterm{longvid}}
+is written in the \term{values} subclause,
+the list of the records consisting of labels
+\nonterm{lab$_1$}, $\cdots$, \nonterm{lab$_n$}
+denoted by the variable is inserted into the table.
 	If the rows to be inserted does not cover all the columns in
 the designated table, the columns not covered are filled with the
 default values, which is specified when the table is created.
@@ -19703,11 +20103,11 @@ the designated table must be identical.
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\term{values}句に並ぶ各組の$i$番目の式\nonterm{sqlexp$_i$}の型は，
 挿入先テーブルのカラム\nonterm{lab$_i$}の型が$\tau_i$のとき，
-\code{(\{\}~-> $\tau_i$, $w$) SQL.exp}型でなければならない．
+$(\code{\{\}},w)\triangleright\tau_i$型でなければならない．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The type of the $i$-th expression \nonterm{sqlexp$_i$} in the
 \term{values} columns must be
-\code{(\{\}~-> $\tau_i$, $w$) SQL.exp}
+$(\code{\{\}},w)\triangleright\tau_i$
 where $\tau_i$ is the type of the \nonterm{lab$_i$} column of the
 designated table.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19796,12 +20196,12 @@ must be a column in the designated table.
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	各\nonterm{updateRow$_i$}の式\nonterm{sqlexp$_i$}の型は，
 更新先テーブルの行の型が$\tau$，カラム\nonterm{lab$_i$}の型が$\tau_i$のとき，
-\code{(\{\nonterm{lab} : $\tau$\} -> $\tau_i$, $w$) SQL.exp}型で
+$(\code{\{\nonterm{lab} : $\tau$\}},w)\triangleright\tau_i$型で
 なければならない．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The type of \nonterm{sqlexp$_i$} of each \nonterm{updateRow$_i$}
 must be
-\code{(\{\nonterm{lab} : $\tau$\} -> $\tau_i$, $w$) SQL.exp}
+$(\code{\{\nonterm{lab} : $\tau$\}},w)\triangleright\tau_i$
 where
 $\tau$ is the type of the designated table and
 $\tau_i$ is the type of the \nonterm{lab$_i$} column in $\tau$.
@@ -19900,22 +20300,22 @@ in \smlsharp{}:
 \label{sec:reference:sqlfn}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	SQL実行関数式\term{\_sql \nonterm{pat} => \nonterm{sql}}は，
-SQLコマンド\nonterm{sql}をデータベースサーバーで実行する
+	SQL実行関数式\term{\_sql \nonterm{pat} => \nonterm{sqlfn}}は，
+SQLコマンド\nonterm{sqlfn}をデータベースサーバーで実行する
 関数を生成する．
 	データベースサーバーへの接続ハンドルを引数として
-この関数を呼び出すと，式\nonterm{sql}が評価され，その結果得られた
+この関数を呼び出すと，式\nonterm{sqlfn}が評価され，その結果得られた
 SQLコマンドがサーバーに送信され実行される．
 	実行に成功したならば，この関数はその実行結果を返し，
 実行に失敗したときは\term{SQL.Exec}例外を発生させる．
 	具体的には，この関数は以下のことを行う．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	An SQL execution function
-\term{\_sql \nonterm{pat} => \nonterm{sql}}
+\term{\_sql \nonterm{pat} => \nonterm{sqlfn}}
 generates a function
-that executes the SQL command \nonterm{sql} on a database server.
+that executes the SQL command \nonterm{sqlfn} on a database server.
 	By applying this function to a connection handle to a database,
-the \nonterm{sql} expression is evaluated and the resulting SQL command
+the \nonterm{sqlfn} expression is evaluated and the resulting SQL command
 is sent to the server.
 	This function returns the execution result
 if the execusion is successfully done, or
@@ -19943,13 +20343,13 @@ binds the pattern \nonterm{pat} to it.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \item
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	式\nonterm{sql}を評価し，
+	式\nonterm{sqlfn}を評価し，
 \code{($\tau'$, $w$) SQL.command}型のコマンドを得る．
-	ただし，\nonterm{sql}が\nonterm{sqlselect}の場合は，
+	ただし，\nonterm{sqlfn}が\nonterm{sqlselect}の場合は，
 \code{($\tau$, $w$) SQL.query}型のSELECTクエリを
 \code{($\tau$ SQL.cursor, $w$) SQL.command}型のSQLコマンドと解釈する．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	It evaluates the expression \nonterm{sql} and obtains the
+	It evaluates the expression \nonterm{sqlfn} and obtains the
 command of type \code{($\tau'$, $w$) SQL.command}.
 	Exceptionally, if \nonterm{sql} is of the form \nonterm{sqlselect},
 it interprets
@@ -19977,7 +20377,7 @@ it returns the result of type $\tau'$.
 とき，この関数の型は
 \code{$\tau$ SQL.conn -> $\tau'$}である．
 	一般に$\tau'$は，
-\nonterm{sql}が\nonterm{sqlselect}のとき
+\nonterm{sqlfn}が\nonterm{sqlselect}のとき
 \code{SQL.cursor}型，そうでないとき\code{unit}型になる．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	As seen in these steps,
@@ -19987,7 +20387,7 @@ when the type of the command is
 \code{($\tau$, $w$) SQL.db -> ($\tau'$, $w$) SQL.command}.
 	Typically,
 $\tau'$ is either
-\code{SQL.cursor} if \nonterm{sql} is \nonterm{sqlselect},
+\code{SQL.cursor} if \nonterm{sqlfn} is \nonterm{sqlselect},
 or \code{unit} otherwise.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -20036,16 +20436,16 @@ write it directly in an SQL execution function.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
 val w = fn () => \_sql where \#employee.name = "Taro"\\
-val c = fn db => update \#db.employee\\
-~~~~~~~~~~~~~~~~~set \= age = \#employee.age + 1,\\
-~~~~~~~~~~~~~~~~~salary = \#employee.salary + 100\\
-~~~~~~~~~~~~~~~~~where...(w ())\\
-val q = \_sql db => c db
+val c = fn db => \_sql update \#db.employee\\
+~~~~~~~~~~~~~~~~~~~~~~set \= age = \#employee.age + 1,\\
+~~~~~~~~~~~~~~~~~~~~~~salary = \#employee.salary + 100\\
+~~~~~~~~~~~~~~~~~~~~~~where...(w ())\\
+val q = \_sql db => ...(c db)
 \end{program}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	SQL実行関数式
-\term{\_sql \nonterm{pat} => \nonterm{sql}}には，
+\term{\_sql \nonterm{pat} => \nonterm{sqlfn}}には，
 以下の型に関する制約がある．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The typing rules of the SQL execution functions are the following:
@@ -20053,16 +20453,16 @@ val q = \_sql db => c db
 \begin{itemize}
 \item
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\nonterm{sql}の型
+	\nonterm{sqlfn}の型
 \code{($\tau$,$w$) SQL.command}または
 \code{($\tau'$,$w$) SQL.query}の
-$w$は，\nonterm{sql}の型以外のどこにも使われていない型変数でなければならない．
+$w$は，\nonterm{sqlfn}の型以外のどこにも使われていない型変数でなければならない．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	In the type of \nonterm{sql},
+	In the type of \nonterm{sqlfn},
 which is either
 \code{($\tau$,$w$) SQL.command} or
 \code{($\tau'$,$w$) SQL.query},
-the $w$ must be the type variable occuring only in the type of \nonterm{sql}.
+the $w$ must be the type variable occuring only in the type of \nonterm{sqlfn}.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \end{itemize}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20076,7 +20476,7 @@ introduced to avoid queries across multiple databases.
 	For example, the following causes a type error:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-\#~fun f exp = \_sql db => select \#e.name, exp from \#db.employee as e;\\
+\#~fun f exp = \_sql db => select \#e.name, (...exp) from \#db.employee as e;\\
 (interactive):1.12-1.65 Error:\\
 ~~(type inference 067) User type variable cannot be generalized: '\$h
 \end{program}
@@ -20084,7 +20484,7 @@ introduced to avoid queries across multiple databases.
 	この直接の原因は，\code{select}の中に関数\code{f}の引数\code{exp}が
 入っているために，\code{select $\cdots$}の型
 \code{($\tau$,$w$) SQL.query}の$w$が
-引数\code{exp}の型\code{($\tau'$,$w$) SQL.exp}の$w$としても用いられおり，
+引数\code{exp}の型\code{($\tau'$,$w$) SQL.exp}の$w$としても用いられており，
 上述の制約に違反することである．
 	より実践的には，引数\code{exp}は，
 \code{\_sql db => $\cdots$}の\code{db}とは異なる
@@ -20176,7 +20576,8 @@ it constructs a query rather than executes it as follow,
 then the type error is avoided:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-fun f exp = fn db => \_sql select \#e.name, exp from \#db.employee as e
+fun f exp = fn db => \_sql select \#e.name, (...exp) from \#db.employee as e\\
+val q = \_sql db => select...(f \_sql(\#e.saraly) db)
 \end{program}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20331,8 +20732,9 @@ structure SQL : sig\\
 ~~val mysql : string -> backend\\
 ~~val odbc : string -> backend\\
 ~~val sqlite3 : string -> backend\\
-~~structure SQLite3 : {\normalfont\txt{（\ref{sec:reference:sqllib_connect}節参照）}{(see Section \ref{sec:reference:sqllib_connect})}}
+~~structure SQLite3 : {\normalfont\txt{（\ref{sec:reference:sqllib_connect}節参照）}{(see Section \ref{sec:reference:sqllib_connect})}}\\
 ~~val connect : 'a server -> 'a conn\\
+~~val connectAndCreate : 'a server -> 'a conn\\
 ~~val closeConn : 'a conn -> unit\\
 ~~val fetch : 'a cursor -> 'a option\\
 ~~val fetchAll : 'a cursor -> 'a list\\
@@ -20433,7 +20835,7 @@ PostgreSQL & \smlsharp{}\\\hline
 \code{TEXT}, \code{VARCHAR} \ & \code{string}\\
 \code{FLOAT8}\ & \code{real}\\
 \code{FLOAT4}\ & \code{real32}\\
-\code{TIMESTAMP}\ & \code{SQL.timestamp}\\
+%\code{TIMESTAMP}\ & \code{SQL.timestamp}\\
 \hline
 \end{tabular}
 
@@ -20444,7 +20846,7 @@ PostgreSQL & \smlsharp{}\\\hline
         \code{SQL.mysql \argu{param}}は，
 MySQLサーバーへの接続情報を返す．
 	文字列\argu{param}には，
-``キー=値''という形式の指定が空白文字で区切られて並べる．
+``キー=値''という形式の指定を空白文字で区切って並べる．
         指定可能なキーとその意味は以下の通りである．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\code{SQL.mysql \argu{param}} returns a connection information
@@ -20653,7 +21055,7 @@ ODBC & \smlsharp{}\\\hline
 \code{FLOAT} & \code{real32}\\
 \code{DOUBLE} & \code{real}\\
 \code{VARCHAR}, \code{LONGVARCHAR}, \code{NVARCHAR} & \code{string}\\
-\code{TIMESTAMP} & \code{SQL.timestamp}\\
+%\code{TIMESTAMP} & \code{SQL.timestamp}\\
 \hline
 \end{tabular}
 
@@ -20736,6 +21138,31 @@ ODBC & libodbc.so.2 & \code{SMLSHARP\_LIBODBC}\\
 SQLite3 & libsqlite3.so.0 & \code{SMLSHARP\_LIBSQLITE3}\\
 \hline
 \end{tabular}
+
+\item
+	\code{val connectAndCreate : 'a server -> 'a conn}
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	以下の点を除いて\code{SQL.connect}と同じである．
+	引数の型で指示されたテーブルが
+接続先データベースに存在しない場合，
+\code{SQL.connectAndCreate}は
+\code{CREATE TABLE}コマンドを発行し
+そのテーブルを作成する．
+	サポートされない型を含むテーブルを作成しようとしたとき
+\code{SQL.Link}例外が発生する．
+	\code{CREATE TABLE}コマンドの実行に失敗したとき
+\code{SQL.Exec}例外が発生する．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Same as \code{SQL.connect} except for the following:
+\code{SQL.connectAndCreate} creates the tables
+that are indicated in the argument type but do not exist
+in the database by issueing the \code{CREATE TABLE} commands.
+	If a table to be created includes an unsupported type, it raises
+the \code{SQL.Link} exception.
+	If a \code{CREATE TABLE} command fails, it raises
+the \code{SQL.Exec} exception.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \item
 	\code{val closeConn : 'a conn -> unit}
@@ -20823,6 +21250,7 @@ closes the given cursor.
 \end{itemize}
 
 \subsection{\txt{SQLクエリの操作}{Utilities for SQL Queries}}
+\label{sec:reference:sqllib_query}
 
 \begin{itemize}
 \item
@@ -20925,14 +21353,12 @@ SQL評価式の中で用いる
 SQLの二項演算子や集約関数，およびその他のユーティリティーを
 提供する．
 	SQL評価式構文の中では，
-\code{SQL.Op}ストラクチャは自動的に\code{open}され，
-さらにいくつかの識別子が以下の通りinfix宣言される．
+いくつかの識別子が以下の通りinfix宣言される．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The \code{SQL.Op} structure provides
 SQL's infix operators, aggregate functions, and other utilities,
 all of which are used for constructing SQL value expressions.
 	In \smlsharp{}'s SQL value expressions,
-the \code{SQL.Op} structure is implicitly \code{open}-ed and the
 the infixity of some identifiers are declared as follows:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
@@ -20941,14 +21367,13 @@ infix 5 like ||\\
 nonfix mod
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	従って，
-SQL評価式構文内では，
-このストラクチャで定義されている関数を，
-ストラクチャ名を前置することなく，また二項演算子は中置記法で
-使用することができる．
+	\smlsharp{}で評価される式でないSQL評価式構文内では，
+このストラクチャで定義されている関数や演算子を
+ストラクチャ名を前置することなく使用することができる．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	This allows to use SQL operators defined in this structure
-as infix operators without any structure prefix.
+	In an SQL value expression that is not evaluated by \smlsharp{},
+SQL functions and operators defined in this structure can be used
+without any structure prefix.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -21009,36 +21434,35 @@ their \code{option} types.
 structure SQL : sig\\
 ~~$\cdots$\\
 ~~structure Op : sig\\
-~~~~val toSQL : 'sql -> ('a -> 'sql, 'w) exp\\
-~~~~val Some : ('a -> 'b, 'w) exp -> ('a -> 'b option, 'w) exp\\
-~~~~val Part : ('a -> 'b option list, 'w) exp -> ('a -> 'b list, 'w) exp\\
-~~~~val Num : ('a -> 'num, 'w) exp -> ('a -> numeric option) exp\\
-~~~~val + : ('a -> 'num, 'w) exp * ('a -> 'num, 'w) exp -> ('a -> 'num, 'w) exp\\
-~~~~val - : ('a -> 'num, 'w) exp * ('a -> 'num, 'w) exp -> ('a -> 'num, 'w) exp\\
-~~~~val * : ('a -> 'num, 'w) exp * ('a -> 'num, 'w) exp -> ('a -> 'num, 'w) exp\\
-~~~~val / : ('a -> 'num, 'w) exp * ('a -> 'num, 'w) exp -> ('a -> 'num, 'w) exp\\
-~~~~val mod : ('a -> 'num, 'w) exp * ('a -> 'num, 'w) exp -> ('a -> 'num, 'w) exp\\
-~~~~val \char`\~ : ('a -> 'num, 'w) exp -> ('a -> 'num, 'w) exp\\
-~~~~val abs : ('a -> 'num, 'w) exp -> ('a -> 'num, 'w) exp\\
-~~~~val < : ('a -> 'sql, 'w) exp * ('a -> 'sql, 'w) exp -> ('a -> bool3, 'w) exp\\
-~~~~val > : ('a -> 'sql, 'w) exp * ('a -> 'sql, 'w) exp -> ('a -> bool3, 'w) exp\\
-~~~~val <= : ('a -> 'sql, 'w) exp * ('a -> 'sql, 'w) exp -> ('a -> bool3, 'w) exp\\
-~~~~val >= : ('a -> 'sql, 'w) exp * ('a -> 'sql, 'w) exp -> ('a -> bool3, 'w) exp\\
-~~~~val = : ('a -> 'sql, 'w) exp * ('a -> 'sql, 'w) exp -> ('a -> bool3, 'w) exp\\
-~~~~val <> : ('a -> 'sql, 'w) exp * ('a -> 'sql, 'w) exp -> ('a -> bool3, 'w) exp\\
-~~~~val || : ('a -> 'str, 'w) exp * ('a -> 'str, 'w) exp -> ('a -> 'str, 'w) exp\\
-~~~~val like : ('a -> 'str, 'w) exp * ('a -> 'str, 'w) exp -> ('a -> bool3, 'w) exp\\
-~~~~val nullif : ('a -> 'sqlopt, 'w) * ('a -> 'sqlopt, 'w) exp -> ('a -> 'sqlopt, 'w) exp\\
-~~~~val coalesce : ('a -> 'b option, 'w) * ('a -> 'b, 'w) exp -> ('a -> 'b, 'w) exp\\
-~~~~val coalesce' : ('a -> 'b option, 'w) * ('a -> 'b option, 'w) exp -> ('a -> 'b option, 'w) exp\\
-~~~~val count : ('a -> 'sql, 'w) exp -> ('a -> int) exp\\
-~~~~val avg : ('a -> 'num list, 'w) exp -> ('a -> real option, 'w) exp\\
-~~~~val sum : ('a -> 'num list, 'w) exp -> ('a -> 'num option, 'w) exp\\
-~~~~val sum' : ('a -> 'num option list, 'w) exp -> ('a -> 'num option, 'w) exp\\
-~~~~val min : ('a -> 'sql list, 'w) exp -> ('a -> 'sql option, 'w) exp\\
-~~~~val min' : ('a -> 'sql option list, 'w) exp -> ('a -> 'sql option, 'w) exp\\
-~~~~val max : ('a -> 'sql list, 'w) exp -> ('a -> 'sql option, 'w) exp\\
-~~~~val max' : ('a -> 'sql option list, 'w) exp -> ('a -> 'sql option, 'w) exp\\
+~~~~val Some : 'a -> 'a option\\
+~~~~val Part : 'a option list -> 'a list\\
+~~~~val Num : 'num -> numeric option\\
+~~~~val + : 'num * 'num -> 'num\\
+~~~~val - : 'num * 'num -> 'num\\
+~~~~val * : 'num * 'num -> 'num\\
+~~~~val / : 'num * 'num -> 'num\\
+~~~~val mod : 'num * 'num -> 'num\\
+~~~~val \char`\~ : 'num -> 'num\\
+~~~~val abs : 'num -> 'num\\
+~~~~val < : 'sql * 'sql -> bool3\\
+~~~~val > : 'sql * 'sql -> bool3\\
+~~~~val <= : 'sql * 'sql -> bool3\\
+~~~~val >= : 'sql * 'sql -> bool3\\
+~~~~val = : 'sql * 'sql -> bool3\\
+~~~~val <> : 'sql * 'sql -> bool3\\
+~~~~val || : 'str * 'str -> 'str\\
+~~~~val like : 'str * 'str -> bool3\\
+~~~~val nullif : 'sqlopt * 'sqlopt -> 'sqlopt\\
+~~~~val coalesce : 'b option * 'b -> 'b\\
+~~~~val coalesce' : 'b option * 'b option -> 'b option\\
+~~~~val count : 'sql -> int\\
+~~~~val avg : 'num list -> real option\\
+~~~~val sum : 'num list -> 'num option\\
+~~~~val sum' : 'num option list -> 'num option\\
+~~~~val min : 'sql list -> 'sql option\\
+~~~~val min' : 'sql option list -> 'sql option\\
+~~~~val max : 'sql list -> 'sql option\\
+~~~~val max' : 'sql option list -> 'sql option\\
 ~~end\\
 end
 \end{program}
@@ -21050,152 +21474,29 @@ end
 for each category of their purposes.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{\txt{\smlsharp{}の値のSQLクエリへの埋め込み}{Embedding \smlsharp{} values in SQL qureies}}
-
-\begin{itemize}
-\item
-	\code{val toSQL : 'sql -> ('a -> 'sql, 'w) exp}
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\code{toSQL \argu{data}}は，
-\smlsharp{}の値\argu{data}をSQL評価式の定数リテラルとして埋め込む．
-	\argu{data}が\code{NONE}のときはNULLリテラルを返す．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\code{toSQL \argu{data}} embeds the value of \argu{data}
-in an SQL value expression as a constant literal.
-	If \argu{data} is NONE, it returns a NULL literal.
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\end{itemize}
-
 \subsection{\txt{型を合わせるための何もしない関数}{Workarounds for type inconsistencies}}
 \label{sec:reference:sqllib_none}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\ref{sec:reference:sqltype}節で述べたとおり，
-\smlsharp{}はNULLになる可能性を\code{option}型を用いて
-型上で区別する．
-	一方，標準SQLでは，NULLはどの基本型にも含まれる．
-	この違いのため，
-SQLでは型エラーでないクエリでも，
-\smlsharp{}では型エラーとなることがある．
-	また，数値型についても，
-標準SQLでは暗黙に数値型のキャストが行われる一方，
-\smlsharp{}は暗黙のキャストを行わないため，
-\smlsharp{}では型エラーとなることがある．
-	例えば，
-部署ごとの平均年齢より若い人の問い合わせる以下のクエリを見てみよう．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	As described in Section \ref{sec:reference:sqltype},
-\smlsharp{} distinguish values being possibly NULL from non-NULL values
-by using \code{option} type.
-	In contrast,
-the standard SQL allows NULL in any type.
-	Due to this difference,
-the \smlsharp{} compiler reports a type error
-even for a query type-correct in the standard SQL.
-	Similarly,
-\smlsharp{} does not allow implicit numeric type conversion,
-which the standard SQL allows.
-	For example,
-consider the following that queries people younger than
-the average in each deparment:
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-fn db => \_sql select \#e.department as department, \#e.name as name\\
-~~~~~~~~~~~~~~from \#db.empoloyee as e\\
-~~~~~~~~~~~~~~where \#e.age < (select avg(\#t.age)\\
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~from \#db.employee as t\\
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~where \#t.department = \#e.department\\
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~group by ())
-\end{program}
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	この式には型がつくものの，
-\code{employee}テーブルの\code{age}カラムの型は
-\code{SQL.numeric option}と推論される．
-	従って，
-\code{age}が\code{int}型のデータベースに対してこのクエリを実行できない．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	This expression is typechecked,
-but the type of	\code{age} column of \code{employee} table is
-infered as \code{SQL.numeric option}.
-	Thus, this query cannot be executed
-if the \code{age} column is of \code{int}.
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	この原因は，
-集約関数\code{avg}の結果とカラム\code{\#e.age}を比較していることにある．
-	\code{avg}の結果の型は
-\code{SQL.numeric option}型である．
-	\smlsharp{}におけるSQL比較演算子の型付け規則により，
-比較演算子の左右の式の型は一致していなければならない．
-	従って，
-\code{\#e.age}の型は
-\code{SQL.numeric option}型となる．
-	標準SQLであれば，
-暗黙に\code{NUMERIC}型へのキャストが行われるため，
-\code{age}カラムの型は数値型ならばどの型でも良いはずである．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The source of this inference is that
-the result of the aggregate function \code{avg} is compared with
-\code{\#e.age}.
-	The result type of \code{avg} is
-\code{SQL.numeric option}.
-	The comparison operator forces the two expressions to have
-the same type.
-	Therefore,
-the type of \code{\#e.age} is \code{SQL.numeric option}.
-	In the standard SQL,
-\code{age} may have an arbitrary numeric type
-since its type is implicitly casted to \code{NUMERIC}.
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	このような，
-\smlsharp{}がサポートしない
+	\smlsharp{}がサポートしない
 暗黙のキャストやオーバーロードに対応するため，
-型の辻褄を合わせるための何もしない以下の関数が提供されている．
+型の辻褄を合わせるための以下の関数が提供されている．
+	これらの使い方は
+\ref{sec:reference:sqlcast}節を参照せよ．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	To reconcile this gap,
-\smlsharp{} provides the following functions corresponding to
-implicit type cast:
+	\smlsharp{} provides the following functions corresponding to
+implicit type cast.
+	See Subsection \ref{sec:reference:sqlcast} for details.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{itemize}
 \item
-	\code{val Some : ('a -> 'b, 'w) exp -> ('a -> 'b option, 'w) exp}
+	\code{val Some : 'a -> 'a option}
 \item
-	\code{val Part : ('a -> 'b option list, 'w) exp -> ('a -> 'b list, 'w) exp}
+	\code{val Part : 'a option list -> 'a list}
 \item
-	\code{val Num : ('a -> 'num, 'w) exp -> ('a -> numeric option, 'w) exp}
+	\code{val Num : 'num -> numeric option}
 \end{itemize}
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	これらの関数をSQL評価式中に書いても，
-サーバーに送信するコマンド文字列にこれらの関数呼び出しは現れない．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	These functions does nothing and disappear in the SQL query
-sent to the server.
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	上述の例に対しては，
-比較演算の箇所に\code{Num}関数を加えると，
-任意の数値型の\code{age}カラムに対して
-このクエリを実行できるようになる．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	For the above example,
-inserting \code{Num} function to the left side of the comparison operator
-allows \code{age} to have an arbitrary numeric type.
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{program}
-fn db => \_sql select \#e.department as department, \#e.name as name\\
-~~~~~~~~~~~~~~from \#db.empoloyee as e\\
-~~~~~~~~~~~~~~where Num \#e.age < (select avg(\#t.age)\\
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~from \#db.employee as t\\
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~where \#t.department = \#e.department\\
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~group by ())
-\end{program}
 
 \subsection{\txt{SQL演算子および関数}{SQL operators and functions}}
 \label{sec:reference:sqllib_operators}
@@ -21228,7 +21529,7 @@ provided for any SQL basic types.
 	The type of these operators is
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-('a -> 'sql, 'w) exp * ('a -> 'sql, 'w) exp -> ('a -> bool3, 'w) exp
+'sql * 'sql -> bool3
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 である．
@@ -21258,7 +21559,7 @@ numeric types.
 	The type of these operators is either
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-('a -> 'num, 'w) exp * ('a -> 'num, 'w) exp -> ('a -> num, 'w) exp
+'num * 'num -> 'num
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 または
@@ -21266,7 +21567,7 @@ numeric types.
 or
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-('a -> 'num, 'w) exp -> ('a -> num, 'w) exp
+'num -> 'num
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 である．
@@ -21295,7 +21596,7 @@ a function.
 	The type of \code{mod} is
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-('a -> 'num, 'w) exp * ('a -> 'num, 'w) exp -> ('a -> num, 'w) exp
+'num * 'num -> 'num
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 である．
@@ -21318,8 +21619,8 @@ string concatination operator \code{||} are available.
         Their types are the following:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-val like : ('a -> 'str, 'w) exp * ('a -> 'str, 'w) exp -> ('a -> bool3, 'w) exp\\
-val || : ('a -> 'str, 'w) exp * ('a -> 'str, 'w) exp -> ('a -> 'str, 'w) exp
+val like : 'str * 'str -> bool3\\
+val || : 'str * 'str -> 'str
 \end{program}
 
 \item
@@ -21331,7 +21632,7 @@ val || : ('a -> 'str, 'w) exp * ('a -> 'str, 'w) exp -> ('a -> 'str, 'w) exp
 the \code{nullif} function of the following type is provided:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-val nullif : ('a -> 'sqlopt, 'w) * ('a -> 'sqlopt, 'w) exp -> ('a -> 'sqlopt, 'w) exp
+val nullif : 'sqlopt * 'sqlopt -> 'sqlopt
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	引数は2つとも\code{option}型でなければならない．
@@ -21352,8 +21653,8 @@ Two variants \code{coalesce} and \code{coalesce'} are provided
 because of the \code{option} type.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-val coalesce : ('a -> 'b option, 'w) * ('a -> 'b, 'w) exp -> ('a -> 'b, 'w) exp\\
-val coalesce' : ('a -> 'b option, 'w) * ('a -> 'b option, 'w) exp -> ('a -> 'b option, 'w) exp
+val coalesce : 'b option * 'b -> 'b\\
+val coalesce' : 'b option * 'b option -> 'b option
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	どちらの関数を用いても，
@@ -21370,7 +21671,7 @@ for a paticular use of COALESCE that substitutes NULL value with non-NULL
 values.
 	Different from the standard SQL,
 COALESCE with more than two arguments is not supported.
-	Nest \code{coalesce} functions for more than two values.
+	Nest \code{coalesce'} functions for more than two values.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{itemize}
@@ -21409,14 +21710,14 @@ two variants such as \code{sum} and \code{sum'}.
 	The type of these functions are the following:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-val count : ('a -> 'sql, 'w) exp -> ('a -> int) exp\\
-val avg : ('a -> 'num list, 'w) exp -> ('a -> real option, 'w) exp\\
-val sum : ('a -> 'num list, 'w) exp -> ('a -> 'num option, 'w) exp\\
-val sum' : ('a -> 'num option list, 'w) exp -> ('a -> 'num option, 'w) exp\\
-val min : ('a -> 'sql list, 'w) exp -> ('a -> 'sql option, 'w) exp\\
-val min' : ('a -> 'sql option list, 'w) exp -> ('a -> 'sql option, 'w) exp\\
-val max : ('a -> 'sql list, 'w) exp -> ('a -> 'sql option, 'w) exp\\
-val max' : ('a -> 'sql option list, 'w) exp -> ('a -> 'sql option, 'w) exp
+val count : 'sql -> int\\
+val avg : 'num list -> real option\\
+val sum : 'num list -> 'num option\\
+val sum' : 'num option list -> 'num option\\
+val min : 'sql list -> 'sql option\\
+val min' : 'sql option list -> 'sql option\\
+val max : 'sql list -> 'sql option\\
+val max' : 'sql option list -> 'sql option
 \end{program}
 
 
@@ -21467,13 +21768,18 @@ structure SQL : sig\\
 end
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	これらの関数の意味は
+Basis Libraryの\code{Int}および\code{IntInf}ストラクチャに定義されている
+同名の関数と同じである．
+	\code{toString}関数は小数点以下に最大で16,383文字を出力するかも
+しれないことに注意せよ．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The meaning of these functions are same as
 the functions of the same name defined in \code{Int} and \code{IntInf}
 of the Basic Library.
 	Note that
 \code{toString} serializes
 at most 16,383 digits after the decimal point.
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -21625,7 +21931,7 @@ bound by an \code{\_sql} or \code{fn} expression.
 \chapter{\txt{核言語の宣言とインターフェイス}{Declarations of the core language and their interfaces }}
 \label{chap:reference:declarations}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	宣言の種類毎に，宣言\nonterm{decl}の定義と，それに対応するインター
+	宣言nの種類毎に，宣言\nonterm{decl}の定義と，それに対応するインター
 フェイス仕様\nonterm{interfaceSpec}の定義を与え，それら宣言に対してコン
 パイラが計算する型と値を説明する．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28029,7 +28335,7 @@ the details.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \end{enumerate}
 
-\section{\txt{smlyacc出力ファイルの構造とインタフェイスファル記述}{The
+\section{\txt{smlyacc出力ファイルの構造とインタフェイスファイル記述}{The
 structure of a smlyacc output file and the interface file specification}}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -28315,7 +28621,7 @@ the standard LEX system.
 \code{src/ml-lex/doc/mllex.pdf} in the \smlsharp{} source code distribution.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-\section{\txt{smllex出力ファイルのインタフェイスファル記述}{The interface file for the generated lexer}}
+\section{\txt{smllex出力ファイルのインタフェイスファイル記述}{The interface file for the generated lexer}}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\code{smllex}は，字句解析生成関数\code{makeLexer}を含むストラクチャを生成する．
 	生成された字句解析プログラムを\smlsharp{}で使用するためには，その
