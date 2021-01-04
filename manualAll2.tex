@@ -1,7 +1,8 @@
+%#!platex manualAll2 ; dvipdfmx manualAll2
 \newif\ifjp
 \newif\ifinternal
 
-\internalfalse
+\internaltrue
 
 % テキストテンプレート
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -12,6 +13,8 @@
 
 %% 日本語 以下を有効化
 \jptrue
+% #!platex manualAll2 && latexml --noparse --destination=manual.xml manualAll2.tex && latexmlpost --format=xhtml --destination=docs/3.6.0/ja/manual.xhtml --split --nographicimages --novalidate manual.xml && hg log -r. -T'<!--{node}-->' >> $d/manual.xhtml
+
 % #!platex manualAll2; dvipdfmx  -o manualAll2jp.pdf manualAll2
 %#!d=docs/3.5.0/ja; platex manualAll2 && latexml --noparse --destination=manual.xml manualAll2.tex && latexmlpost --format=xhtml --destination=$d/manual.xhtml --split --nographicimages --novalidate manual.xml && hg log -r. -T'<!--{node}-->' >> $d/manual.xhtml
 
@@ -58,14 +61,14 @@ RIEC, Tohoku University
 }
 }
 
-\renewcommand{\today}{\txt{令和2年5月}{May, 2020}}
+\renewcommand{\today}{\txt{令和3年1月}{Jan, 2021}}
 \date{\today}
 \newcommand{\smlsharp}{SML\#}
-\newcommand{\version}{3.6.0}
-\newcommand{\releaseDate}{2020-05-29}
+\newcommand{\version}{3.7.0}
+\newcommand{\releaseDate}{2021-01-04}
 
 \newcommand{\mythversion}{1.00}
-\newcommand{\llvmversion}{10.0.0}
+\newcommand{\llvmversion}{11.0.0}
 
 \newcommand{\seeJapanese}{The English version of this document is under
 construction. See the official Japanese documents (unfortunately in Japanese).}
@@ -216,11 +219,11 @@ construction. See the official Japanese documents (unfortunately in Japanese).}
 
 \tableofcontents
 
-\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-Mozilla FireFoxなどのMathMLを表示可能なブラウザでご覧ください．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This document is best viewed with a MathML-capable browser such as Mozilla FireFox.
-\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+%\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%Mozilla FireFoxなどのMathMLを表示可能なブラウザでご覧ください．
+%\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%This document is best viewed with a MathML-capable browser such as Mozilla FireFox.
+%\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \setcounter{page}{1}
 \pagenumbering{arabic}
@@ -804,7 +807,9 @@ ML-Yacc & src/ml-yacc  & Standard ML of New Jersey 110.73
 \\\hline
 ML-Lex & src/ml-lex  & Standard ML of New Jersey 110.73
 \\\hline
-SML/NJ Library & src/smlnj-lib &  Standard ML of New Jersey 110.73
+ML-Lpt & src/ml-lpt  & Standard ML of New Jersey 110.99
+\\\hline
+SML/NJ Library & src/smlnj-lib &  Standard ML of New Jersey 110.99
 \\\hline
 TextIO,
 BinIO,
@@ -1042,7 +1047,7 @@ compiler that is as fast as other mature compilers.
 \chapter{\txt{\smlsharp{}ライセンス}{\smlsharp{} License}}
 \label{sec:smlsharpLicence}
 
-Copyright (c) 2006 - 2017, Tohoku University.\\
+Copyright (c) 2006 - 2021, Tohoku University.\\
 All rights reserved.\\
 
 Redistribution and use in source and binary forms, with or without
@@ -1102,8 +1107,8 @@ setting up a programming environment.
 	\smlsharp{}\version{}版は以下のプラットフォームで動作します．
 \begin{itemize}
 \item Linux（amd64（x86\_64）版）
-\item Mac OS X （10.14以降推奨）
-\item Windows 10 （Windows Subsystem for Linuxを利用）
+\item macOS（10.15以降推奨）
+\item Windows 10（Windows Subsystem for Linuxを利用）
 \end{itemize}
 
 	また，\smlsharp{}のコンパイルと実行には以下のサードパーティ製
@@ -1111,15 +1116,13 @@ setting up a programming environment.
 \begin{itemize}
 \item MassiveThreads \mythversion
 \item GNU Multiple Precision Arithmetic Library (GMP) ライブラリ
-\item yajl (Yet Another JSON Library) 2.1 ライブラリ
-\item LLVM 3.9.1以降（LLVM 10を推奨．新しいものが望ましい）
+\item LLVM 3.9.1以降（LLVM \llvmversion{}を推奨．新しいものが望ましい）
 \end{itemize}
 	MassiveThreadsはBSDスタイルライセンスの下で配布されている
 フリーソフトウェアです．
 	GMPはLGPL（GNU Lesser General Public License）の下で配布されている
 フリーソフトウェアです．
-	yajlはISCライセンスの下で配布されているフリーソフトウェアです．
-	LLVMはBSDスタイルのLLVM Release Licenseの下で配布されている
+	LLVMは例外条項付きのApache License version 2の下で配布されている
 フリーソフトウェアです．
 
 %	このうち，MassiveThreadsはオプションです．
@@ -1127,10 +1130,6 @@ setting up a programming environment.
 %MassiveThreadsを使わない\smlsharp{}コンパイラをビルドすることができます．
 %	以下，特に断りが無い限り，
 %MassiveThreadsを使用するものとして説明します．
-
-	yajlはバージョン2系列をご用意ください．
-	yajl 1とyajl 2は仕様が異なります．
-        yajl 1では\smlsharp{}をビルドすることができません．
 
 	LLVMはバージョン3.9.1以降のできるだけ新しいものをご用意ください．
 	LLVM \llvmversion{}までのバージョンでコンパイルと動作を確認済です．
@@ -1147,8 +1146,8 @@ setting up a programming environment.
 \item
 	\smlsharp{}コンパイラのビルドには，これら全てのライブラリと
 {\tt opt}，{\tt llc}，および{\tt llvm-as}コマンドが使用されます．
-	\smlsharp{}コンパイラコマンドにはMassiveThreads，GMP，および
-yajlライブラリがリンクされます．
+	\smlsharp{}コンパイラコマンドにはMassiveThreadsおよびGMP
+ライブラリがリンクされます．
 	LLVMのライブラリはリンクされません．
 \item
 	インストール後の\smlsharp{}コンパイラコマンドは，
@@ -1156,7 +1155,7 @@ yajlライブラリがリンクされます．
 {\tt llvm-dis}コマンドを使用します．
 \item
 	\smlsharp{}コンパイラが生成したすべての実行形式ファイルには，
-MassiveThreads，GMPおよびyajlライブラリがリンクされます
+MassiveThreadsおよびGMPライブラリがリンクされます
 （これらのライブラリの機能を使用していなくても，これらのライブラリが
 リンクされます．
 	この点は将来改善する予定です）．
@@ -1175,7 +1174,7 @@ MassiveThreads，GMPおよびyajlライブラリがリンクされます
 platforms.
 \begin{itemize}
 \item Linux (amd64 (x86\_64))
-\item Mac OS X (10.14 or later is recommended)
+\item macOS (10.15 or later is recommended)
 \item Windows 10 (Windows Subsystem for Linux)
 \end{itemize}
 
@@ -1183,26 +1182,21 @@ platforms.
 \begin{itemize}
 \item MassiveThreads \mythversion{}
 \item GNU Multiple Precision Arithmetic (GMP) library
-\item yajl (Yet Another JSON Library) 2.1
-\item LLVM 3.9.1 or above (LLVM 10 is recommended; the latest one available is preferrable)
+\item LLVM 3.9.1 or above (LLVM \llvmversion{} is recommended; the latest one available is preferrable)
 \end{itemize}
 	MassiveThreads is a free software distributed under a BSD-style
 license.
 	GMP is a free software distributed under LGPL（GNU Lesser General
 Public License).
 	Yajl is a free software distributed under a variant of ISC license.
-	LLVM is a open-source software distributed under LLVM Release License,
-which is a BSD-style license.
+	LLVM is a open-source software distributed under Apache
+license version 2 with some exceptions.
 
 %	MassiveThreads is actually an option;
 %by specifying a build option,
 %you can build \smlsharp{} that does not depend on MassiveThreads.
 %	In what follows,
 %MassiveThreads is enabled unless otherwise noted.
-
-	Yajl must be in version 2.0.0 or above.
-	Since yajl 1 and yajl 2 are not compatible with each other,
-compilation of \smlsharp{} with yajl 1 shall fail.
 
 	LLVM version must be in version 3.9.1 or above.
 	The latest LLVM available in your system is preferable.
@@ -1216,7 +1210,7 @@ and \smlsharp{} programs.
 \begin{itemize}
 \item
 	These libraries and commands are used to build \smlsharp{}.
-	The MassiveThreads, GMP, and yajl libraries are liniked into
+	The MassiveThreads and GMP libraries are liniked into
 the \smlsharp{} compiler command.
 	Libraries of LLVM is not linked into the \smlsharp{} compiler.
 \item
@@ -1226,7 +1220,7 @@ the \smlsharp{} compiler command uses
 for code generation.
 \item
 	The executable file of any user program compiled by the \smlsharp{}
-compiler is linked with the MassiveThreads, GMP, and yajl library,
+compiler is linked with the MassiveThreads and GMP library,
 even if the program does not use the features of these libraries at all.
 	We plan to fix this in upcoming releases.
 \end{itemize}
@@ -1264,15 +1258,15 @@ install and update \smlsharp{} by {\tt apt} command.
 \begin{itemize}
 \item Debian sid:
 \begin{program}
-wget -O- https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/signing-key-pub.asc | apt-key add -\\
-wget -O/etc/apt/sources.list.d/smlsharp.list https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp.list\\
+wget -P /usr/share/keyrings https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp-archive-keyring.gpg\\
+wget -P /etc/apt/sources.list.d https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp.list\\
 apt update\\
 apt install smlsharp
 \end{program}
 \item Debian 10 (buster):
 \begin{program}
-wget -O- https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/buster/signing-key-pub.asc | apt-key add -\\
-wget -O/etc/apt/sources.list.d/smlsharp.list https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/buster/smlsharp.list\\
+wget -P /usr/share/keyrings https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/buster/smlsharp-archive-keyring.gpg\\
+wget -P /etc/apt/sources.list.d https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/buster/smlsharp.list\\
 apt update\\
 apt install smlsharp
 \end{program}
@@ -1287,24 +1281,30 @@ apt install smlsharp
 \begin{enumerate}
 \item
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	\smlsharp{}開発チームの公開鍵をダウンロードしシステムに登録します．
+	\smlsharp{}開発チームの公開鍵をダウンロードしシステムの所定の
+位置に置きます．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Download the public key of the \smlsharp{} development team and
-register it to the system.
+put it to the specified position in the system.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-wget -O- https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/signing-key-pub.asc | apt-key add -
+wget -P /usr/share/keyrings https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp-archive-keyring.gpg
 \end{program}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	{\tt apt-key finger}コマンドで鍵指紋を確認できます．
-	登録した鍵の指紋が上記指紋と一致することを確認してください
+	以下のコマンドで鍵指紋を確認できます．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	You can check the fingerprint of the key by the following command:
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+\begin{program}
+gpg --with-fingerprint /usr/share/keyrings/smlsharp-archive-keyring.gpg
+\end{program}
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	ダウンロードした鍵の指紋が上記指紋と一致することを確認してください
 （より厳密に鍵の正当性を確認したい場合は，\smlsharp{}開発者本人に
 直接会って鍵指紋を受け取ってください）．
 	鍵指紋は以下の通りです．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	You can check the fingerprint of the key by the {\tt apt-key}
-command.
-	Confirm that the fingerprint of the installed key is identical
+	Confirm that the fingerprint of the downloaded key is identical
 to the above fingerprint
 (those who would like to verify the public key strictly should meet a developer
 of the \smlsharp{} compiler and receive the fingerprint of the key).
@@ -1324,7 +1324,7 @@ add it to the system.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{program}
-wget -O/etc/apt/sources.list.d/smlsharp.list https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp.list
+wget -P /etc/apt/sources.list.d https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp.list
 \end{program}
 
 \item
@@ -1363,14 +1363,16 @@ apt install smlsharp
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}リリース時点で最新のリリースおよびLTSリリースに対して
-プライベートリポジトリを用意しています．
+PPA (Personal Package Archives for Ubuntu) にプライベートリポジトリを
+を用意しています．
 	このリポジトリをシステムに追加することで，{\tt apt}コマンドで
 \smlsharp{}コンパイラをインストール，アップデートすることができます．
 
 	以下のコマンドでインストールできます．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Private repositories are provided for the latest release and
-latest TLS release (when \smlsharp{} is released) of Ubuntu.
+latest TLS release (when \smlsharp{} is released) of Ubuntu through
+PPA (Personal Package Archives for Ubuntu).
 	Add one of these repositories to your system, and you can
 install and update the \smlsharp{} compiler by the {\tt apt} command.
 
@@ -1378,27 +1380,29 @@ install and update the \smlsharp{} compiler by the {\tt apt} command.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{itemize}
-\item Ubuntu 20.04 LTS (Focal):
+\item Ubuntu 20.10 LTS (Groovy):
 \begin{program}
-wget -O- https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/focal/signing-key-pub.asc | apt-key add -\\
-wget -O/etc/apt/sources.list.d/smlsharp.list https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/focal/smlsharp.list\\
-apt update\\
+add-apt-repository ppa:smlsharp/ppa
+apt update
 apt install smlsharp
 \end{program}
-\item Ubuntu 18.04 LTS (Bionic):
+\item Ubuntu 20.04 LTS (Focal):
 \begin{program}
-wget -O- https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/bionic/signing-key-pub.asc | apt-key add -\\
-wget -O/etc/apt/sources.list.d/smlsharp.list https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/ubuntu/dists/bionic/smlsharp.list\\
-apt update\\
+add-apt-repository ppa:smlsharp/ppa
+apt update
 apt install smlsharp
 \end{program}
 \end{itemize}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	コマンドはDebianの場合と同様です．
+        \texttt{add-apt-repository}でシステムにプライベートリポジトリを
+追加します．
+	\texttt{apt}コマンドはDebianの場合と同様です．
 	詳細は\ref{sec:tutorialInstallDebian}節をご覧ください．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The commands are similar to those for Debian.
+	\texttt{add-apt-repository} adds the private repository to the
+system.
+	The \texttt{apt} commands are similar to those for Debian.
 	See Section \ref{sec:tutorialInstallDebian} for details.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -1508,7 +1512,7 @@ install and update \smlsharp{} by {\tt yum} or {\tt dnf} command.
 \item CentOS 8:
 \begin{program}
 rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/centos/smlsharp-release-centos-8-0.noarch.rpm\\
-dnf install --enablerepo=PowerTools smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
+dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \item CentOS 7:
 \begin{program}
@@ -1526,15 +1530,6 @@ points.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{itemize}
-\item
-\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	CentOS 8の場合，\smlsharp{}インストール時に
-PowerToolsリポジトリを有効にする必要があります．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	On CentOS 8, the PowerTools repository must be enabled when
-installing \smlsharp{}.
-\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 \item
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	CentOS 7の場合，{\tt epel-release}パッケージを事前にインストール
@@ -1566,7 +1561,7 @@ install \smlsharp{} and its dependent libraries.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{program}
-brew tap --full smlsharp/smlsharp https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/homebrew\\
+brew tap smlsharp/smlsharp https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/homebrew\\
 brew install smlsharp
 \end{program}
 
@@ -1616,7 +1611,7 @@ fetch the public key of the \smlsharp{} development team from the
 following URL or some PGP public key servers:
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/signing-key-pub.asc
+https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp-archive-keyring.gpg
 \end{program}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	鍵指紋は以下の通りです．
@@ -1701,7 +1696,7 @@ install \smlsharp{} in the same installation steps as Ubuntu
 \item プログラム開発用のツール群GNU binutils（GNU Binary Utilities）．
 \item CおよびC++コンパイラ（gccまたはclang）
 \item make（GNU makeを推奨）
-\item MassiveThreads，GMP，およびyajlのライブラリ本体とヘッダーファイル
+\item MassiveThreadsおよびGMPライブラリ本体とヘッダーファイル
 \item LLVM 3.9.1以降のライブラリ，ヘッダーファイル，およびコマンド
 \end{enumerate}
 	これらのソフトウェアがインストール済みならば，\smlsharp{}は
@@ -1715,7 +1710,7 @@ install \smlsharp{} in the same installation steps as Ubuntu
 \item GNU binutils（GNU Binary Utilities),
 \item C and C++ compiler (gcc or clang),
 \item make (GNU make is recommended),
-\item MassiveThreads, GMP, and yajl library and their header files, and
+\item MassiveThreads and GMP library and their header files, and
 \item LLVM 3.9.1 (or above) library, its header files, and commands
 \end{enumerate}
 	If these have been already installed, you can build and install
@@ -8787,9 +8782,9 @@ for partially dynamic records to dynamically-typed values.
 program that reads a list of records written in JSON.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-\# val J = "[{\"name\":\"Joe\", \"age\":21, \"grade\":1.1}," \\
-\ \ \ \ \ \ \ \ \ \ \ \ \^ "{\"name\":\"Sue\", \"age\":31, \"grade\":2.0}," \\
-\ \ \ \ \ \ \ \ \ \ \ \ \^ "{\"name\":\"Bob\", \"age\":41, \"grade\":3.9}]"; \\
+\# val J = "[\{\"name\":\"Joe\", \"age\":21, \"grade\":1.1\}," \\
+\ \ \ \ \ \ \ \ \ \ \ \ \^ "\{\"name\":\"Sue\", \"age\":31, \"grade\":2.0\}," \\
+\ \ \ \ \ \ \ \ \ \ \ \ \^ "\{\"name\":\"Bob\", \"age\":41, \"grade\":3.9\}]"; \\
 val J =\\
 \ \ "[\{"name":"Joe", "age":21, "grade":1.1\},\\
 \ \ \ \ \{"name":"Sue", "age":31, "grade":2.0\},\\
@@ -15176,9 +15171,9 @@ The following casts are correct:
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
 val l = Dynamic.fromJson\\
-~~~~~~~~~~"[{\char`\\"name\char`\\":\char`\\"Joe\char`\\", \char`\\"age\char`\\":21},\char`\\\\
-~~~~~~~~~~\char`\\ {\char`\\"name\char`\\":\char`\\"Sue\char`\\", \char`\\"grade\char`\\":2.0},\char`\\\\
-~~~~~~~~~~\char`\\ {\char`\\"name\char`\\":\char`\\"Robert\char`\\", \char`\\"nickname\char`\\":\char`\\"Bob\char`\\"}]";
+~~~~~~~~~~"[\{\char`\\"name\char`\\":\char`\\"Joe\char`\\", \char`\\"age\char`\\":21\},\char`\\\\
+~~~~~~~~~~\char`\\ \{\char`\\"name\char`\\":\char`\\"Sue\char`\\", \char`\\"grade\char`\\":2.0\},\char`\\\\
+~~~~~~~~~~\char`\\ \{\char`\\"name\char`\\":\char`\\"Robert\char`\\", \char`\\"nickname\char`\\":\char`\\"Bob\char`\\"\}]";
 \end{program}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 以下のキャストは全て正しい．
@@ -15442,7 +15437,7 @@ $\{\nonterm{vid} : \nonterm{ty}\}$.
 	The following shows simple examples.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-SML\# \version{} for x86\_64-pc-linux-gnu with LLVM \llvmversion{}
+SML\# \version{} (\releaseDate{}) for x86\_64-pc-linux-gnu with LLVM \llvmversion{}
 \\
 \# val A = 1
 \\
@@ -16997,9 +16992,6 @@ constructs for SQL queries:
 \\
 \nonterm{sqlfn}
 &::=&
-	\term{...}\ \term{(}\ \nonterm{exp}\ \term{)}
-	& \txt{SQLコマンドの埋め込み}{embedded SQL commands}
-\\&\vbar&
 	\nonterm{sqlselect}
 	& \txt{SELECTクエリ}{SELECT queries}
 \\&\vbar&
@@ -17032,8 +17024,9 @@ defined in Section \ref{sec:reference:sqlcommand}.
 \nonterm{pat}および\nonterm{sql}の中では，
 \code{...(\nonterm{exp})}または
 \code{(...\nonterm{exp})}という形で囲われる\nonterm{exp}の中を除き
-（\ref{sec:reference:sqlselect}節および
-\ref{sec:reference:sqlexp}節参照），
+（\ref{sec:reference:sqlexp}節，
+\ref{sec:reference:sqlselect}節，および
+\ref{sec:reference:sqlcommand}節参照），
 以下は予約語として扱われる
 （この予約語のリストは
 第\ref{sec:reference:lexicalitems}節からの再掲である）．
@@ -17044,8 +17037,9 @@ except for the position surrounded by
 \code{...(\nonterm{exp})}
 or
 \code{(...\nonterm{exp})}
-(see Section \ref{sec:reference:sqlselect} and
-\ref{sec:reference:sqlexp} for details),
+(see Section \ref{sec:reference:sqlexp},
+\ref{sec:reference:sqlselect}, and
+\ref{sec:reference:sqlcommand} for details),
 the following words are recognized as keywords
 (this list of keywords is reused from
 Section \ref{sec:reference:lexicalitems}).
@@ -19841,7 +19835,7 @@ fn db => \_sql\\
 ~~select \#e.department, (select min(\#t.age)\\
 ~~~~~~~~~~~~~~~~~~~~~~~~~from \#db.employee as t\\
 ~~~~~~~~~~~~~~~~~~~~~~~~~where (\#t.department = \#e.department\\
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~and Some \#t.salary > min(\#e.salary))\\
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~and (Some) \#t.salary > min(\#e.salary))\\
 ~~~~~~~~~~~~~~~~~~~~~~~~~group by ())\\
 ~~from \#db.employee as e\\
 ~~group by \#e.department
@@ -19930,25 +19924,48 @@ then the resulting SQL query is correct.
 \\&$\vbar$&
 	\nonterm{sqltransaction}
 	& \txt{トランザクション関連コマンド}{transaction management commands}
+\\&\vbar&
+	\term{(\nonterm{sqlfn}; $\cdots$; \nonterm{sqlfn})}
+	& \txt{コマンドのシーケンス}{command sequence}
+\\&\vbar&
+	\term{...}\ \term{(}\ \nonterm{exp}\ \term{)}
+	& \txt{SQLコマンドの埋め込み}{embedded SQL commands}
 \end{tabular}
 
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	これらのコマンドの型は，
+	INSERT，UPDATE，DELETE，トランザクション関連コマンドの型は，
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The type of these commands is
+	The type of INSERT, UPDATE, DELETE, and transaction commands is
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
 (unit, $w$) SQL.command
 \end{program}
 \ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 である．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	各コマンドの詳細は以下の各副節で与える．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Details of these commands are shown in the following subsections.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\term{(\nonterm{sqlfn$_1$}; $\cdots$; \nonterm{sqlfn$_n$})}
+（$n$は2以上でなければならない）は，一度に送信される
+セミコロンで区切られた一連のコマンドを表す．
+	その型は最後のコマンド\nonterm{sqlfn$_n$}の型に等しい．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\term{(\nonterm{sqlfn$_1$}; $\cdots$; \nonterm{sqlfn$_n$})}
+($n$ must be greater than 1) is a command consisting of a sequence of
+commands separated by semicolons.
+	Its type is equal to the type of the last command
+\nonterm{sqlfn$_n$}.
+\fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifjp%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\term{...(\nonterm{exp})}は，\smlsharp{}の式を評価した結果を
+コマンドとして埋め込む．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\term{...(\nonterm{exp})} embeds the result of \nonterm{exp}
+as a command.
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\txt{INSERTコマンド}{INSERT commands}}
@@ -21455,8 +21472,8 @@ structure SQL : sig\\
 ~~~~val nullif : 'sqlopt * 'sqlopt -> 'sqlopt\\
 ~~~~val coalesce : 'b option * 'b -> 'b\\
 ~~~~val coalesce' : 'b option * 'b option -> 'b option\\
-~~~~val count : 'sql -> int\\
-~~~~val avg : 'num list -> real option\\
+~~~~val count : 'sql list -> int\\
+~~~~val avg : 'num list -> numeric option\\
 ~~~~val sum : 'num list -> 'num option\\
 ~~~~val sum' : 'num option list -> 'num option\\
 ~~~~val min : 'sql list -> 'sql option\\
@@ -21710,8 +21727,8 @@ two variants such as \code{sum} and \code{sum'}.
 	The type of these functions are the following:
 \fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{program}
-val count : 'sql -> int\\
-val avg : 'num list -> real option\\
+val count : 'sql list -> int\\
+val avg : 'num list -> numeric option\\
 val sum : 'num list -> 'num option\\
 val sum' : 'num option list -> 'num option\\
 val min : 'sql list -> 'sql option\\
@@ -28899,10 +28916,15 @@ consists of the directories and files.
 
 \begin{tabular}{ll}
 \code{benchmark/}& \txt{ベンチマークソース}{benchmark programs}\\
-\code{precompiled/}&\txt{\code{minismlsharp}のアセンブリソースアーカイブ}{assembry source archives for \code{minismlsharp}}\\
-\code{sample/}& \txt{サンプルプログラム}{sample programs}\\
-\code{src/} & \txt{\smlsharp{} ソースファイル}{the \smlsharp{} source files}\\
-\code{test/}& \txt{テストプログラムとデータ}{test programs and data}
+\code{precompiled/}&
+    \txt{\code{minismlsharp}のアセンブリソースアーカイブ}
+       {assembry source archives for \code{minismlsharp}}\\
+\code{sample/}& 
+    \txt{サンプルプログラム}{sample programs}\\
+\code{src/} & 
+    \txt{\smlsharp{} ソースファイル}{the \smlsharp{} source files}\\
+\code{test/}& 
+    \txt{テストプログラムとデータ}{test programs and data}
 \end{tabular}
 
 \item \txt{ファイル}{files}
@@ -28963,6 +28985,7 @@ consists of the following directories and files.
 \end{tabular}
 
 \item \txt{\smlsharp{}ツール}{\smlsharp{} tools}
+
 \begin{tabular}{ll}
 \code{smlformat/}&\txt{\code{smlformat}清書プログラム生成器}{\code{smlformat}the pretty printer generator}
 \\
@@ -32666,8 +32689,6 @@ K.~Ueno, A.~Ohori.
 大堀 淳.
 \newblock {\em プログラミング言語Standard ML入門}.
 \newblock 共立出版, 2000.
-
-
 
 \end{thebibliography}
 
