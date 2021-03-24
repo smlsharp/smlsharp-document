@@ -1,3 +1,5 @@
+DESTDIR = smlsharp.github.io
+
 all:
 
 VERSION: manual.tex
@@ -5,16 +7,22 @@ VERSION: manual.tex
 include VERSION
 
 all: pdf html
-pdf: ja/manual.pdf en/manual.pdf
-html: ja/documents/$(VERSION)/index.html en/documents/$(VERSION)/index.html
+pdf: \
+  $(DESTDIR)/docs/ja/documents/$(VERSION)/manual.pdf \
+  $(DESTDIR)/docs/en/documents/$(VERSION)/manual.pdf
+html: \
+  $(DESTDIR)/docs/ja/documents/$(VERSION)/index.html \
+  $(DESTDIR)/docs/en/documents/$(VERSION)/index.html
 
-.PHONY: all pdf html
+.PHONY: all pdf html clean distclean
 .DELETE_ON_ERROR:
 
 clean:
-	-rm -rf VERSION bin lib ja en
-distclean:
-	-rm -rf VERSION bin lib ja en src
+	-rm -rf VERSION tmp bin lib
+	-rm -rf $(DESTDIR)/docs/ja/documents/$(VERSION)
+	-rm -rf $(DESTDIR)/docs/en/documents/$(VERSION)
+distclean: clean
+	-rm -rf src
 
 src:
 	-mkdir $@
@@ -22,39 +30,44 @@ lib:
 	-mkdir $@
 bin:
 	-mkdir $@
-ja:
-	-mkdir $@
-en:
-	-mkdir $@
-ja/documents/$(VERSION):
+tmp/ja:
 	-mkdir -p $@
-en/documents/$(VERSION):
+tmp/en:
+	-mkdir -p $@
+$(DESTDIR)/docs/ja/documents/$(VERSION):
+	-mkdir -p $@
+$(DESTDIR)/docs/en/documents/$(VERSION):
 	-mkdir -p $@
 
-ja/manual.tex: manual.tex | ja
+tmp/ja/manual.tex: manual.tex | tmp/ja
 	sed -E 's/^\\jp(true|false)$$/\\jptrue/' $< > $@
-en/manual.tex: manual.tex | en
+tmp/en/manual.tex: manual.tex | tmp/en
 	sed -E 's/^\\jp(true|false)$$/\\jpfalse/' $< > $@
 
-ja/manual.pdf: ja/manual.tex
-	cd ja && platex -interaction=nonstopmode manual
-	cd ja && platex -interaction=nonstopmode manual
-	cd ja && dvipdfmx manual
+tmp/ja/manual.pdf: tmp/ja/manual.tex
+	cd tmp/ja && platex -interaction=nonstopmode manual
+	cd tmp/ja && platex -interaction=nonstopmode manual
+	cd tmp/ja && dvipdfmx manual
 
-en/manual.pdf: en/manual.tex
-	cd en && platex -interaction=nonstopmode manual
-	cd en && platex -interaction=nonstopmode manual
-	cd en && dvipdfmx manual
+tmp/en/manual.pdf: tmp/en/manual.tex
+	cd tmp/en && platex -interaction=nonstopmode manual
+	cd tmp/en && platex -interaction=nonstopmode manual
+	cd tmp/en && dvipdfmx manual
 
-ja/manual.xml: ja/manual.tex bin/latexml
+$(DESTDIR)/docs/ja/documents/$(VERSION)/manual.pdf: tmp/ja/manual.pdf | $(DESTDIR)/docs/ja/documents/$(VERSION)
+	cp $< $@
+$(DESTDIR)/docs/en/documents/$(VERSION)/manual.pdf: tmp/en/manual.pdf | $(DESTDIR)/docs/en/documents/$(VERSION)
+	cp $< $@
+
+tmp/ja/manual.xml: tmp/ja/manual.tex bin/latexml
 	PERLLIB=lib bin/latexml --noparse --destination=$@ $<
-en/manual.xml: en/manual.tex bin/latexml
+tmp/en/manual.xml: tmp/en/manual.tex bin/latexml
 	PERLLIB=lib bin/latexml --noparse --destination=$@ $<
 
-ja/documents/$(VERSION)/index.html: ja/manual.xml bin/latexmlpost | ja/documents/$(VERSION)
+$(DESTDIR)/docs/ja/documents/$(VERSION)/index.html: tmp/ja/manual.xml bin/latexmlpost | $(DESTDIR)/docs/ja/documents/$(VERSION)
 	PERLLIB=lib bin/latexmlpost --format=html5 --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML' --destination=$@ --split --nographicimages --novalidate $<
 	git log -n1 --format='<!--%H-->' HEAD >> $@
-en/documents/$(VERSION)/index.html: en/manual.xml bin/latexmlpost | en/documents/$(VERSION)
+$(DESTDIR)/docs/en/documents/$(VERSION)/index.html: tmp/en/manual.xml bin/latexmlpost | $(DESTDIR)/docs/en/documents/$(VERSION)
 	PERLLIB=lib bin/latexmlpost --format=html5 --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML' --destination=$@ --split --nographicimages --novalidate $<
 	git log -n1 --format='<!--%H-->' HEAD >> $@
 
