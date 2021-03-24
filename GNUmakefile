@@ -14,7 +14,7 @@ html: \
   $(DESTDIR)/docs/ja/documents/$(VERSION)/index.html \
   $(DESTDIR)/docs/en/documents/$(VERSION)/index.html
 
-.PHONY: all pdf html clean distclean
+.PHONY: all pdf html clean distclean jekyllify
 .DELETE_ON_ERROR:
 
 clean:
@@ -70,6 +70,13 @@ $(DESTDIR)/docs/ja/documents/$(VERSION)/index.html: tmp/ja/manual.xml bin/latexm
 $(DESTDIR)/docs/en/documents/$(VERSION)/index.html: tmp/en/manual.xml bin/latexmlpost | $(DESTDIR)/docs/en/documents/$(VERSION)
 	PERLLIB=lib bin/latexmlpost --format=html5 --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML' --destination=$@ --split --nographicimages --novalidate $<
 	git log -n1 --format='<!--%H-->' HEAD >> $@
+
+jekyllify: \
+  $(DESTDIR)/docs/ja/documents/$(VERSION)/index.html \
+  $(DESTDIR)/docs/en/documents/$(VERSION)/index.html
+	scripts/jekyllify.sh \
+	  $(DESTDIR)/docs/ja/documents/$(VERSION)/*.html \
+	  $(DESTDIR)/docs/en/documents/$(VERSION)/*.html
 
 SHA256 = perl -mDigest::SHA -e 'exit(Digest::SHA->new(256)->addfile($$ARGV[0])->hexdigest() ne $$ARGV[1])'
 
