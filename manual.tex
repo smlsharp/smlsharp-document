@@ -76,8 +76,8 @@ construction. See the official Japanese documents (unfortunately in Japanese).}
 
 \newcommand\eurl[1]{{\edef\eurlTMP{{#1}}\expandafter\url\eurlTMP}}
 
-\newcommand{\documentUrlJa}{\eurl{https://www.pllab.riec.tohoku.ac.jp/smlsharp/docs/\version/ja/manual.xhtml}}
-\newcommand{\documentUrlEn}{\eurl{https://www.pllab.riec.tohoku.ac.jp/smlsharp/docs/\version/en/manual.xhtml}}
+\newcommand{\documentUrlJa}{\eurl{https://smlsharp.github.io/ja/documents/\version/}}
+\newcommand{\documentUrlEn}{\eurl{https://smlsharp.github.io/en/documents/\version/}}
 \newcommand{\smlsharpSize}{\txt{30万}{0.3 millions}}
 
 \newcommand{\codestyle}{%
@@ -321,7 +321,7 @@ Standard MLの基本機能を用いたMLプログラミングの基本も，
 \item {\bf \smlsharp{}の名前について:}
 第\ref{sec:smlsharpHistory}節.
 \item {\bf \smlsharp{}ホームページ：}
-\url{https://www.pllab.riec.tohoku.ac.jp/smlsharp/ja/}
+\url{https://smlsharp.github.io/}
 \item {\bf \smlsharp{} Document in English：}
 \documentUrlEn
 \end{itemize}   
@@ -389,7 +389,7 @@ Section \ref{sec:smlsharpTeam}.
 \item {\bf On the name of \smlsharp{}}:
 Section \ref{sec:smlsharpHistory} (History of \smlsharp).
 \item {\bf \smlsharp{} web page}: 
-\url{https://www.pllab.riec.tohoku.ac.jp/smlsharp/}
+\url{https://smlsharp.github.io/}
 \item {\bf \smlsharp{} document in Japanese}:
 \documentUrlJa
 \end{itemize}
@@ -669,7 +669,7 @@ funded by the Japan ministry of science, education and technologies
 以下のwebサイトやメーリングリストを管理しています．
 \begin{itemize}
 \item \smlsharp{}ホームページ.
-\url{https://www.pllab.riec.tohoku.ac.jp/smlsharp/ja/}
+\url{https://smlsharp.github.io/}
 コンパイラや本書を含む文書の最新版などもここからダウンロードできます．
 
 \item Twitterアカウント {\tt @smlsharp}．
@@ -680,10 +680,10 @@ funded by the Japan ministry of science, education and technologies
 	個々に言及いたしませんが，本書をご覧頂きコメントをお寄せ頂いた
 方々に感謝いたします． 
 
-\item \smlsharp{}開発者への連絡メールアドレス
-{\tt smlsharp-dev@ml.riec.tohoku.ac.jp}.
-%\epsfig{file=smlsharp-list.eps,width=0.4\textwidth}
-各種問い合わせや共同研究の提案などにご利用ください．
+%\item \smlsharp{}開発者への連絡メールアドレス
+%{\tt smlsharp-dev@ml.riec.tohoku.ac.jp}.
+%%\epsfig{file=smlsharp-list.eps,width=0.4\textwidth}
+%各種問い合わせや共同研究の提案などにご利用ください．
 
 \end{itemize}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -710,7 +710,7 @@ affiliation at the time of development):
 	Contact information regarding \smlsharp{}:
 \begin{itemize}
 \item \smlsharp{} home page:
-\url{https://www.pllab.riec.tohoku.ac.jp/smlsharp/ja/}
+\url{https://smlsharp.github.io/}
 
 %\item \smlsharp{} mailing list:
 %{\tt smlsharp-list@pllab.riec.tohoku.ac.jp}
@@ -729,9 +729,9 @@ affiliation at the time of development):
 
 	We tweet the latest information about \smlsharp{} on this account.
 	
-\item Email address of the \smlsharp{} development team :
-{\tt smlsharp-dev@ml.riec.tohoku.ac.jp}
-%\epsfig{file=smlsharp-list.eps,width=0.4\textwidth}
+%\item Email address of the \smlsharp{} development team :
+%{\tt smlsharp-dev@ml.riec.tohoku.ac.jp}
+%%\epsfig{file=smlsharp-list.eps,width=0.4\textwidth}
 
 Send your questions, requests, and comments to the development team.
 \end{itemize}
@@ -1259,15 +1259,15 @@ install and update \smlsharp{} by {\tt apt} command.
 \begin{itemize}
 \item Debian sid:
 \begin{program}
-wget -P /usr/share/keyrings https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp-archive-keyring.gpg\\
-wget -P /etc/apt/sources.list.d https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp.list\\
+wget -P /usr/share/keyrings https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp-archive-keyring.gpg\\
+wget -P /etc/apt/sources.list.d https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp.list\\
 apt update\\
 apt install smlsharp
 \end{program}
 \item Debian 10 (buster):
 \begin{program}
-wget -P /usr/share/keyrings https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/buster/smlsharp-archive-keyring.gpg\\
-wget -P /etc/apt/sources.list.d https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/buster/smlsharp.list\\
+wget -P /usr/share/keyrings https://github.com/smlsharp/repos/raw/main/debian/dists/buster/smlsharp-archive-keyring.gpg\\
+wget -P /etc/apt/sources.list.d https://github.com/smlsharp/repos/raw/main/debian/dists/buster/smlsharp.list\\
 apt update\\
 apt install smlsharp
 \end{program}
@@ -1289,7 +1289,7 @@ apt install smlsharp
 put it to the specified position in the system.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-wget -P /usr/share/keyrings https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp-archive-keyring.gpg
+wget -P /usr/share/keyrings https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp-archive-keyring.gpg
 \end{program}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	以下のコマンドで鍵指紋を確認できます．
@@ -1325,7 +1325,7 @@ add it to the system.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{program}
-wget -P /etc/apt/sources.list.d https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp.list
+wget -P /etc/apt/sources.list.d https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp.list
 \end{program}
 
 \item
@@ -1430,12 +1430,12 @@ install and update \smlsharp{} by {\tt dnf} command.
 \begin{itemize}
 \item Fedora:
 \begin{program}
-rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/fedora/smlsharp-release-fedora-31-0.noarch.rpm\\
+rpm -i https://github.com/smlsharp/repos/raw/main/fedora/smlsharp-release-fedora-31-0.noarch.rpm\\
 dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \item Fedora Rawhide:
 \begin{program}
-rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/fedora/smlsharp-release-rawhide-31-0.noarch.rpm\\
+rpm -i https://github.com/smlsharp/repos/raw/main/fedora/smlsharp-release-rawhide-31-0.noarch.rpm\\
 dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \end{itemize}
@@ -1458,7 +1458,7 @@ repository.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{program}
-rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/fedora/smlsharp-release-fedora-31-0.noarch.rpm
+rpm -i https://github.com/smlsharp/repos/raw/main/fedora/smlsharp-release-fedora-31-0.noarch.rpm
 \end{program}
 
 \item
@@ -1512,13 +1512,13 @@ install and update \smlsharp{} by {\tt yum} or {\tt dnf} command.
 \begin{itemize}
 \item CentOS 8:
 \begin{program}
-rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/centos/smlsharp-release-centos-8-0.noarch.rpm\\
+rpm -i https://github.com/smlsharp/repos/raw/main/centos/smlsharp-release-centos-8-0.noarch.rpm\\
 dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \item CentOS 7:
 \begin{program}
 yum install epel-release\\
-rpm -i https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/centos/smlsharp-release-centos-7-0.noarch.rpm\\
+rpm -i https://github.com/smlsharp/repos/raw/main/centos/smlsharp-release-centos-7-0.noarch.rpm\\
 yum install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \end{itemize}
@@ -1562,7 +1562,7 @@ install \smlsharp{} and its dependent libraries.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{program}
-brew tap smlsharp/smlsharp https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/homebrew\\
+brew tap smlsharp/smlsharp\\
 brew install smlsharp
 \end{program}
 
@@ -1589,7 +1589,7 @@ brew install smlsharp
 so that the \smlsharp{}-related pacakges are added to the Homebrew system.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-brew tap --full smlsharp/smlsharp https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/homebrew
+brew tap smlsharp/smlsharp
 \end{program}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	このリポジトリはMassiveThreadsと\smlsharp{}コンパイラの
@@ -1612,7 +1612,7 @@ fetch the public key of the \smlsharp{} development team from the
 following URL or some PGP public key servers:
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/debian/dists/sid/smlsharp-archive-keyring.gpg
+https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp-archive-keyring.gpg
 \end{program}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	鍵指紋は以下の通りです．
@@ -1812,15 +1812,15 @@ following steps.
 \item
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	ソースパッケージ
-（\eurl{https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-\version.tar.gz}）
+（\eurl{https://github.com/smlsharp/smlsharp/releases/download/v\version/smlsharp-\version.tar.gz}）
 をダウンロードします．
 	最新のソースパッケージは
-\url{https://www.pllab.riec.tohoku.ac.jp/smlsharp/?Download}からも取得できます．
+\url{https://smlsharp.github.io/ja/downloads/}からも取得できます．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Download the source distribution from:
-\eurl{https://www.pllab.riec.tohoku.ac.jp/smlsharp/download/smlsharp-\version.tar.gz}.
+\eurl{https://github.com/smlsharp/smlsharp/releases/download/v\version/smlsharp-\version.tar.gz}.
 	The latest version of the source package is also available from
-\url{https://www.pllab.riec.tohoku.ac.jp/smlsharp/?Download}.
+\url{https://smlsharp.github.io/ja/downloads/}.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \item
