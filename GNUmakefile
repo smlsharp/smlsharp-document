@@ -64,12 +64,15 @@ tmp/ja/manual.xml: tmp/ja/manual.tex bin/latexml
 tmp/en/manual.xml: tmp/en/manual.tex bin/latexml
 	PERLLIB=lib bin/latexml --noparse --destination=$@ $<
 
-$(DESTDIR)/docs/ja/documents/$(VERSION)/index.html: tmp/ja/manual.xml bin/latexmlpost | $(DESTDIR)/docs/ja/documents/$(VERSION)
-	PERLLIB=lib bin/latexmlpost --format=html5 --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML' --destination=$@ --split --nographicimages --novalidate $<
-	git log -n1 --format='<!--%H-->' HEAD >> $@
-$(DESTDIR)/docs/en/documents/$(VERSION)/index.html: tmp/en/manual.xml bin/latexmlpost | $(DESTDIR)/docs/en/documents/$(VERSION)
-	PERLLIB=lib bin/latexmlpost --format=html5 --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML' --destination=$@ --split --nographicimages --novalidate $<
-	git log -n1 --format='<!--%H-->' HEAD >> $@
+define LATEXMLPOST_CMD
+	PERLLIB=lib bin/latexmlpost --stylesheet=xslt/html.xsl --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML' --destination=$@ --split --nographicimages --novalidate $<
+	echo '.ltx_page_header .ltx_document_title{margin:1em 0;text-align:center;font-weight:bold}' >> $(patsubst %/index.html,%/LaTeXML.css,$@)
+endef
+
+$(DESTDIR)/docs/ja/documents/$(VERSION)/index.html: tmp/ja/manual.xml bin/latexmlpost xslt/html.xsl | $(DESTDIR)/docs/ja/documents/$(VERSION)
+	$(LATEXMLPOST_CMD)
+$(DESTDIR)/docs/en/documents/$(VERSION)/index.html: tmp/en/manual.xml bin/latexmlpost xslt/html.xsl | $(DESTDIR)/docs/en/documents/$(VERSION)
+	$(LATEXMLPOST_CMD)
 
 jekyllify: \
   $(DESTDIR)/docs/ja/documents/$(VERSION)/index.html \
