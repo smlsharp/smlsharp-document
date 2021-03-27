@@ -2,12 +2,13 @@
 for i
 do
   permalink=${i#*/docs/}
+  permalink=${permalink%index.html}
   lang=${permalink%%/*}
   sed -i.orig '
 1i\
 ---\
 layout: default\
-permalink: '"$permalink"'\
+permalink: /'"$permalink"'\
 translated: true\
 lang: '"$lang"'
 /^<!DOCTYPE html><html>$/d
