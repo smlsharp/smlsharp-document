@@ -64,7 +64,7 @@ RIEC, Tohoku University
 \renewcommand{\today}{\txt{令和3年3月}{Mar, 2021}}
 \date{\today}
 \newcommand{\smlsharp}{SML\#}
-\newcommand{\version}{3.7.1}
+\newcommand{\version}{4.0.0}
 \newcommand{\releaseDate}{2021-03-15}
 
 \newcommand{\mythversion}{1.00}
@@ -235,7 +235,9 @@ construction. See the official Japanese documents (unfortunately in Japanese).}
 \chapter{\txt{はじめに}{Preface}}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	本書は東北大学電気通信研究所で開発された関数型プログラミング言語
+% 	本書は東北大学電気通信研究所で開発された関数型プログラミング言語
+% \smlsharp{}の公式ドキュメントです．
+	本書は関数型プログラミング言語
 \smlsharp{}の公式ドキュメントです．
 	\smlsharp{}の概要，
 チュートリアル，
@@ -265,9 +267,11 @@ construction. See the official Japanese documents (unfortunately in Japanese).}
 	不明な点や要望等は著者にご連絡ください．
 
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	This is the official document of \smlsharp{}, a programming
-language being developed at Research Institute of Electrical
-Communication, Tohoku University.
+% 	This is the official document of \smlsharp{}, a programming
+% language being developed at Research Institute of Electrical
+% Communication, Tohoku University.
+	This is the official document of a functional programming
+language \smlsharp{}.
 	This document intends to provide comprehensive information on
 \smlsharp{}, including:
 tutorials on \smlsharp{} programming, 
@@ -500,14 +504,20 @@ ELFフォーマット）にコンパイルし，システムのリンカーでC�
 大規模プログラムを安全かつ効率的に開発することができます．
 \end{enumerate}
 
-	\smlsharp{}コンパイラおよび実行時処理系は，東北大学電気通信研究
-所大堀・上野研究室で開発され，東北大学が著作権保有するオープンソースソフトウェ
-アです．
-	BSDスタイルの\smlsharp{}ライセンス（\ref{sec:smlsharpLicence}節参照）に
+	\smlsharp{}コンパイラおよび実行時処理系は，
+\smlsharp{}開発チームが著作権保有するオープンソースソフトウェアです．
+% 	\smlsharp{}コンパイラおよび実行時処理系は，東北大学電気通信研究
+% 所大堀・上野研究室で開発され，東北大学が著作権保有するオープンソースソフトウェ
+% アです．
+	MITライセンス（\ref{sec:smlsharpLicense}節参照）に
 よって公開されており，だれでも自由に利用することができます．
+% 	BSDスタイルの\smlsharp{}ライセンス（\ref{sec:smlsharpLicense}節参照）に
+% よって公開されており，だれでも自由に利用することができます．
 	このライセンスは，二次著作物（つまりコンパイラで作成されたシステ
 ムなど）に関する制限の少ないフリーソフトウェアライセンスであり，企業の商
 品開発にも安心して使用できます．
+	現在（\releaseDate）の\smlsharp{}開発チームのメンバーは、、五十音順で、
+大堀 淳（東北大学）と上野雄大（東北大学）です。
 
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -562,10 +572,19 @@ concurrent threads run efficiently on a multicore CPU.
 
 \end{enumerate}
 
-	The \smlsharp{} compiler and its runtime system are developed at
-Research Institute of Electrical Communication,  Tohoku University.
-	They are open-source software distributed with a BSD-style
-\smlsharp{} license (See Section \ref{sec:smlsharpLicence}).
+	The \smlsharp{} compiler and its runtime system are developed 
+by the \smlsharp{} development team.
+% 	The \smlsharp{} compiler and its runtime system are developed at
+% Research Institute of Electrical Communication,  Tohoku University.
+	They are open-source software distributed under the MIT
+license copyrighted by the \smlsharp{} development team
+(See Section \ref{sec:smlsharpLicense}).
+% 	They are open-source software distributed with a BSD-style
+% \smlsharp{} license (See Section \ref{sec:smlsharpLicense}).
+	The current \smlsharp{} development team consists of
+Atsushi Ohori (Tohoku University) and Katsuhiro Ueno (Tohoku University)
+(in the alphabetical order).
+
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{\txt{\smlsharp{}の歴史}{History of \smlsharp{}}}
@@ -673,7 +692,9 @@ funded by the Japan ministry of science, education and technologies
 \item 上野雄大（北陸先端科学技術大学院大学情報科学研究科，東北大学電気通信研究所）
 \end{itemize}
 
-	東北大学電気通信研究所では，\smlsharp{}に関する情報共有の目的で
+% 	東北大学電気通信研究所では，\smlsharp{}に関する情報共有の目的で
+% 以下のwebサイトやメーリングリストを管理しています．
+	\smlsharp{}開発チームは，\smlsharp{}に関する情報共有の目的で
 以下のwebサイトやメーリングリストを管理しています．
 \begin{itemize}
 \item \smlsharp{}ホームページ.
@@ -1054,41 +1075,65 @@ compiler that is as fast as other mature compilers.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \chapter{\txt{\smlsharp{}ライセンス}{\smlsharp{} License}}
-\label{sec:smlsharpLicence}
+\label{sec:smlsharpLicense}
 
-Copyright (c) 2006 - 2021, Tohoku University.\\
-All rights reserved.\\
+The MIT Licence
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are
-met:
+Copyright (c)  2021  The \smlsharp{} Development Team
 
-\begin{itemize}
-\item 
-  Redistributions of source code must retain the above copyright
-  notice, this list of conditions and the following disclaimer. 
-\item 
-  Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the following disclaimer
-  in the documentation and/or other materials provided with the
-  distribution. 
-\item 
-  Neither the name of Tohoku University nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.  
-\end{itemize}
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions: 
 
-THIS SOFTWARE IS PROVIDED BY TOHOKU UNIVERSITY AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TOHOKU UNIVERSITY OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software. 
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+
+
+% Copyright (c) 2006 - 2021, Tohoku University.\\
+% All rights reserved.\\
+% 
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions are
+% met:
+% 
+% \begin{itemize}
+% \item 
+%   Redistributions of source code must retain the above copyright
+%   notice, this list of conditions and the following disclaimer. 
+% \item 
+%   Redistributions in binary form must reproduce the above
+%   copyright notice, this list of conditions and the following disclaimer
+%   in the documentation and/or other materials provided with the
+%   distribution. 
+% \item 
+%   Neither the name of Tohoku University nor the names of its
+%   contributors may be used to endorse or promote products derived from
+%   this software without specific prior written permission.  
+% \end{itemize}
+% 
+% THIS SOFTWARE IS PROVIDED BY TOHOKU UNIVERSITY AND CONTRIBUTORS "AS IS"
+% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+% THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+% PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TOHOKU UNIVERSITY OR
+% CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+% EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+% PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+% PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+% LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+% NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+% SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 \part{\txt{チュートリアル}{Tutorials}}
 \label{part:tutorial}
