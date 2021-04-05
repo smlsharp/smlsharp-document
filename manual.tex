@@ -53,22 +53,22 @@
 \newcommand{\authors}
 {\txt{大堀\ \ 淳\mbox{\ \ \ \ }上野 雄大
 \\
-東北大学 電気通信研究所
+\smlsharp{}開発チーム
 }
 {Atsushi Ohori\mbox{\ \ \ \ }Katsuhiro Ueno
 \\
-RIEC, Tohoku University
+The \smlsharp{} development team
 }
 }
 
-\renewcommand{\today}{\txt{令和3年3月}{Mar, 2021}}
+\renewcommand{\today}{\txt{令和3年4月}{Apr, 2021}}
 \date{\today}
 \newcommand{\smlsharp}{SML\#}
 \newcommand{\version}{4.0.0}
-\newcommand{\releaseDate}{2021-03-15}
+\newcommand{\releaseDate}{2021-04-XX}
 
 \newcommand{\mythversion}{1.00}
-\newcommand{\llvmversion}{11.0.0}
+\newcommand{\llvmversion}{11.1.0}
 
 \newcommand{\seeJapanese}{The English version of this document is under
 construction. See the official Japanese documents (unfortunately in Japanese).}
@@ -692,14 +692,19 @@ funded by the Japan ministry of science, education and technologies
 \item 上野雄大（北陸先端科学技術大学院大学情報科学研究科，東北大学電気通信研究所）
 \end{itemize}
 
-% 	東北大学電気通信研究所では，\smlsharp{}に関する情報共有の目的で
-% 以下のwebサイトやメーリングリストを管理しています．
 	\smlsharp{}開発チームは，\smlsharp{}に関する情報共有の目的で
-以下のwebサイトやメーリングリストを管理しています．
+以下のwebサイトや掲示板を管理しています．
 \begin{itemize}
 \item \smlsharp{}ホームページ.
 \url{https://smlsharp.github.io/}
 コンパイラや本書を含む文書の最新版などもここからダウンロードできます．
+
+\item \smlsharp{}フォーラム．
+\url{https://github.com/smlsharp/forum_ja/discussions}（日本語）および
+\url{https://github.com/smlsharp/forum/discussions}（英語）
+
+	この掲示板は\smlsharp{}について議論する場所です．
+	メッセージを投稿するにはGitHubアカウントが必要です．
 
 \item Twitterアカウント {\tt @smlsharp}．
 \smlsharp{}に関する最新情報をツイートします．
@@ -707,12 +712,7 @@ funded by the Japan ministry of science, education and technologies
 	修正・執筆にあたっては，twitterなどでの\smlsharp{}や本書へのコメ
 ントなども，本書の改善の参考にさせて頂いております．
 	個々に言及いたしませんが，本書をご覧頂きコメントをお寄せ頂いた
-方々に感謝いたします． 
-
-%\item \smlsharp{}開発者への連絡メールアドレス
-%{\tt smlsharp-dev@ml.riec.tohoku.ac.jp}.
-%%\epsfig{file=smlsharp-list.eps,width=0.4\textwidth}
-%各種問い合わせや共同研究の提案などにご利用ください．
+方々に感謝いたします．
 
 \end{itemize}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -741,28 +741,19 @@ affiliation at the time of development):
 \item \smlsharp{} home page:
 \url{https://smlsharp.github.io/}
 
-%\item \smlsharp{} mailing list:
-%{\tt smlsharp-list@pllab.riec.tohoku.ac.jp}
-%
-%	This list is for general discussion on \smlsharp{}.
-%	We use Japanese and English in discussion.
-%	To post a message, you need to subscribe to this list.
-%	All the messages are made available on the Web.
+\item \smlsharp{} forum:
+\url{https://github.com/smlsharp/forum/discussions}
 
-%%%%%%%%%%%%%%%%%%ToDo: 参加方法
-%How to subscribe:\url{https://www.pllab.riec.tohoku.ac.jp/mailman/listinfo.cgi/smlsharp-list?language=ja}\\
-%Mail archive:\url{https://www.pllab.riec.tohoku.ac.jp/pipermail/smlsharp-list/}
+	This board is for general discussion on \smlsharp{}.
+	To post a message, you need to have a GitHub account.
+	All the messages are made available on the Web.
 
 \item \smlsharp{} twitter account:
 {\tt @smlsharp}
 
 	We tweet the latest information about \smlsharp{} on this account.
-	
-%\item Email address of the \smlsharp{} development team :
-%{\tt smlsharp-dev@ml.riec.tohoku.ac.jp}
-%%\epsfig{file=smlsharp-list.eps,width=0.4\textwidth}
 
-Send your questions, requests, and comments to the development team.
+	Send your questions, requests, and comments to the development team.
 \end{itemize}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
