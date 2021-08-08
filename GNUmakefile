@@ -86,9 +86,9 @@ SHA256 = perl -mDigest::SHA -e 'exit(Digest::SHA->new(256)->addfile($$ARGV[0])->
 src/Archive-Zip-1.68.tar.gz: | src
 	cd src && curl -L -O https://www.cpan.org/authors/id/P/PH/PHRED/Archive-Zip-1.68.tar.gz
 	$(SHA256) $@ 984e185d785baf6129c6e75f8eb44411745ac00bf6122fb1c8e822a3861ec650
-src/File-Which-1.23.tar.gz: | src
-	cd src && curl -L -O https://www.cpan.org/authors/id/P/PL/PLICEASE/File-Which-1.23.tar.gz
-	$(SHA256) $@ b79dc2244b2d97b6f27167fc3b7799ef61a179040f3abd76ce1e0a3b0bc4e078
+src/File-Which-1.27.tar.gz: | src
+	cd src && curl -L -O https://www.cpan.org/authors/id/P/PL/PLICEASE/File-Which-1.27.tar.gz
+	$(SHA256) $@ 3201f1a60e3f16484082e6045c896842261fc345de9fb2e620fd2a2c7af3a93a
 src/IO-String-1.08.tar.gz: | src
 	cd src && curl -L -O https://www.cpan.org/authors/id/G/GA/GAAS/IO-String-1.08.tar.gz
 	$(SHA256) $@ 2a3f4ad8442d9070780e58ef43722d19d1ee21a803bf7c8206877a10482de5a0
@@ -110,11 +110,11 @@ lib/Archive/Zip.pm: src/Archive-Zip-1.68.tar.gz | lib
 	cd src && tar -xf Archive-Zip-1.68.tar.gz
 	cd src/Archive-Zip-1.68 && perl Makefile.PL && make
 	cp -R src/Archive-Zip-1.68/blib/lib/Archive lib
-lib/File/Which.pm: src/File-Which-1.23.tar.gz | lib
-	-rm -rf src/File-Which-1.23
-	cd src && tar -xf File-Which-1.23.tar.gz
-	cd src/File-Which-1.23 && perl Makefile.PL && make
-	cp -R src/File-Which-1.23/blib/lib/File lib
+lib/File/Which.pm: src/File-Which-1.27.tar.gz | lib
+	-rm -rf src/File-Which-1.27
+	cd src && tar -xf File-Which-1.27.tar.gz
+	cd src/File-Which-1.27 && perl Makefile.PL && make
+	cp -R src/File-Which-1.27/blib/lib/File lib
 lib/IO/String.pm: src/IO-String-1.08.tar.gz | lib
 	-rm -rf src/IO-String-1.08
 	cd src && tar -xf IO-String-1.08.tar.gz
