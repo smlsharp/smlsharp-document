@@ -105,36 +105,26 @@ src/LaTeXML-0.8.5.tar.gz: | src
 	cd src && curl -L -O https://www.cpan.org/authors/id/B/BR/BRMILLER/LaTeXML-0.8.5.tar.gz
 	$(SHA256) $@ 1de821d0df8c88041ee10820188f33feac77d5618de4c0798a296a425f4e2637
 
+define PMBUILD_CMD
+	-rm -rf $(patsubst %.tar.gz,%,$<)
+	cd src && tar -xf $(notdir $<)
+	cd $(patsubst %.tar.gz,%,$<) && PERLLIB=../../lib perl Makefile.PL
+	cd $(patsubst %.tar.gz,%,$<) && PERLLIB=../../lib make
+	cp -R $(patsubst %.tar.gz,%,$<)/blib/lib/* lib
+endef
+
 lib/Archive/Zip.pm: src/Archive-Zip-1.68.tar.gz | lib
-	-rm -rf src/Archive-Zip-1.68
-	cd src && tar -xf Archive-Zip-1.68.tar.gz
-	cd src/Archive-Zip-1.68 && perl Makefile.PL && make
-	cp -R src/Archive-Zip-1.68/blib/lib/Archive lib
+	$(PMBUILD_CMD)
 lib/File/Which.pm: src/File-Which-1.27.tar.gz | lib
-	-rm -rf src/File-Which-1.27
-	cd src && tar -xf File-Which-1.27.tar.gz
-	cd src/File-Which-1.27 && perl Makefile.PL && make
-	cp -R src/File-Which-1.27/blib/lib/File lib
+	$(PMBUILD_CMD)
 lib/IO/String.pm: src/IO-String-1.08.tar.gz | lib
-	-rm -rf src/IO-String-1.08
-	cd src && tar -xf IO-String-1.08.tar.gz
-	cd src/IO-String-1.08 && perl Makefile.PL && make
-	cp -R src/IO-String-1.08/blib/lib/IO lib
+	$(PMBUILD_CMD)
 lib/Image/Size.pm: src/Image-Size-3.300.tar.gz | lib
-	-rm -rf src/Image-Size-3.300
-	cd src && tar -xf Image-Size-3.300.tar.gz
-	cd src/Image-Size-3.300 && perl Makefile.PL && make
-	cp -R src/Image-Size-3.300/blib/lib/Image lib
+	$(PMBUILD_CMD)
 lib/Parse/RecDescent.pm: src/Parse-RecDescent-1.967015.tar.gz | lib
-	-rm -rf src/Parse-RecDescent-1.967015
-	cd src && tar -xf Parse-RecDescent-1.967015.tar.gz
-	cd src/Parse-RecDescent-1.967015 && perl Makefile.PL && make
-	cp -R src/Parse-RecDescent-1.967015/blib/lib/Parse lib
+	$(PMBUILD_CMD)
 lib/Text/Unidecode.pm: src/Text-Unidecode-1.30.tar.gz | lib
-	-rm -rf src/Text-Unidecode-1.30
-	cd src && tar -xf Text-Unidecode-1.30.tar.gz
-	cd src/Text-Unidecode-1.30 && perl Makefile.PL && make
-	cp -R src/Text-Unidecode-1.30/blib/lib/Text lib
+	$(PMBUILD_CMD)
 lib/LaTeXML.pm: src/LaTeXML-0.8.5.tar.gz | lib
 	-rm -rf src/LaTeXML-0.8.5
 	cd src && tar -xf LaTeXML-0.8.5.tar.gz
