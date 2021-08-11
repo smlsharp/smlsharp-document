@@ -101,6 +101,36 @@ src/Parse-RecDescent-1.967015.tar.gz: | src
 src/Text-Unidecode-1.30.tar.gz: | src
 	cd src && curl -L -O https://cpan.metacpan.org/authors/id/S/SB/SBURKE/Text-Unidecode-1.30.tar.gz
 	$(SHA256) $@ 6c24f14ddc1d20e26161c207b73ca184eed2ef57f08b5fb2ee196e6e2e88b1c6
+src/URI-5.09.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.09.tar.gz
+	$(SHA256) $@ 03e63ada499d2645c435a57551f041f3943970492baa3b3338246dab6f1fae0a
+src/Try-Tiny-0.30.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/E/ET/ETHER/Try-Tiny-0.30.tar.gz
+	$(SHA256) $@ da5bd0d5c903519bbf10bb9ba0cb7bcac0563882bcfe4503aee3fb143eddef6b
+src/Encode-Locale-1.05.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/G/GA/GAAS/Encode-Locale-1.05.tar.gz
+	$(SHA256) $@ 176fa02771f542a4efb1dbc2a4c928e8f4391bf4078473bd6040d8f11adb0ec1
+src/HTTP-Message-6.33.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Message-6.33.tar.gz
+	$(SHA256) $@ 23b967f71b852cb209ec92a1af6bac89a141dff1650d69824d29a345c1eceef7
+src/HTTP-Date-6.05.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Date-6.05.tar.gz
+	$(SHA256) $@ 365d6294dfbd37ebc51def8b65b81eb79b3934ecbc95a2ec2d4d827efe6a922b
+src/libwww-perl-6.55.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-6.55.tar.gz
+	$(SHA256) $@ c1d0d3a44a039b136ebac7336f576e3f5c232347e8221abd69ceb4108e85c920
+src/Pod-Parser-1.63.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-1.63.tar.gz
+	$(SHA256) $@ dbe0b56129975b2f83a02841e8e0ed47be80f060686c66ea37e529d97aa70ccd
+src/XML-SAX-Base-1.09.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/G/GR/GRANTM/XML-SAX-Base-1.09.tar.gz
+	$(SHA256) $@ 66cb355ba4ef47c10ca738bd35999723644386ac853abbeb5132841f5e8a2ad0
+src/XML-LibXML-2.0125.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/XML-LibXML-2.0125.tar.gz
+	$(SHA256) $@ 01407fe313893dabb138a817897277dbdabcd0cbcbaca4628a16b7cb6fd86bd7
+src/XML-LibXSLT-1.99.tar.gz: | src
+	cd src && curl -L -O https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/XML-LibXSLT-1.99.tar.gz
+	$(SHA256) $@ 127e17a877fb61e47b9e8b87bf8daad31339a62a00121f9751d522b438b0f7f0
 src/LaTeXML-0.8.5.tar.gz: | src
 	cd src && curl -L -O https://cpan.metacpan.org/authors/id/B/BR/BRMILLER/LaTeXML-0.8.5.tar.gz
 	$(SHA256) $@ 1de821d0df8c88041ee10820188f33feac77d5618de4c0798a296a425f4e2637
@@ -110,6 +140,7 @@ define PMBUILD_CMD
 	cd src && tar -xf $(notdir $<)
 	cd $(patsubst %.tar.gz,%,$<) && PERLLIB=../../lib perl Makefile.PL
 	cd $(patsubst %.tar.gz,%,$<) && PERLLIB=../../lib make
+	cp -R $(patsubst %.tar.gz,%,$<)/blib/arch/* lib
 	cp -R $(patsubst %.tar.gz,%,$<)/blib/lib/* lib
 endef
 
@@ -125,16 +156,50 @@ lib/Parse/RecDescent.pm: src/Parse-RecDescent-1.967015.tar.gz | lib
 	$(PMBUILD_CMD)
 lib/Text/Unidecode.pm: src/Text-Unidecode-1.30.tar.gz | lib
 	$(PMBUILD_CMD)
-lib/LaTeXML.pm: src/LaTeXML-0.8.5.tar.gz | lib
+lib/URI.pm: src/URI-5.09.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/Try/Tiny.pm: src/Try-Tiny-0.30.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/Encode/Locale.pm: src/Encode-Locale-1.05.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/HTTP/Message.pm: src/HTTP-Message-6.33.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/HTTP/Date.pm: src/HTTP-Date-6.05.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/LWP.pm: src/libwww-perl-6.55.tar.gz lib/Try/Tiny.pm lib/Encode/Locale.pm lib/HTTP/Message.pm lib/HTTP/Date.pm
+	$(PMBUILD_CMD)
+lib/Pod/Parser.pm: src/Pod-Parser-1.63.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/XML/SAX/Base.pm: src/XML-SAX-Base-1.09.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/XML/LibXML.pm: src/XML-LibXML-2.0125.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/XML/LibXSLT.pm: src/XML-LibXSLT-1.99.tar.gz | lib
+	$(PMBUILD_CMD)
+lib/LaTeXML.pm: src/LaTeXML-0.8.5.tar.gz lib/Parse/RecDescent.pm
 	-rm -rf src/LaTeXML-0.8.5
 	cd src && tar -xf LaTeXML-0.8.5.tar.gz
 	cd src/LaTeXML-0.8.5 && $(LATEXML_PATCH) | patch -p1
-	cd src/LaTeXML-0.8.5 && perl Makefile.PL && make
-	cp -R src/LaTeXML-0.8.5/blib/lib/LaTeXML* lib
+	cd src/LaTeXML-0.8.5 && PERLLIB=../../lib perl Makefile.PL
+	cd src/LaTeXML-0.8.5 && PERLLIB=../../lib make
+	cp -R src/LaTeXML-0.8.5/blib/lib/* lib
 	cd lib/LaTeXML/Package && cp book.cls.ltxml jbook.cls.ltxml
-bin/latexml: lib/Archive/Zip.pm lib/File/Which.pm lib/IO/String.pm lib/Image/Size.pm lib/Parse/RecDescent.pm lib/Text/Unidecode.pm lib/LaTeXML.pm | bin
+LATEXML_DEPS = \
+  lib/Archive/Zip.pm \
+  lib/File/Which.pm \
+  lib/IO/String.pm \
+  lib/Image/Size.pm \
+  lib/Text/Unidecode.pm \
+  lib/URI.pm \
+  lib/LWP.pm \
+  lib/Pod/Parser.pm \
+  lib/XML/SAX/Base.pm \
+  lib/XML/LibXML.pm \
+  lib/XML/LibXSLT.pm \
+  lib/LaTeXML.pm
+bin/latexml: $(LATEXML_DEPS) | bin
 	cp src/LaTeXML-0.8.5/blib/script/latexml bin
-bin/latexmlpost: lib/Archive/Zip.pm lib/File/Which.pm lib/IO/String.pm lib/Image/Size.pm lib/Parse/RecDescent.pm lib/Text/Unidecode.pm lib/LaTeXML.pm | bin
+bin/latexmlpost: $(LATEXML_DEPS) | bin
 	cp src/LaTeXML-0.8.5/blib/script/latexmlpost bin
 
 LATEXML_PATCH = printf -- '\
