@@ -61,14 +61,14 @@ The \smlsharp{} development team
 }
 }
 
-\renewcommand{\today}{\txt{令和3年4月}{Apr, 2021}}
+\renewcommand{\today}{\txt{令和6年11月}{Nov, 2024}}
 \date{\today}
 \newcommand{\smlsharp}{SML\#}
-\newcommand{\version}{4.0.0}
-\newcommand{\releaseDate}{2021-04-XX}
+\newcommand{\version}{4.1.0}
+\newcommand{\releaseDate}{2021-11-08}
 
-\newcommand{\mythversion}{1.00}
-\newcommand{\llvmversion}{11.1.0}
+\newcommand{\mythversion}{1.02}
+\newcommand{\llvmversion}{19.1}
 
 \newcommand{\seeJapanese}{The English version of this document is under
 construction. See the official Japanese documents (unfortunately in Japanese).}
@@ -1152,8 +1152,8 @@ setting up a programming environment.
 	\smlsharp{}\version{}版は以下のプラットフォームで動作します．
 \begin{itemize}
 \item Linux（amd64（x86\_64）版）
-\item macOS（10.15以降推奨）
-\item Windows 10（Windows Subsystem for Linuxを利用）
+\item macOS（10.15以降）
+\item Windows 10，Windows 11（Windows Subsystem for Linuxを利用）
 \end{itemize}
 
 	また，\smlsharp{}のコンパイルと実行には以下のサードパーティ製
@@ -1161,7 +1161,7 @@ setting up a programming environment.
 \begin{itemize}
 \item MassiveThreads \mythversion
 \item GNU Multiple Precision Arithmetic Library (GMP) ライブラリ
-\item LLVM 3.9.1以降（LLVM \llvmversion{}を推奨．新しいものが望ましい）
+\item LLVM（7.1.0から\llvmversion{}まで．新しいものが望ましい）
 \end{itemize}
 	MassiveThreadsはBSDスタイルライセンスの下で配布されている
 フリーソフトウェアです．
@@ -1176,9 +1176,9 @@ setting up a programming environment.
 %	以下，特に断りが無い限り，
 %MassiveThreadsを使用するものとして説明します．
 
-	LLVMはバージョン3.9.1以降のできるだけ新しいものをご用意ください．
+	LLVMはバージョン7.1.0以降のできるだけ新しいものをご用意ください．
 	LLVM \llvmversion{}までのバージョンでコンパイルと動作を確認済です．
-	3.8以前のLLVMでは\smlsharp{}をビルドすることができません．
+	7より前のLLVMでは\smlsharp{}をビルドすることができません．
 
 	これらのソフトウェアは全て，
 \smlsharp{}コンパイラのビルドや実行に必要です．
@@ -1220,20 +1220,19 @@ platforms.
 \begin{itemize}
 \item Linux (amd64 (x86\_64))
 \item macOS (10.15 or later is recommended)
-\item Windows 10 (Windows Subsystem for Linux)
+\item Windows 11 (Windows Subsystem for Linux)
 \end{itemize}
 
 	\smlsharp{} compiler requires the following software.
 \begin{itemize}
 \item MassiveThreads \mythversion{}
 \item GNU Multiple Precision Arithmetic (GMP) library
-\item LLVM 3.9.1 or above (LLVM \llvmversion{} is recommended; the latest one available is preferrable)
+\item LLVM (from 7.1.0 to \llvmversion{}; the latest one available is preferrable)
 \end{itemize}
 	MassiveThreads is a free software distributed under a BSD-style
 license.
 	GMP is a free software distributed under LGPL（GNU Lesser General
 Public License).
-	Yajl is a free software distributed under a variant of ISC license.
 	LLVM is a open-source software distributed under Apache
 license version 2 with some exceptions.
 
@@ -1243,10 +1242,10 @@ license version 2 with some exceptions.
 %	In what follows,
 %MassiveThreads is enabled unless otherwise noted.
 
-	LLVM version must be in version 3.9.1 or above.
+	LLVM version must be in version 7.1.0 or above.
 	The latest LLVM available in your system is preferable.
 	We confirmed that \smlsharp{} works with up to LLVM \llvmversion{}.
-	Compliing \smlsharp{} with LLVM 3.8 or below shall fail.
+	Compliing \smlsharp{} with LLVM prior to 7 shall fail.
 
 	All of these libraries and commands are required not only to
 build \smlsharp{} but also to run the \smlsharp{} compiler command
@@ -1303,15 +1302,22 @@ install and update \smlsharp{} by {\tt apt} command.
 \begin{itemize}
 \item Debian sid:
 \begin{program}
-wget -P /usr/share/keyrings https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp-archive-keyring.gpg\\
-wget -P /etc/apt/sources.list.d https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp.list\\
+wget -P /etc/apt/keyrings https://smlsharp.github.io/repos/debian/dists/sid/smlsharp-archive-keyring.gpg\\
+wget -P /etc/apt/sources.list.d https://smlsharp.github.io/repos/debian/dists/sid/smlsharp.sources\\
 apt update\\
 apt install smlsharp
 \end{program}
-\item Debian 10 (buster):
+\item Debian 12 (bookworm):
 \begin{program}
-wget -P /usr/share/keyrings https://github.com/smlsharp/repos/raw/main/debian/dists/buster/smlsharp-archive-keyring.gpg\\
-wget -P /etc/apt/sources.list.d https://github.com/smlsharp/repos/raw/main/debian/dists/buster/smlsharp.list\\
+wget -P /etc/apt/keyrings https://smlsharp.github.io/repos/debian/dists/bookworm/smlsharp-archive-keyring.gpg\\
+wget -P /etc/apt/sources.list.d https://smlsharp.github.io/repos/debian/dists/bookworm/smlsharp.sources\\
+apt update\\
+apt install smlsharp
+\end{program}
+\item Debian 11 (bullseye):
+\begin{program}
+wget -P /usr/share/keyrings https://smlsharp.github.io/repos/debian/dists/bullseye/smlsharp-archive-keyring.gpg\\
+wget -P /etc/apt/sources.list.d https://smlsharp.github.io/repos/debian/dists/bullseye/smlsharp.list\\
 apt update\\
 apt install smlsharp
 \end{program}
@@ -1333,7 +1339,7 @@ apt install smlsharp
 put it to the specified position in the system.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-wget -P /usr/share/keyrings https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp-archive-keyring.gpg
+wget -P /etc/apt/keyrings https://smlsharp.github.io/repos/debian/dists/sid/smlsharp-archive-keyring.gpg
 \end{program}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	以下のコマンドで鍵指紋を確認できます．
@@ -1341,7 +1347,7 @@ wget -P /usr/share/keyrings https://github.com/smlsharp/repos/raw/main/debian/di
 	You can check the fingerprint of the key by the following command:
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \begin{program}
-gpg --with-fingerprint /usr/share/keyrings/smlsharp-archive-keyring.gpg
+gpg --with-fingerprint /etc/apt/keyrings/smlsharp-archive-keyring.gpg
 \end{program}
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	ダウンロードした鍵の指紋が上記指紋と一致することを確認してください
@@ -1369,7 +1375,7 @@ add it to the system.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{program}
-wget -P /etc/apt/sources.list.d https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp.list
+wget -P /etc/apt/sources.list.d https://smlsharp.github.io/repos/debian/dists/sid/smlsharp.sources
 \end{program}
 
 \item
@@ -1407,7 +1413,7 @@ apt install smlsharp
 \label{sec:tutorialInstallUbuntu}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	\smlsharp{}リリース時点で最新のリリースおよびLTSリリースに対して
+	\smlsharp{}リリース時点で有効なLTSリリースに対して
 PPA (Personal Package Archives for Ubuntu) にプライベートリポジトリを
 を用意しています．
 	このリポジトリをシステムに追加することで，{\tt apt}コマンドで
@@ -1415,9 +1421,9 @@ PPA (Personal Package Archives for Ubuntu) にプライベートリポジトリ�
 
 	以下のコマンドでインストールできます．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Private repositories are provided for the latest release and
-latest TLS release (when \smlsharp{} is released) of Ubuntu through
-PPA (Personal Package Archives for Ubuntu).
+	The private repositories are provided
+for Ubuntu LTS releases avaliable when \smlsharp{} is released
+through PPA (Personal Package Archives for Ubuntu).
 	Add one of these repositories to your system, and you can
 install and update the \smlsharp{} compiler by the {\tt apt} command.
 
@@ -1425,13 +1431,7 @@ install and update the \smlsharp{} compiler by the {\tt apt} command.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{itemize}
-\item Ubuntu 20.10 LTS (Groovy):
-\begin{program}
-add-apt-repository ppa:smlsharp/ppa\\
-apt update\\
-apt install smlsharp
-\end{program}
-\item Ubuntu 20.04 LTS (Focal):
+\item Ubuntu 20.04 LTS (focal), 22.04 LTS (jammy), 24.04 LTS (noble):
 \begin{program}
 add-apt-repository ppa:smlsharp/ppa\\
 apt update\\
@@ -1455,16 +1455,15 @@ system.
 \label{sec:tutorialInstallFedora}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	\smlsharp{}リリース時点で最新リリースのFedoraおよび
+	\smlsharp{}リリース時点での
 Fedora Rawhideに対してプライベートリポジトリを用意しています．
 	このリポジトリをシステムに追加することで，{\tt dnf}コマンドで
 \smlsharp{}コンパイラのインストールおよびアップデートを行うことができます．
 
 	以下のコマンドでインストールできます．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Private repositories of \smlsharp{} are provided for the
-latest version (when \smlsharp{} is released) of Fedora and
-Fedora Rawhide.
+	Private repositories of \smlsharp{} are provided for
+the latest version (when \smlsharp{} is released) of Fedora Rawhide.
 	Add one of these repositories to your system, and you can
 install and update \smlsharp{} by {\tt dnf} command.
 
@@ -1472,14 +1471,9 @@ install and update \smlsharp{} by {\tt dnf} command.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{itemize}
-\item Fedora:
-\begin{program}
-rpm -i https://github.com/smlsharp/repos/raw/main/fedora/smlsharp-release-fedora-31-0.noarch.rpm\\
-dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
-\end{program}
 \item Fedora Rawhide:
 \begin{program}
-rpm -i https://github.com/smlsharp/repos/raw/main/fedora/smlsharp-release-rawhide-31-0.noarch.rpm\\
+rpm -i https://smlsharp.github.io/repos/fedora/smlsharp-release-fedora-41-1.noarch.rpm\\
 dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
 \end{itemize}
@@ -1502,7 +1496,7 @@ repository.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{program}
-rpm -i https://github.com/smlsharp/repos/raw/main/fedora/smlsharp-release-fedora-31-0.noarch.rpm
+rpm -i https://smlsharp.github.io/repos/fedora/smlsharp-release-fedora-41-1.noarch.rpm
 \end{program}
 
 \item
@@ -1534,10 +1528,10 @@ DD99 2B50 C9A3 B075 DA04 613A D299 F71F C5C1 D12E
 
 \end{enumerate}
 
-\section{CentOS}
+\section{AlmaLinux}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	CentOS 7およびCentOS 8に対して，
+	AlmaLinux 8および9に対して，
 amd64用のプライベートリポジトリを用意しています．
 	このリポジトリをシステムに追加することで，{\tt yum}コマンドや
 {\tt dnf}コマンドで\smlsharp{}コンパイラのインストールおよびアップデートを
@@ -1545,8 +1539,8 @@ amd64用のプライベートリポジトリを用意しています．
 
 	以下のコマンドでインストールできます．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Private repositories of \smlsharp{} are provided for CentOS 7
-and CentOS 8.
+	Private repositories of \smlsharp{} are provided for AlmaLinux 8
+and 9.
 	Add one of these repositoriers to your system, and you can
 install and update \smlsharp{} by {\tt yum} or {\tt dnf} command.
 
@@ -1554,42 +1548,19 @@ install and update \smlsharp{} by {\tt yum} or {\tt dnf} command.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{itemize}
-\item CentOS 8:
+\item AlmaLinux 8, AlmaLinux 9:
 \begin{program}
-rpm -i https://github.com/smlsharp/repos/raw/main/centos/smlsharp-release-centos-8-0.noarch.rpm\\
+rpm -i https://smlsharp.github.io/repos/almalinux/smlsharp-release-almalinux-8-1.noarch.rpm\\
 dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 \end{program}
-\item CentOS 7:
-\begin{program}
-yum install epel-release\\
-rpm -i https://github.com/smlsharp/repos/raw/main/centos/smlsharp-release-centos-7-0.noarch.rpm\\
-yum install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
-\end{program}
 \end{itemize}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	コマンドは，以下の点を除いてFedoraの場合とほぼ同様です．
+	コマンドはFedoraの場合とほぼ同様です．
+	詳細は\ref{sec:tutorialInstallFedora}節をご覧ください．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The commands are similar to those for Fedora except for the following
-points.
-\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-\begin{itemize}
-\item
-\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	CentOS 7の場合，{\tt epel-release}パッケージを事前にインストール
-しておく必要があります．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	On CentOS 7, the {\tt epel-release} package must be installed
-prior to installing \smlsharp{}.
-\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-\end{itemize}
-
-\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	その他の詳細は\ref{sec:tutorialInstallFedora}節をご覧ください．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	See Section \ref{sec:tutorialInstallFedora} for details of other
-commands.
+	The commands are almost similar to those for Fedora.
+	See Section \ref{sec:tutorialInstallFedora} for details.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{macOS}
@@ -1607,7 +1578,7 @@ install \smlsharp{} and its dependent libraries.
 
 \begin{program}
 brew tap smlsharp/smlsharp\\
-brew install smlsharp
+brew install smlsharp/smlsharp/smlsharp
 \end{program}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -1640,32 +1611,12 @@ brew tap smlsharp/smlsharp
 formula（パッケージ）およびbottle（バイナリパッケージ）を含みます．
 	ただし，bottleは\smlsharp{}リリース時の最新のmacOSに対してのみ
 提供されます．
-	パッケージの正当性を示すため，このリポジトリの各コミットは
-\smlsharp{}開発チームの秘密鍵で署名されています．
-	署名を検証したい場合は以下のURLあるいは
-PGP公開鍵サーバーから\smlsharp{}開発チームの公開鍵を取得してください．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	This repository includes the formulae (packages) and bottles
 (binary packages) of the MassiveThread library and \smlsharp{} compiler.
 	Bottles are provided only for the latest version of macOS
 when \smlsharp{} is released.
-	For validity of packages, each commit in this repository
-is signed by the private key of the \smlsharp{} development team.
-	To verify the signature,
-fetch the public key of the \smlsharp{} development team from the
-following URL or some PGP public key servers:
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-\begin{program}
-https://github.com/smlsharp/repos/raw/main/debian/dists/sid/smlsharp-archive-keyring.gpg
-\end{program}
-\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	鍵指紋は以下の通りです．
-\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The fingerprint of the key is the following:
-\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-\begin{program}
-DD99 2B50 C9A3 B075 DA04 613A D299 F71F C5C1 D12E
-\end{program}
 
 \item
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -1690,7 +1641,7 @@ therefore the command takes a long time.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \end{enumerate}
 
-\section{\txt{Windows 10}{Windows 10}}
+\section{\txt{Windows 11}{Windows 11}}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	Windows Subsystems for LinuxとUbuntuをセットアップすることで，
@@ -1701,25 +1652,6 @@ therefore the command takes a long time.
 Microsoftが提供するドキュメントをご覧ください．
 	bashを起動したあとのインストール手順はUbuntuへのインストール手順と
 同一です（\ref{sec:tutorialInstallUbuntu}節をご覧ください）．
-
-%	本文書執筆時点でのおおまかなセットアップ方法は以下の通りです．
-%\begin{enumerate}
-%\item
-%	Windows Subsystems for Linuxのセットアップには
-%Creators Update以降のWindows 10を使うことが推奨されています．
-%	必要に応じてアップデートしてください．
-%\item
-%	「コントロールパネル」→「プログラム」→
-%「Windowsの機能の有効化または無効化」から
-%Windows Subsystems for Linuxを有効にします．
-%	ここで再起動が必要です．
-%\item
-%	「設定」→「更新とセキュリティ」→「開発者向け」から
-%「開発者モード」を有効にします．
-%\item
-%	再起動後，コマンドプロンプトあるいはPowerShellを開き，
-%bashコマンドを実行します．
-%\item
 
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	By setting up Windows Subsystems for Linux and Ubuntu,
@@ -1741,8 +1673,10 @@ install \smlsharp{} in the same installation steps as Ubuntu
 \item プログラム開発用のツール群GNU binutils（GNU Binary Utilities）．
 \item CおよびC++コンパイラ（gccまたはclang）
 \item make（GNU makeを推奨）
-\item MassiveThreadsおよびGMPライブラリ本体とヘッダーファイル
-\item LLVM 3.9.1以降のライブラリ，ヘッダーファイル，およびコマンド
+\item GMPライブラリ本体とヘッダーファイル
+\item LLVMのライブラリ，ヘッダーファイル，およびコマンド
+（バージョン7.1.0から\llvmversion{}まで）
+\item MassiveThreadsライブラリ本体とヘッダーファイル
 \end{enumerate}
 	これらのソフトウェアがインストール済みならば，\smlsharp{}は
 標準的な3ステップ {\tt ./configure \&\& make \&\& make install} で
@@ -1756,7 +1690,8 @@ install \smlsharp{} in the same installation steps as Ubuntu
 \item C and C++ compiler (gcc or clang),
 \item make (GNU make is recommended),
 \item MassiveThreads and GMP library and their header files, and
-\item LLVM 3.9.1 (or above) library, its header files, and commands
+\item LLVM library, its header files, and commands
+(supported versions are from 7.1.0 to \llvmversion).
 \end{enumerate}
 	If these have been already installed, you can build and install
 \smlsharp{} in the following popular three steps:
@@ -1764,20 +1699,24 @@ install \smlsharp{} in the same installation steps as Ubuntu
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	特にこだわりがなければ，これらのソフトウェアは
+OS標準のパッケージシステムでインストールしてください．
 	これらのソフトウェアがOSのパッケージシステムによって提供されていない
 場合，これらもソースからビルドする必要があります．
 	これらのコンパイルの詳細は，各ソフトウェアの公式ドキュメントなどを
 参照してください．
 
-	本文書の執筆時点でのMassiveThreadsおよびLLVM \llvmversion{}の大まかな
+	本文書の執筆時点でのMassiveThreadsおよびLLVM 7.1.0の大まかな
 インストール手順は以下の通りです．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	We recommend you to install these prerequisites through
+the packaging system of your OS.
 	If your OS does not provide them, you need to build them from the
 source.
 	See those official documents for details of this procedure.
 
 	For your information, we roughly present how to compile MassiveThreads
-and LLVM \llvmversion{} the time when we write this document.
+and LLVM 7.1.0 when we write this document.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \paragraph{MassiveThreads}
@@ -1798,15 +1737,15 @@ MassiveThreads web site
 do {\tt ./configure \&\& make \&\& make install}.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-\paragraph{LLVM \llvmversion{}}
+\paragraph{LLVM 7.1.0}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	LLVMのWebページ \url{http://llvm.org/} などからLLVMのソースコード
-{\tt llvm-\llvmversion.src.tar.xz}%
+{\tt llvm-7.1.0.src.tar.xz}%
 を入手，展開し，以下の5ステップでビルドします．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	Obtain the source code of LLVM \llvmversion{} named
-{\tt llvm-\llvmversion.tar.xz}
+	Obtain the source code of LLVM 7.1.0 named
+{\tt llvm-7.1.0.tar.xz}
 from LLVM web site \url{http://llvm.org/}.
 	After expanding the tar archive,
 do the following five commands:
@@ -2011,6 +1950,12 @@ $\mathit{prefix}'$ different from $\mathit{prefix}$, specify
 するとき{\tt -j\nonterm{n}}スイッチを指定すると，並列にコンパイルされ，
 実行時間が短縮される場合があります．\nonterm{n}は並列度です．コアの数程度
 に指定すると良い結果が得られると思います．
+\item SML#コンパイラ自体を開発するためには，
+SML#コンパイラを動かすためのLLVMに加え，ブートストラップのために
+LLVM 7.1.0が必要です．
+開発目的で\smlsharp{}コンパイラをビルドする場合は，
+{\tt ./configure}実行時に{\tt --with-llvm7}オプションを加えて，
+LLVM 7.1.0がインストールされている場所を指定してください．
 \end{itemize}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Some hints:
@@ -2021,6 +1966,13 @@ tools, which takes some time．
 	If you have a CPU with $n$ cores and use GNU make, then try to
 give {\tt -j$m$} ($m \le n$) switch to {\tt make} command for
 parallel processing, where $m$ indicate the degree of parallelism.
+\item
+	In addition to LLVM for the \smlsharp{} compiler to work,
+\smlsharp{} compiler developers need to install LLVM 7.1.0 as well
+for bootstrapping.
+	If you would like to develop the \smlsharp{} compiler,
+add {\tt --with-llvm7} option to {\tt ./configure} command line
+to specify where LLVM 7.1.0 is installed.
 \end{itemize}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -28848,19 +28800,19 @@ Chapter~\ref{chap:control} outline the control flow of the \smlsharp{} compiler.
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	以降の各章では，第\ref{chap:control}章で記述したコンパラの制御の
 流れに従い，各モジュールの構造と機能を記述する．
-	第\ref{chap:main}章では，\code{main}モジュールを記述する．
+%	第\ref{chap:main}章では，\code{main}モジュールを記述する．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	Each of the following chapters describes the structure and
 function of each of the modules in the order of compilation flow
 described in Chapter~\ref{chap:control}.
-	Chapter~\ref{chap:control} describes \code{main} module.
+%	Chapter~\ref{chap:control} describes \code{main} module.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \item 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-第\ref{chap:main}章は\code{toplebel}モジュールを記述する．
+%第\ref{chap:main}章は\code{toplebel}モジュールを記述する．
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Chapter~\ref{chap:control} describes \code{toplebel} module.
+%Chapter~\ref{chap:control} describes \code{toplebel} module.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -29696,7 +29648,8 @@ The top-level compile phase processing by \code{src/compiler/compilePhase/toplev
 	\smlsharp{}コンパイラコマンドは，\smlsharp{}言語で書かれたプログ
 ラムを\smlsharp{}コンパラで分割コンパイル・リンクし生成された実行形式プ
 ログラムである．
-	第\ref{chap:executableCode}章で記述する通り，\smlsharp{}のプログ
+%	第\ref{chap:executableCode}章で記述する通り，
+	\smlsharp{}のプログ
 ラムのメインコードは，\smlsharp{}コマンドをリンクモードで起動した時に指
 定されたインタフェイスファイルに対応するソースファイルおよび，そのインタ
 フェイスファイルから参照されるインタフェイスファイルに対応するソースファ
@@ -29710,7 +29663,8 @@ The top-level compile phase processing by \code{src/compiler/compilePhase/toplev
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The \smlsharp{} compiler is an \smlsharp{} program separately
 compiled and liked by the \smlsharp{} compiler.
-	As we explain in chapter~\ref{chap:executableCode}, the main
+%	As we explain in chapter~\ref{chap:executableCode},
+	the main
 function of an \smlsharp{} program, initially called from the
 \smlsharp{} runtime system, sequentially evaluets the top-level
 declarations of the set of source files in an order that respects the
