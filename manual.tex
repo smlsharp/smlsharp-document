@@ -1950,8 +1950,10 @@ $\mathit{prefix}'$ different from $\mathit{prefix}$, specify
 するとき{\tt -j\nonterm{n}}スイッチを指定すると，並列にコンパイルされ，
 実行時間が短縮される場合があります．\nonterm{n}は並列度です．コアの数程度
 に指定すると良い結果が得られると思います．
-\item SML#コンパイラ自体を開発するためには，
-SML#コンパイラを動かすためのLLVMに加え，ブートストラップのために
+% \item SML#コンパイラ自体を開発するためには，
+% SML#コンパイラを動かすためのLLVMに加え，ブートストラップのために
+\item \smlsharp{}コンパイラ自体を開発するためには，
+\smlsharp{}コンパイラを動かすためのLLVMに加え，ブートストラップのために
 LLVM 7.1.0が必要です．
 開発目的で\smlsharp{}コンパイラをビルドする場合は，
 {\tt ./configure}実行時に{\tt --with-llvm7}オプションを加えて，
