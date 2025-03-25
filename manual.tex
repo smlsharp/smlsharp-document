@@ -61,14 +61,14 @@ The \smlsharp{} development team
 }
 }
 
-\renewcommand{\today}{\txt{令和6年11月}{Nov, 2024}}
+\renewcommand{\today}{\txt{令和7年3月}{Mar, 2025}}
 \date{\today}
 \newcommand{\smlsharp}{SML\#}
-\newcommand{\version}{4.1.0}
-\newcommand{\releaseDate}{2021-11-08}
+\newcommand{\version}{4.2.0}
+\newcommand{\releaseDate}{2025-03-24}
 
 \newcommand{\mythversion}{1.02}
-\newcommand{\llvmversion}{19.1}
+\newcommand{\llvmversion}{20.1}
 
 \newcommand{\seeJapanese}{The English version of this document is under
 construction. See the official Japanese documents (unfortunately in Japanese).}
@@ -631,6 +631,9 @@ Standard ML of New Jerseyコンパイラに多相型レコード演算を加え�
 2008年のe-Societyプロジェクト終了後も，東北大学電気通信研究所大堀・上野研究室
 にて，\smlsharp{}の研究開発を続けています．
 
+2021年から，より自由で開かれた利用を目指し，
+開発の中心は\smlsharp{}開発チームが担っています．
+
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	The origin of the \smlsharp{} can be traced back to the proposal
 of Machiavelli published in \cite{ohor89sigmod}.
@@ -661,6 +664,10 @@ Science and Technology as a part of the e-Society project
 funded by the Japan ministry of science, education and technologies
 
 	In 2006, the project moved to Tohoku University.
+
+	In 2021, the core activity of development moved to
+the \smlsharp{} development team.
+
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \section{
@@ -673,12 +680,11 @@ funded by the Japan ministry of science, education and technologies
 	現在（\releaseDate）\smlsharp{}は，
 \begin{itemize}
 \item 
-大堀 淳（東北大学電気通信研究所）
+大堀 淳（東北大学名誉教授）
 \item 
 上野雄大（新潟大学自然科学系）
 \end{itemize}
-の２名が，東北大学大学院情報科学研究科の大堀・上野研究室に所属の大学院生の協力の
-下，開発を行なっています．
+の２名が，新潟大学上野研究室に所属の学生の協力の下，開発を行なっています．
 
 	\smlsharp{}のこれまでの主な開発者は以下の通りです．
 	（敬称は略させていただいています．
@@ -706,10 +712,10 @@ funded by the Japan ministry of science, education and technologies
 	この掲示板は\smlsharp{}について議論する場所です．
 	メッセージを投稿するにはGitHubアカウントが必要です．
 
-\item Twitterアカウント {\tt @smlsharp}．
+\item X（旧Twitter）アカウント {\tt @smlsharp}．
 \smlsharp{}に関する最新情報をツイートします．
 
-	修正・執筆にあたっては，twitterなどでの\smlsharp{}や本書へのコメ
+	修正・執筆にあたっては，Xなどでの\smlsharp{}や本書へのコメ
 ントなども，本書の改善の参考にさせて頂いております．
 	個々に言及いたしませんが，本書をご覧頂きコメントをお寄せ頂いた
 方々に感謝いたします．
@@ -719,11 +725,11 @@ funded by the Japan ministry of science, education and technologies
 	At present (\releaseDate), \smlsharp{} is being developed by
 \begin{itemize}
 \item 
-Atsushi Ohori（RIEC, Tohoku University）
+Atsushi Ohori（Professor emeritus, Tohoku University）
 \item 
 Katsuhiro Ueno （Niigata University）
 \end{itemize}
-with help of graduate students.
+with help of students.
 
 	The past \smlsharp{} development team members include (with the
 affiliation at the time of development):
@@ -748,7 +754,7 @@ affiliation at the time of development):
 	To post a message, you need to have a GitHub account.
 	All the messages are made available on the Web.
 
-\item \smlsharp{} twitter account:
+\item \smlsharp{} X (twitter) account:
 {\tt @smlsharp}
 
 	We tweet the latest information about \smlsharp{} on this account.
@@ -1017,8 +1023,10 @@ be impossible.
 	第\version{}版にその殆どが含まれていますが，以下の制約があります．
 \begin{enumerate}
 \item ターゲットアーキテクチャ．
-	現在の\smlsharp{}コンパイラは，Intelアーキテクチャ（x86\_64）向けのコードのみ生成可能です．
-	将来，マルチターゲット化を行う予定です．
+	現在の\smlsharp{}コンパイラは，Intelアーキテクチャ（x86\_64）
+およびarm64アーキテクチャ向けのコードのみ生成可能です．
+	オペレーティングシステムもLinuxおよびmacOSのみの対応です．
+	それ以外のアーキテクチャやOSへの対応は将来の課題です．
 %\item Windows版の対話型ループの制約．
 %	\smlsharp{}\version{}版は，すべて一つのネイティブコードコンパイ
 %ラで動いています．
@@ -1033,12 +1041,20 @@ be impossible.
 %大文字数によって制約されます．
 
 \item 最適化．
-	現在のバージョンには，インライニングや定数の伝播などの基本的な最
-適化も十分に実装されていません．
-	従って，コンパイル時間，コンパイルされたコードの実行時間もともに
-十分とは言えません．
-	将来の版では，他の最適化コンパイラに比肩する速度が得られると期待
-しています．
+	現在のバージョンでは，インライニングや定数の伝播などの基本的な最
+適化のみを装備しています．
+	将来の版では，より高度な最適化を実装し，他の最適化コンパイラに
+比肩する速度が得られると期待しています．
+
+\item arm64版の制限．
+	arm64アーキテクチャへの対応は実験的です．
+	x86\_64でできることがarm64ではできないことがあります．
+	例えば，MLの関数をCに渡すコードをコンパイルするとき，
+arm64版macOSでは以下のLLVMエラーが発生することがあります．
+\begin{verbatim}
+   LLVM ERROR: INIT_TRAMPOLINE operation is only supported on Linux
+\end{verbatim}
+	この制限は将来の版で解消される予定です．
 
 \end{enumerate}
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1050,17 +1066,26 @@ restrictions.
 \begin{enumerate}
 \item {\bf Target Architecture.}
 
-	The current compiler only generates x86-64 code.
+	The current compiler only generates x86-64 and arm64 code
+and only supports Linux and macOS.
 
 \item {\bf Optimization.}
 
-	In this version, optimization is far from adequate; it does not
-even implement standard ones such as inlining and constant propagation.
-	So both the compilation time and the speed of generated code are
-not very satisfactory.
-	We have started design and development of optimizing \smlsharp{}
-compiler, and hope that we will provide an optimized \smlsharp{}
-compiler that is as fast as other mature compilers.
+	In this version, the compiler is equipped with standard
+optimizations such as inlining and constant propagation.
+	We hope that we will provide more advanced optimizations,
+which will make the compiler as fast as other mature compilers.
+
+\item {\bf Limitations on arm64}.
+
+	Arm64 support is still experimental.
+	Some features do not work similarly to x86\_64.
+	For example, on arm64 macOS, exporting an ML function to C
+sometimes causes the following LLVM error:
+\begin{verbatim}
+   LLVM ERROR: INIT_TRAMPOLINE operation is only supported on Linux
+\end{verbatim}
+	This limitation will be resolved in the future versions.
 
 \end{enumerate}
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -1151,9 +1176,9 @@ setting up a programming environment.
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	\smlsharp{}\version{}版は以下のプラットフォームで動作します．
 \begin{itemize}
-\item Linux（amd64（x86\_64）版）
-\item macOS（10.15以降）
-\item Windows 10，Windows 11（Windows Subsystem for Linuxを利用）
+\item Linux（amd64（x86\_64）版またはaarch64（arm64）版）
+\item macOS（10.15以降，x86\_64版またはarm64版）
+\item Windows 11（Windows Subsystem for Linux 2を利用）
 \end{itemize}
 
 	また，\smlsharp{}のコンパイルと実行には以下のサードパーティ製
@@ -1218,9 +1243,9 @@ MassiveThreadsおよびGMPライブラリがリンクされます
 	The \smlsharp{} version \version{} works on one of the following
 platforms.
 \begin{itemize}
-\item Linux (amd64 (x86\_64))
-\item macOS (10.15 or later is recommended)
-\item Windows 11 (Windows Subsystem for Linux)
+\item Linux (amd64 (x86\_64) or aarch64 (arm64))
+\item macOS (version 10.15 or later, x86\_64 or arm64)
+\item Windows 11 (Windows Subsystem for Linux 2)
 \end{itemize}
 
 	\smlsharp{} compiler requires the following software.
@@ -1431,7 +1456,7 @@ install and update the \smlsharp{} compiler by the {\tt apt} command.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 \begin{itemize}
-\item Ubuntu 20.04 LTS (focal), 22.04 LTS (jammy), 24.04 LTS (noble):
+\item 22.04 LTS (jammy), 24.04 LTS (noble):
 \begin{program}
 add-apt-repository ppa:smlsharp/ppa\\
 apt update\\
@@ -1563,6 +1588,20 @@ dnf install smlsharp smlsharp-smlformat smlsharp-smllex smlsharp-smlyacc
 	See Section \ref{sec:tutorialInstallFedora} for details.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+\section{Nix/NixOS}
+
+\ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	Flakesを有効にした上で以下のコマンドを実行すると
+\smlsharp{}コンパイラが起動します．
+\else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	Enable Flakes and run the following command to run the
+\smlsharp{} compiler:
+\fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+\begin{program}
+nix run github:smlsharp/nixpkgs
+\end{program}
+
 \section{macOS}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -1641,23 +1680,23 @@ therefore the command takes a long time.
 \fi%%%%<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 \end{enumerate}
 
-\section{\txt{Windows 11}{Windows 11}}
+\section{Windows 11}
 
 \ifjp%>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	Windows Subsystems for LinuxとUbuntuをセットアップすることで，
+	Windows Subsystems for Linux 2とUbuntuをセットアップすることで，
 \smlsharp{}のUbuntu用バイナリパッケージをWindowsにそのままインストールし
 実行することができます．
 
-	Windows Subsystems for Linuxを有効にするための手順の詳細は，
+	Windows Subsystems for Linux 2を有効にするための手順の詳細は，
 Microsoftが提供するドキュメントをご覧ください．
 	bashを起動したあとのインストール手順はUbuntuへのインストール手順と
 同一です（\ref{sec:tutorialInstallUbuntu}節をご覧ください）．
 
 \else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	By setting up Windows Subsystems for Linux and Ubuntu,
+	By setting up Windows Subsystems for Linux 2 and Ubuntu,
 you can install the \smlsharp{}'s {\tt .deb} package for Ubuntu in Windows.
 
-	See Microsoft's documents for setting up Windows Subsystems for Linux.
+	See Microsoft's documents for setting up Windows Subsystems for Linux 2.
 	After {\tt bash} command becomes available,
 install \smlsharp{} in the same installation steps as Ubuntu
 (see Section \ref{sec:tutorialInstallUbuntu} for details).
@@ -1757,7 +1796,8 @@ cmake -G "Unix Makefiles" \char`\\\\
 \ \ \ \ \ -DCMAKE\_INSTALL\_PREFIX=/$\mathit{where}$/$\mathit{llvm}$/$\mathit{is}$ \char`\\\\
 \ \ \ \ \ -DCMAKE\_BUILD\_TYPE=Release \char`\\\\
 \ \ \ \ \ -DLLVM\_BUILD\_LLVM\_DYLIB=On \char`\\\\
-\ \ \ \ \ -DLLVM\_ENABLE\_BINDINGS=Off\\
+\ \ \ \ \ -DLLVM\_ENABLE\_BINDINGS=Off \char`\\\\
+\ \ \ \ \ ..\\
 make\\
 make install
 \end{program}
@@ -2029,8 +2069,9 @@ to specify where LLVM 7.1.0 is installed.
 
 \item {\bf Cコンパイラ.}
 	\smlsharp{}コンパイラは，ソースコードを%x86あるいは
-x86\_64アーキテクチャのネイティブコードにコンパイルし，OS標準のオブジェクト
-ファイルを作成し，さらにそれらをリンクし実行形式ファイルを作成します．
+x86\_64またはarm64アーキテクチャのネイティブコードにコンパイルし，
+OS標準のオブジェクトファイルを作成し，
+さらにそれらをリンクし実行形式ファイルを作成します．
 	この過程でCコンパイラドライバ（{\tt gcc}や{\tt clang}など）を
 通してリンカーを呼び出します．
 	Cコンパイラは，Unix系OS%やCygwin，MinGW
@@ -2098,7 +2139,7 @@ its basic functionality, it will become a powerful tool in programming.
 
 \item {\bf C compiler.}
 	\smlsharp{} compiler generates %x86 or
-x86\_64 native code,
+x86\_64 or arm64 native code,
 creates an
 object file in a standard format (e.g. ELF), and generates an executable
 code by linking object files with C libraries.
